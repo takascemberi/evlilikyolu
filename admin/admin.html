@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Paneli - Evlilik Yolu</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div class="admin-container">
+    <h1>Admin Paneli</h1>
+
+    <div class="section">
+      <h2>Yeni Üyeler</h2>
+      <div id="new-users" class="list-box">Yükleniyor...</div>
+    </div>
+
+    <div class="section">
+      <h2>Resim Onayı Bekleyenler</h2>
+      <div id="pending-images" class="list-box">Yükleniyor...</div>
+    </div>
+
+    <div class="section">
+      <h2>Canlı Destek Mesajları</h2>
+      <div id="support-messages" class="list-box">Yükleniyor...</div>
+    </div>
+
+    <div class="section">
+      <h2>Premium Üyelik Talepleri</h2>
+      <div id="premium-requests" class="list-box">Yükleniyor...</div>
+    </div>
+
+    <div class="section">
+      <h2>Hediye Paketi Talepleri</h2>
+      <div id="gift-requests" class="list-box">Yükleniyor...</div>
+    </div>
+
+    <div class="section">
+      <h2>Kullanıcı Arama</h2>
+      <input type="text" id="searchInput" placeholder="Kullanıcı adıyla ara..." />
+      <button onclick="searchUser()">Ara</button>
+      <div id="searchResults" class="list-box"></div>
+    </div>
+
+    <audio id="notifSound" src="public/audio/notif.mp3" preload="auto"></audio>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
