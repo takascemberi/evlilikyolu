@@ -5,6 +5,98 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Paneli</title>
   <link rel="stylesheet" href="admin-style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #e1bee7, #f3e5f5);
+      color: #333;
+    }
+
+    .header {
+      background-color: #6a1b9a;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .logout-btn {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #fff;
+      color: #6a1b9a;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .logout-btn:hover {
+      background: #f3e5f5;
+    }
+
+    .search-bar {
+      text-align: center;
+      margin: 30px 20px 10px;
+    }
+    .search-bar input {
+      padding: 12px;
+      width: 320px;
+      border: 1px solid #999;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 25px;
+      width: 280px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card h3 {
+      color: #6a1b9a;
+      margin-bottom: 10px;
+    }
+    .card p {
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+    .button {
+      background: #6a1b9a;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    .button:hover {
+      background: #8e24aa;
+    }
+  </style>
 </head>
 <body>
   <script>
@@ -13,7 +105,11 @@
     }
   </script>
 
-  <div class="header">Admin Paneli</div>
+  <div class="header">
+    Admin Paneli
+    <button class="logout-btn" onclick="logout()">Çıkış</button>
+  </div>
+
   <div class="search-bar">
     <input type="text" placeholder="Kullanıcı Ara...">
   </div>
@@ -58,11 +154,14 @@
 
   <audio id="admin-sound" src="adminmesaj.wav" preload="auto"></audio>
   <script>
-    // Sesli bildirim oynatma örneği (manuel tetiklenebilir)
     function playSound() {
       document.getElementById("admin-sound").play();
     }
-    // Gerçek sistemde mesaj geldiğinde otomatik çalıştırılır
+
+    function logout() {
+      localStorage.removeItem("isAdmin");
+      window.location.href = "admin-login.html";
+    }
   </script>
 </body>
 </html>
