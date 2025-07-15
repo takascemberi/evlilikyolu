@@ -1,70 +1,68 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Paneli</title>
-  <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      padding: 30px;
-    }
-    h1 {
-      text-align: center;
-      color: #ffd700;
-    }
-    .box {
-      background: #222;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.1);
-    }
-    button {
-      padding: 10px 20px;
-      background: #ffd700;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background: #e6c200;
-    }
-  </style>
+  <link rel="stylesheet" href="admin-style.css">
 </head>
 <body>
-
-  <h1>Admin Paneli</h1>
-
-  <div class="box">
-    <h2>Yeni Üyeler</h2>
-    <p>Yeni kayıt olan kullanıcılar burada listelenecek.</p>
-    <button onclick="bildirimCal()">🔔 Bildirim Sesi Test</button>
-  </div>
-
-  <div class="box">
-    <h2>Resim Onay Paneli</h2>
-    <p>Kullanıcıların yüklediği resimler onay için burada görünecek.</p>
-  </div>
-
-  <div class="box">
-    <h2>Canlı Destek ve Mesajlar</h2>
-    <p>Kullanıcılardan gelen mesajları buradan görebilir, yanıtlayabilir ve silebilirsiniz.</p>
-  </div>
-
-  <audio id="notification-sound" src="../public/ses/adminmesaj.wav" preload="auto"></audio>
-
   <script>
-    function bildirimCal() {
-      const ses = document.getElementById("notification-sound");
-      if (ses) {
-        ses.play().catch(() => {});
-      }
+    if (localStorage.getItem("isAdmin") !== "true") {
+      window.location.href = "admin-login.html";
     }
   </script>
 
+  <div class="header">Admin Paneli</div>
+  <div class="search-bar">
+    <input type="text" placeholder="Kullanıcı Ara...">
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h3>Yeni Üyeler</h3>
+      <p>Onay bekleyen kullanıcıları listele...</p>
+      <button class="button">Görüntüle</button>
+    </div>
+
+    <div class="card">
+      <h3>Resim Onayı</h3>
+      <p>Kullanıcılar tarafından yüklenen yeni resimler</p>
+      <button class="button">İncele</button>
+    </div>
+
+    <div class="card">
+      <h3>Canlı Destek</h3>
+      <p>Yeni mesajlar, bildirim sesli uyarı ile gelir</p>
+      <button class="button">Mesajları Gör</button>
+    </div>
+
+    <div class="card">
+      <h3>Kullanıcı Listesi</h3>
+      <p>Adına göre arama, düzenleme, engelleme</p>
+      <button class="button">Listele</button>
+    </div>
+
+    <div class="card">
+      <h3>Premium Talepler</h3>
+      <p>1-3-6 aylık üyelik ödemeleri</p>
+      <button class="button">Onayla</button>
+    </div>
+
+    <div class="card">
+      <h3>Hediye Talepleri</h3>
+      <p>Jeton ile hediye alma istekleri</p>
+      <button class="button">Kontrol Et</button>
+    </div>
+  </div>
+
+  <audio id="admin-sound" src="adminmesaj.wav" preload="auto"></audio>
+  <script>
+    // Sesli bildirim oynatma örneği (manuel tetiklenebilir)
+    function playSound() {
+      document.getElementById("admin-sound").play();
+    }
+    // Gerçek sistemde mesaj geldiğinde otomatik çalıştırılır
+  </script>
 </body>
 </html>
