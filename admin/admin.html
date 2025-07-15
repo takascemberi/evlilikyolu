@@ -3,48 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Paneli - Evlilik Yolu</title>
-  <link rel="stylesheet" href="admin.css" />
+  <title>Admin Paneli</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #ffd700;
+    }
+    .box {
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+    button {
+      padding: 10px 20px;
+      background: #ffd700;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #e6c200;
+    }
+  </style>
 </head>
 <body>
-  <div class="admin-container">
-    <h1>Admin Paneli</h1>
 
-    <div class="section">
-      <h2>Yeni Üyeler</h2>
-      <div id="new-users" class="list-box">Yükleniyor...</div>
-    </div>
+  <h1>Admin Paneli</h1>
 
-    <div class="section">
-      <h2>Resim Onayı Bekleyenler</h2>
-      <div id="pending-images" class="list-box">Yükleniyor...</div>
-    </div>
-
-    <div class="section">
-      <h2>Canlı Destek Mesajları</h2>
-      <div id="support-messages" class="list-box">Yükleniyor...</div>
-    </div>
-
-    <div class="section">
-      <h2>Premium Üyelik Talepleri</h2>
-      <div id="premium-requests" class="list-box">Yükleniyor...</div>
-    </div>
-
-    <div class="section">
-      <h2>Hediye Paketi Talepleri</h2>
-      <div id="gift-requests" class="list-box">Yükleniyor...</div>
-    </div>
-
-    <div class="section">
-      <h2>Kullanıcı Arama</h2>
-      <input type="text" id="searchInput" placeholder="Kullanıcı adıyla ara..." />
-      <button onclick="searchUser()">Ara</button>
-      <div id="searchResults" class="list-box"></div>
-    </div>
-
-    <audio id="notifSound" src="public/audio/notif.mp3" preload="auto"></audio>
+  <div class="box">
+    <h2>Yeni Üyeler</h2>
+    <p>Yeni kayıt olan kullanıcılar burada listelenecek.</p>
+    <button onclick="bildirimCal()">🔔 Bildirim Sesi Test</button>
   </div>
 
-  <script type="module" src="admin.js"></script>
+  <div class="box">
+    <h2>Resim Onay Paneli</h2>
+    <p>Kullanıcıların yüklediği resimler onay için burada görünecek.</p>
+  </div>
+
+  <div class="box">
+    <h2>Canlı Destek ve Mesajlar</h2>
+    <p>Kullanıcılardan gelen mesajları buradan görebilir, yanıtlayabilir ve silebilirsiniz.</p>
+  </div>
+
+  <audio id="notification-sound" src="../public/ses/adminmesaj.wav" preload="auto"></audio>
+
+  <script>
+    function bildirimCal() {
+      const ses = document.getElementById("notification-sound");
+      if (ses) {
+        ses.play().catch(() => {});
+      }
+    }
+  </script>
+
 </body>
 </html>
