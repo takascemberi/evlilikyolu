@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Evlilik Yolu - Ana Sayfa</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body style="background: #fff; font-family: 'Poppins', sans-serif; color: #333;">
+  <div style="padding: 30px; max-width: 900px; margin: auto; text-align: center;">
+    <h1 style="color: #d63384;">Evlilik Yolu’na Hoş Geldiniz</h1>
+    <p>Platformumuza giriş yaptınız. Dilerseniz profilinizi düzenleyebilir veya yeni insanlarla tanışabilirsiniz.</p>
+    <button onclick="handleLogout()" style="background: #d63384; color: white; padding: 10px 20px; border: none; border-radius: 30px; cursor: pointer; font-weight: 600; margin-top: 20px;">
+      Çıkış Yap
+    </button>
+
+    <!-- Düğün görselleri -->
+    <div class="image-slider" style="margin-top: 60px;">
+      <img src="images/1.jpg" class="slider-image active" />
+      <img src="images/2.jpg" class="slider-image" />
+      <img src="images/3.jpg" class="slider-image" />
+      <img src="images/4.jpg" class="slider-image" />
+      <img src="images/5.jpg" class="slider-image" />
+    </div>
+
+    <!-- Alt yazı -->
+    <div class="blog-box" style="margin-top: 250px;">
+      1990 yılından itibaren sizlerle birlikte mutluluğunuzu paylaşıyoruz<br />
+      ve yüzlerce üyemizin evliliğine şahit olduk.
+    </div>
+  </div>
+
+  <!-- Firebase çıkış kodu -->
+  <script type="module">
+    import { auth } from './firebaseConfig.js';
+    import { signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+    window.handleLogout = async function () {
+      try {
+        await signOut(auth);
+        window.location.href = "index.html";
+      } catch (error) {
+        alert("Çıkış başarısız: " + error.message);
+      }
+    }
+  </script>
+
+  <!-- Görsellerin geçiş animasyonu -->
+  <script>
+    let current = 0;
+    const images = document.querySelectorAll(".slider-image");
+
+    setInterval(() => {
+      images[current].classList.remove("active");
+      current = (current + 1) % images.length;
+      images[current].classList.add("active");
+    }, 4000);
+  </script>
+</body>
+</html>
