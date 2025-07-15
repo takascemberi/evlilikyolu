@@ -5,18 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Evlilik Yolu - Giriş & Kayıt</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .slider-wrapper {
+      position: relative;
+      max-width: 700px;
+      margin: 50px auto 0 auto;
+    }
+    .slider-image {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .slider-image.active {
+      opacity: 1;
+      z-index: 1;
+      position: relative;
+    }
+    .slider-label {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 20px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .blog-box {
+      max-width: 800px;
+      margin: 450px auto 50px auto;
+      background: rgba(255,255,255,0.1);
+      padding: 30px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+  </style>
 </head>
 <body>
   <div class="overlay">
     <div class="form-container">
       <h1>Evlilik Yolu</h1>
-
       <div class="tabs">
         <div class="tab active" onclick="showTab('login')">Giriş Yap</div>
         <div class="tab" onclick="showTab('register')">Kayıt Ol</div>
       </div>
 
-      <!-- Giriş Formu -->
       <form id="login" class="form active" onsubmit="handleLogin(event)">
         <input type="email" id="loginEmail" placeholder="E-posta" required />
         <input type="password" id="loginPassword" placeholder="Şifre" required />
@@ -25,14 +70,12 @@
         <button type="button" class="google-btn" onclick="handleGoogleLogin()">Google ile Giriş Yap</button>
       </form>
 
-      <!-- Kayıt Formu -->
       <form id="register" class="form" onsubmit="handleRegister(event)">
         <input type="text" id="registerUsername" placeholder="Kullanıcı Adı" required />
         <input type="email" id="registerEmail" placeholder="E-posta" required />
         <input type="number" id="registerAge" placeholder="Yaş" min="18" max="120" required />
         <input type="text" id="registerCountry" placeholder="Ülke" required />
         <input type="text" id="registerCity" placeholder="Şehir" required />
-
         <div class="radio-group">
           <label>Cinsiyet:</label>
           <div>
@@ -42,7 +85,6 @@
             <label for="female">Kadın</label>
           </div>
         </div>
-
         <div class="radio-group">
           <label>Aradığı Cinsiyet:</label>
           <div>
@@ -52,7 +94,6 @@
             <label for="search-female">Kadın</label>
           </div>
         </div>
-
         <input type="password" id="registerPassword" placeholder="Şifre" required />
         <input type="password" id="registerPasswordConfirm" placeholder="Şifre Tekrar" required />
         <button type="submit">Kayıt Ol</button>
@@ -67,22 +108,25 @@
     </div>
   </div>
 
-  <!-- Geçişli Düğün Görselleri -->
-  <div class="image-slider">
+  <!-- 📸 Görsel Slayt + Etiket -->
+  <div class="slider-wrapper">
     <img src="images/1.jpg" class="slider-image active" />
     <img src="images/2.jpg" class="slider-image" />
     <img src="images/3.jpg" class="slider-image" />
     <img src="images/4.jpg" class="slider-image" />
     <img src="images/5.jpg" class="slider-image" />
+    <div class="slider-label" id="slider-label">Sıla ❤️</div>
   </div>
 
-  <!-- Alt Blog Yazısı -->
+  <!-- 📝 Blog Kutusu -->
   <div class="blog-box">
-    1990 yılından itibaren sizlerle birlikte mutluluğunuzu paylaşıyoruz<br />
-    ve yüzlerce üyemizin evliliğine şahit olduk.
+    1990 yılından itibaren sizlerle birlikte mutluluğunuzu paylaşıyoruz<br><br>
+    Bugüne kadar binlerce çiftin hayatını birleştirmesine aracılık ettik. Evlilik Yolu, yalnızca bir tanışma platformu değil; güven, sadakat ve samimiyetin merkezinde bir topluluktur.<br><br>
+    Amacımız sadece eş bulmak değil, birbirine destek olan ömürlük birliktelikleri mümkün kılmak. Gerçek aşkı arayan, hayallerini paylaşacak birini isteyen herkesin yolu burada kesişiyor.  
+    Siz de kendi hikayenizi başlatmak için bize katılın.
   </div>
 
-  <!-- Firebase & Form Script -->
+  <!-- 🔐 Firebase -->
   <script type="module">
     import { auth } from './firebaseConfig.js';
     import {
@@ -145,15 +189,17 @@
     }
   </script>
 
-  <!-- Görsel geçiş kodu -->
   <script>
-    let current = 0;
     const images = document.querySelectorAll(".slider-image");
+    const label = document.getElementById("slider-label");
+    const names = ["Sıla ❤️", "Murat ❤️", "Sema ❤️", "Veli ❤️", "Ayşe ❤️"];
+    let current = 0;
 
     setInterval(() => {
       images[current].classList.remove("active");
       current = (current + 1) % images.length;
       images[current].classList.add("active");
+      label.textContent = names[current];
     }, 4000);
   </script>
 </body>
