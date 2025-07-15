@@ -13,8 +13,7 @@
     }
     .slider-image {
       width: 100%;
-      height: 420px;
-      object-fit: cover;
+      height: auto;
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
       position: absolute;
@@ -27,17 +26,6 @@
       opacity: 1;
       z-index: 1;
       position: relative;
-    }
-    .slider-label {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 10px 20px;
-      border-radius: 20px;
-      color: #fff;
-      font-weight: 600;
-      font-size: 1.1rem;
     }
     .blog-box {
       max-width: 800px;
@@ -108,14 +96,13 @@
     </div>
   </div>
 
-  <!-- 📸 Görsel Slayt + Etiket -->
+  <!-- 📸 Görsel Slayt -->
   <div class="slider-wrapper">
     <img src="images/1.png" class="slider-image active" />
     <img src="images/2.png" class="slider-image" />
     <img src="images/3.png" class="slider-image" />
     <img src="images/4.png" class="slider-image" />
     <img src="images/5.png" class="slider-image" />
-    <div class="slider-label" id="slider-label">Sıla ❤️</div>
   </div>
 
   <!-- 📝 Blog Kutusu -->
@@ -191,15 +178,12 @@
 
   <script>
     const images = document.querySelectorAll(".slider-image");
-    const label = document.getElementById("slider-label");
-    const names = ["Sıla ❤️", "Murat ❤️", "Sema ❤️", "Veli ❤️", "Ayşe ❤️"];
     let current = 0;
 
     setInterval(() => {
       images[current].classList.remove("active");
       current = (current + 1) % images.length;
       images[current].classList.add("active");
-      label.textContent = names[current];
     }, 4000);
   </script>
 </body>
