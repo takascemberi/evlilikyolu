@@ -118,19 +118,19 @@
     <div class="card">
       <h3>Yeni Üyeler</h3>
       <p>Onay bekleyen kullanıcıları listele...</p>
-      <button class="button">Görüntüle</button>
+      <button class="button" onclick="playSound()">Görüntüle</button>
     </div>
 
     <div class="card">
       <h3>Resim Onayı</h3>
       <p>Kullanıcılar tarafından yüklenen yeni resimler</p>
-      <button class="button">İncele</button>
+      <button class="button" onclick="playSound()">İncele</button>
     </div>
 
     <div class="card">
       <h3>Canlı Destek</h3>
       <p>Yeni mesajlar, bildirim sesli uyarı ile gelir</p>
-      <button class="button">Mesajları Gör</button>
+      <button class="button" onclick="playSound()">Mesajları Gör</button>
     </div>
 
     <div class="card">
@@ -142,13 +142,13 @@
     <div class="card">
       <h3>Premium Talepler</h3>
       <p>1-3-6 aylık üyelik ödemeleri</p>
-      <button class="button">Onayla</button>
+      <button class="button" onclick="playSound()">Onayla</button>
     </div>
 
     <div class="card">
       <h3>Hediye Talepleri</h3>
       <p>Jeton ile hediye alma istekleri</p>
-      <button class="button">Kontrol Et</button>
+      <button class="button" onclick="playSound()">Kontrol Et</button>
     </div>
   </div>
 
@@ -162,6 +162,12 @@
       localStorage.removeItem("isAdmin");
       window.location.href = "admin-login.html";
     }
+
+    // Otomatik tetikleme örneği (test amaçlı 5 saniyede bir çalışır)
+    setInterval(() => {
+      // Gerçek sistemde kontrol yapılır (örnek: fetch ile veri kontrolü)
+      playSound();
+    }, 5000);
   </script>
 </body>
 </html>
