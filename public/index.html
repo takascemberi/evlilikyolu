@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Evlilik Yolu - Giriş & Kayıt</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="overlay">
+    <div class="form-container">
+      <h1>Evlilik Yolu</h1>
+
+      <div class="tabs">
+        <div class="tab active" onclick="showTab('login')">Giriş Yap</div>
+        <div class="tab" onclick="showTab('register')">Kayıt Ol</div>
+      </div>
+
+      <!-- Giriş Formu -->
+      <form id="login" class="form active" onsubmit="handleLogin(event)">
+        <input type="email" id="loginEmail" placeholder="E-posta" required />
+        <input type="password" id="loginPassword" placeholder="Şifre" required />
+        <div class="forgot" onclick="alert('Şifre sıfırlama yakında!')">Şifremi Unuttum?</div>
+        <button type="submit">Giriş Yap</button>
+        <button type="button" class="google-btn" onclick="handleGoogleLogin()">Google ile Giriş Yap</button>
+      </form>
+
+      <!-- Kayıt Formu -->
+      <form id="register" class="form" onsubmit="handleRegister(event)">
+        <input type="text" id="registerUsername" placeholder="Kullanıcı Adı" required />
+        <input type="email" id="registerEmail" placeholder="E-posta" required />
+        <input type="number" id="registerAge" placeholder="Yaş" min="18" max="120" required />
+        <input type="text" id="registerCountry" placeholder="Ülke" required />
+        <input type="text" id="registerCity" placeholder="Şehir" required />
+
+        <div class="radio-group">
+          <label>Cinsiyet:</label>
+          <div>
+            <input type="radio" id="male" name="gender" value="erkek" required />
+            <label for="male">Erkek</label>
+            <input type="radio" id="female" name="gender" value="kadin" required />
+            <label for="female">Kadın</label>
+          </div>
+        </div>
+
+        <div class="radio-group">
+          <label>Aradığı Cinsiyet:</label>
+          <div>
+            <input type="radio" id="search-male" name="searchGender" value="erkek" required />
+            <label for="search-male">Erkek</label>
+            <input type="radio" id="search-female" name="searchGender" value="kadin" required />
+            <label for="search-female">Kadın</label>
+          </div>
+        </div>
+
+        <input type="password" id="registerPassword" placeholder="Şifre" required />
+        <input type="password" id="registerPasswordConfirm" placeholder="Şifre Tekrar" required />
+        <button type="submit">Kayıt Ol</button>
+      </form>
+
+      <div class="info-text">
+        <p>💖 Ücretsiz üye ol</p>
+        <p>📍 Yakınındakilerle eşleş</p>
+        <p>🎥 Mesajlaş ve video ile canlı görüş</p>
+        <p>💍 Buluş ve hayatını değiştir</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Geçişli Düğün Görselleri -->
+  <div class="image-slider">
+    <img src="images/1.jpg" class="slider-image active" />
+    <img src="images/2.jpg" class="slider-image" />
+    <img src="images/3.jpg" class="slider-image" />
+    <img src="images/4.jpg" class="slider-image" />
+    <img src="images/5.jpg" class="slider-image" />
+  </div>
+
+  <!-- Alt Blog Yazısı -->
+  <div class="blog-box">
+    1990 yılından itibaren sizlerle birlikte mutluluğunuzu paylaşıyoruz<br />
+    ve yüzlerce üyemizin evliliğine şahit olduk.
+  </div>
+
+  <!-- Firebase & Form Script -->
+  <script type="module">
+    import { auth } from './firebaseConfig.js';
+    import {
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      signInWithPopup,
+      GoogleAuthProvider
+    } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+    function showTab(tab) {
+      document.getElementById("login").classList.remove("active");
+      document.getElementById("register").classList.remove("active");
+      document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
+      if (tab === "login") {
+        document.getElementById("login").classList.add("active");
+        document.querySelectorAll(".tab")[0].classList.add("active");
+      } else {
+        document.getElementById("register").classList.add("active");
+        document.querySelectorAll(".tab")[1].classList.add("active");
+      }
+    }
+
+    window.showTab = showTab;
+
+    window.handleLogin = async function (event) {
+      event.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "home.html";
+      } catch (error) {
+        alert("Giriş başarısız: " + error.message);
+      }
+    }
+
+    window.handleRegister = async function (event) {
+      event.preventDefault();
+      const email = document.getElementById("registerEmail").value;
+      const password = document.getElementById("registerPassword").value;
+      const confirm = document.getElementById("registerPasswordConfirm").value;
+      if (password !== confirm) return alert("Şifreler uyuşmuyor!");
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert("Kayıt başarılı! Giriş yapabilirsiniz.");
+        showTab("login");
+      } catch (error) {
+        alert("Kayıt başarısız: " + error.message);
+      }
+    }
+
+    window.handleGoogleLogin = async function () {
+      const provider = new GoogleAuthProvider();
+      try {
+        await signInWithPopup(auth, provider);
+        window.location.href = "home.html";
+      } catch (error) {
+        alert("Google ile giriş başarısız: " + error.message);
+      }
+    }
+  </script>
+
+  <!-- Görsel geçiş kodu -->
+  <script>
+    let current = 0;
+    const images = document.querySelectorAll(".slider-image");
+
+    setInterval(() => {
+      images[current].classList.remove("active");
+      current = (current + 1) % images.length;
+      images[current].classList.add("active");
+    }, 4000);
+  </script>
+</body>
+</html>
