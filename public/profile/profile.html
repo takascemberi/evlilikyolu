@@ -22,8 +22,8 @@
     }
 
     .profile-pic-wrapper {
-      width: 160px;
-      height: 160px;
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
       border: 4px solid #ff69b4;
       overflow: hidden;
@@ -85,11 +85,10 @@
 <body>
   <div class="profile-container">
     <div class="profile-pic-wrapper">
-      <!-- Kullanıcı resim yüklemediğinde boş alan -->
       <img id="profileImage" src="" alt="Profil Resmi" onerror="this.style.display='none'" />
     </div>
-    <div class="username" id="username">Kullanıcı Adı, 30</div>
-    <div class="membership" id="membershipStatus">Standart Üye</div>
+    <div class="username" id="username">Kullanıcı Adı, Yaş</div>
+    <div class="membership" id="membershipStatus">Üyelik Durumu</div>
 
     <div class="icon-buttons">
       <button title="Ayarlar">⚙️</button>
@@ -99,5 +98,18 @@
 
     <button class="back-button" onclick="location.href='../home.html'">Ana Sayfaya Dön</button>
   </div>
+
+  <script>
+    const username = localStorage.getItem("username") || "Kullanıcı";
+    const age = localStorage.getItem("age") || "00";
+    const membership = localStorage.getItem("membership") || "Standart Üye";
+    const profilePic = localStorage.getItem("profilePic");
+
+    document.getElementById("username").innerText = `${username}, ${age}`;
+    document.getElementById("membershipStatus").innerText = membership;
+    if (profilePic) {
+      document.getElementById("profileImage").src = profilePic;
+    }
+  </script>
 </body>
 </html>
