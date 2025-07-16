@@ -218,8 +218,10 @@
     }
 
     function logout() {
-      alert("Çıkış yapıldı!");
-    }
+  localStorage.clear(); // Gerekirse kullanıcı verilerini temizler
+  alert("Çıkış yapıldı!");
+  window.location.href = "index.html"; // Giriş sayfasına yönlendir
+}
 
     function toggleSupport() {
       document.getElementById("supportPanel").classList.toggle("hidden");
