@@ -5,6 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-key="site_title">Ana Sayfa - Evlilik Yolu</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    @media (min-width: 768px) {
+      .desktop-toolbar {
+        display: flex;
+        gap: 15px;
+        margin-left: auto;
+      }
+      .desktop-toolbar button {
+        background: #e3fcec;
+        color: #007b33;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .desktop-toolbar {
+        display: none;
+      }
+    }
+
+    .top-bar {
+      background: #c5f7d3;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+  </style>
 </head>
 <body>
   <!-- Dil Seçici -->
@@ -23,7 +56,6 @@
     <div class="online-count">🟢 <span id="onlineCount">1234</span> Online</div>
     <button class="logout-btn" onclick="logout()" data-key="logout">Çıkış</button>
     <div class="desktop-toolbar">
-      <button onclick="submitPost()" data-key="share">Paylaş</button>
       <button onclick="goHome()">🏠</button>
       <button onclick="toggleSearch()">🔍</button>
       <button onclick="openMessages()">✉️</button>
@@ -64,11 +96,7 @@
 
   <!-- Alt Menü (Mobil ve sabit) -->
   <nav class="bottom-nav">
-    <button onclick="goHome()">🏠</button>
-    <button onclick="toggleSearch()">🔍</button>
-    <button onclick="openMessages()">✉️</button>
-    <button onclick="openNotifications()">🔔</button>
-    <button onclick="goProfile()">👤</button>
+    <!-- MASAÜSTÜ İÇİN ARTIK GÖRÜNMEYECEK -->
   </nav>
 
   <!-- Arama Kutusu -->
