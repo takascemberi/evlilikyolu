@@ -14,7 +14,7 @@
       apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
       authDomain: "vipbulusma.firebaseapp.com",
       projectId: "vipbulusma",
-      storageBucket: "vipbulusma.firebasestorage.app",
+      storageBucket: "vipbulusma.appspot.com",
       messagingSenderId: "552096712424",
       appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
       measurementId: "G-CNQEJEV51C"
@@ -31,13 +31,13 @@
 
         try {
           await signInWithEmailAndPassword(auth, email, password);
-          window.location.href = "/home.html";
+          location.href = "home.html";
         } catch (error) {
           alert("Hatalı giriş. Lütfen bilgilerinizi kontrol edin.");
         }
       });
 
-      const sliderImages = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg"];
+      const sliderImages = ["1.png", "2.png", "3.png", "4.png", "5.png"];
       let current = 0;
       const imgTag = document.getElementById("image-slider");
       setInterval(() => {
@@ -134,7 +134,7 @@
       </div>
     </div>
     <div class="slider-box">
-      <img id="image-slider" src="/images/1.jpg" alt="Tanıtım Görseli">
+      <img id="image-slider" src="/images/1.png" alt="Tanıtım Görseli">
     </div>
   </div>
   <script>
