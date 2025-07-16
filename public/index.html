@@ -215,6 +215,31 @@
       <option value="ar">🇸🇦 العربية</option>
     </select>
   </div>
-  <!-- İÇERİK KISMI DEĞİŞMEDEN KORUNDU -->
+  <div class="overlay">
+    <div class="form-container">
+      <h1 data-key="title">Evlilik Yolu</h1>
+      <div class="tabs">
+        <div class="tab active" onclick="showTab('login')" data-key="login">Giriş Yap</div>
+        <div class="tab" onclick="showTab('register')" data-key="register">Kayıt Ol</div>
+      </div>
+      <!-- Giriş ve kayıt formları JS ile yüklenecek veya eklenebilir -->
+    </div>
+  </div>
+  <script>
+    const langSelect = document.getElementById('lang-select');
+    const allElements = document.querySelectorAll('[data-key]');
+
+    function updateTexts(lang) {
+      document.documentElement.lang = lang;
+      document.body.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+
+      allElements.forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (translations[lang] && translations[lang][key]) {
+          el.innerText = translations[lang][key];
+        }
+      });
+    }
+  </script>
 </body>
 </html>
