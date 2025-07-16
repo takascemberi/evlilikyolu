@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Evlilik Yolu - Giriş & Kayıt</title>
+  <title data-key="site_title">Evlilik Yolu - Giriş & Kayıt</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     .slider-wrapper {
@@ -39,23 +39,37 @@
       text-align: center;
       box-shadow: 0 0 10px rgba(0,0,0,0.4);
     }
+    #language-switcher {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
   </style>
 </head>
 <body>
+  <div id="language-switcher">
+    <select id="lang-select">
+      <option value="tr">🇹🇷 Türkçe</option>
+      <option value="en">🇬🇧 English</option>
+      <option value="fa">🇮🇷 فارسی</option>
+      <option value="ar">🇸🇦 العربية</option>
+    </select>
+  </div>
+
   <div class="overlay">
     <div class="form-container">
-      <h1>Evlilik Yolu</h1>
+      <h1 data-key="app_name">Evlilik Yolu</h1>
       <div class="tabs">
-        <div class="tab active" onclick="showTab('login')">Giriş Yap</div>
-        <div class="tab" onclick="showTab('register')">Kayıt Ol</div>
+        <div class="tab active" onclick="showTab('login')" data-key="tab_login">Giriş Yap</div>
+        <div class="tab" onclick="showTab('register')" data-key="tab_register">Kayıt Ol</div>
       </div>
 
       <form id="login" class="form active" onsubmit="handleLogin(event)">
         <input type="email" id="loginEmail" placeholder="E-posta" required />
         <input type="password" id="loginPassword" placeholder="Şifre" required />
-        <div class="forgot" onclick="alert('Şifre sıfırlama yakında!')">Şifremi Unuttum?</div>
-        <button type="submit">Giriş Yap</button>
-        <button type="button" class="google-btn" onclick="handleGoogleLogin()">Google ile Giriş Yap</button>
+        <div class="forgot" onclick="alert('Şifre sıfırlama yakında!')" data-key="forgot">Şifremi Unuttum?</div>
+        <button type="submit" data-key="login">Giriş Yap</button>
+        <button type="button" class="google-btn" onclick="handleGoogleLogin()" data-key="google_login">Google ile Giriş Yap</button>
       </form>
 
       <form id="register" class="form" onsubmit="handleRegister(event)">
@@ -65,38 +79,37 @@
         <input type="text" id="registerCountry" placeholder="Ülke" required />
         <input type="text" id="registerCity" placeholder="Şehir" required />
         <div class="radio-group">
-          <label>Cinsiyet:</label>
+          <label data-key="gender">Cinsiyet:</label>
           <div>
             <input type="radio" id="male" name="gender" value="erkek" required />
-            <label for="male">Erkek</label>
+            <label for="male" data-key="male">Erkek</label>
             <input type="radio" id="female" name="gender" value="kadin" required />
-            <label for="female">Kadın</label>
+            <label for="female" data-key="female">Kadın</label>
           </div>
         </div>
         <div class="radio-group">
-          <label>Aradığı Cinsiyet:</label>
+          <label data-key="search_gender">Aradığı Cinsiyet:</label>
           <div>
             <input type="radio" id="search-male" name="searchGender" value="erkek" required />
-            <label for="search-male">Erkek</label>
+            <label for="search-male" data-key="male">Erkek</label>
             <input type="radio" id="search-female" name="searchGender" value="kadin" required />
-            <label for="search-female">Kadın</label>
+            <label for="search-female" data-key="female">Kadın</label>
           </div>
         </div>
         <input type="password" id="registerPassword" placeholder="Şifre" required />
         <input type="password" id="registerPasswordConfirm" placeholder="Şifre Tekrar" required />
-        <button type="submit">Kayıt Ol</button>
+        <button type="submit" data-key="register">Kayıt Ol</button>
       </form>
 
       <div class="info-text">
-        <p>💖 Ücretsiz üye ol</p>
-        <p>📍 Yakınındakilerle eşleş</p>
-        <p>🎥 Mesajlaş ve video ile canlı görüş</p>
-        <p>💍 Buluş ve hayatını değiştir</p>
+        <p data-key="info1">💖 Ücretsiz üye ol</p>
+        <p data-key="info2">📍 Yakınındakilerle eşleş</p>
+        <p data-key="info3">🎥 Mesajlaş ve video ile canlı görüş</p>
+        <p data-key="info4">💍 Buluş ve hayatını değiştir</p>
       </div>
     </div>
   </div>
 
-  <!-- 📸 Görsel Slayt -->
   <div class="slider-wrapper">
     <img src="images/1.png" class="slider-image active" />
     <img src="images/2.png" class="slider-image" />
@@ -105,29 +118,39 @@
     <img src="images/5.png" class="slider-image" />
   </div>
 
-  <!-- 📝 Blog Kutusu -->
-  <div class="blog-box">
-    💍 1990 Yılından İtibaren Binlerce Üyemizle Mutluluğa Aracılık Ediyoruz
-1990 yılından itibaren, insanların hayatlarını birleştirme yolculuğunda yanlarında olmak bizim için yalnızca bir hizmet değil, büyük bir onur oldu. “Evlilik Yolu” olarak çıktığımız bu yolda, her biri birbirinden özel binlerce üyemizin hikâyesine tanıklık ettik ve onları hayatlarının aşkıyla buluşturmanın mutluluğunu yaşadık.
-
-Zaman içinde teknoloji değişti, alışkanlıklar yenilendi, ancak değişmeyen tek şey; insanların sevgiye, güvene ve gerçek bir bağa duyduğu ihtiyaç oldu. Biz de bu ihtiyacı karşılamak, üyelerimize sadece bir tanışma değil, bir ömür boyu sürecek birliktelik fırsatı sunmak için buradayız.
-
-Bugün, Türkiye’nin dört bir yanından ve yurt dışından 50.000’in üzerinde aktif üyemiz, doğru kişiyi bulmak için platformumuzu tercih ediyor. Sistemimizde yer alan gelişmiş eşleşme algoritmaları, kullanıcıların değerlerini, hayallerini ve beklentilerini dikkate alarak onlara en uygun adayları sunar. Çünkü bizim için önemli olan yalnızca bir eşleşme değil, gerçek bir uyum sağlamaktır.
-
-Sitemize katılan herkesin güvenle ve huzurla iletişim kurabilmesi adına, kullanıcılarımızın kimliklerini ve profil bilgilerini titizlikle doğruluyoruz. Sahte profillere, kötü niyetli yaklaşımlara ve saygısız davranışlara karşı sıfır tolerans politikası uyguluyoruz. Güvenli, dürüst ve samimi bir ortam yaratmak, en temel ilkelerimiz arasında yer alıyor.
-
-Platformumuzda yalnızca bekar bireyler değil; evlilik düşüncesiyle yola çıkan, hayatını paylaşacak bir yol arkadaşı arayan her yaştan kullanıcıya özel alanlar bulunur. İster 20 yaşında olun, ister 60; burada her üye aynı saygı ve özenle karşılanır. Çünkü biz biliyoruz ki, aşkın yaşı yoktur.
-
-Ayrıca uzman psikologlarımız ve ilişki danışmanlarımız sayesinde, üyelerimiz yalnızca tanışmakla kalmaz; iletişim ve ilişki yönetimi konusunda da destek alır. Bu hizmetler, üyelerimizin karşılıklı anlayış ve empatiyle sağlam temellere dayalı ilişkiler kurmasına yardımcı olur.
-
-Her geçen gün, yeni evlilik haberleriyle dolan mesaj kutularımız, düğün fotoğraflarıyla süslenen galerimiz ve kullanıcılarımızdan aldığımız içten teşekkür mektupları; yaptığımız işin ne kadar değerli olduğunu bize bir kez daha hatırlatıyor.
-
-Siz de bu büyük aileye katılarak, hayatınızın en güzel yolculuğuna bizimle çıkmaya ne dersiniz?
-
-Çünkü mutluluk bir tesadüf değil, doğru yerde arandığında bulunan bir mucizedir…
+  <div class="blog-box" data-key="blog_text">
+    💍 1990 Yılından İtibaren Binlerce Üyemizle Mutluluğa Aracılık Ediyoruz 1990 yılından itibaren, insanların hayatlarını birleştirme yolculuğunda yanlarında olmak bizim için yalnızca bir hizmet değil, büyük bir onur oldu. “Evlilik Yolu” olarak çıktığımız bu yolda, her biri birbirinden özel binlerce üyemizin hikâyesine tanıklık ettik ve onları hayatlarının aşkıyla buluşturmanın mutluluğunu yaşadık. Zaman içinde teknoloji değişti, alışkanlıklar yenilendi, ancak değişmeyen tek şey; insanların sevgiye, güvene ve gerçek bir bağa duyduğu ihtiyaç oldu. Biz de bu ihtiyacı karşılamak, üyelerimize sadece bir tanışma değil, bir ömür boyu sürecek birliktelik fırsatı sunmak için buradayız. Bugün, Türkiye’nin dört bir yanından ve yurt dışından 50.000’in üzerinde aktif üyemiz, doğru kişiyi bulmak için platformumuzu tercih ediyor. Sistemimizde yer alan gelişmiş eşleşme algoritmaları, kullanıcıların değerlerini, hayallerini ve beklentilerini dikkate alarak onlara en uygun adayları sunar. Çünkü bizim için önemli olan yalnızca bir eşleşme değil, gerçek bir uyum sağlamaktır. Sitemize katılan herkesin güvenle ve huzurla iletişim kurabilmesi adına, kullanıcılarımızın kimliklerini ve profil bilgilerini titizlikle doğruluyoruz. Sahte profillere, kötü niyetli yaklaşımlara ve saygısız davranışlara karşı sıfır tolerans politikası uyguluyoruz. Güvenli, dürüst ve samimi bir ortam yaratmak, en temel ilkelerimiz arasında yer alıyor. Platformumuzda yalnızca bekar bireyler değil; evlilik düşüncesiyle yola çıkan, hayatını paylaşacak bir yol arkadaşı arayan her yaştan kullanıcıya özel alanlar bulunur. İster 20 yaşında olun, ister 60; burada her üye aynı saygı ve özenle karşılanır. Çünkü biz biliyoruz ki, aşkın yaşı yoktur. Ayrıca uzman psikologlarımız ve ilişki danışmanlarımız sayesinde, üyelerimiz yalnızca tanışmakla kalmaz; iletişim ve ilişki yönetimi konusunda da destek alır. Bu hizmetler, üyelerimizin karşılıklı anlayış ve empatiyle sağlam temellere dayalı ilişkiler kurmasına yardımcı olur. Her geçen gün, yeni evlilik haberleriyle dolan mesaj kutularımız, düğün fotoğraflarıyla süslenen galerimiz ve kullanıcılarımızdan aldığımız içten teşekkür mektupları; yaptığımız işin ne kadar değerli olduğunu bize bir kez daha hatırlatıyor. Siz de bu büyük aileye katılarak, hayatınızın en güzel yolculuğuna bizimle çıkmaya ne dersiniz? Çünkü mutluluk bir tesadüf değil, doğru yerde arandığında bulunan bir mucizedir…
   </div>
 
-  <!-- 🔐 Firebase -->
+  <script src="lang.js"></script>
+  <script>
+    const langSelect = document.getElementById('lang-select');
+    const allElements = document.querySelectorAll('[data-key]');
+
+    function updateTexts(lang) {
+      document.documentElement.lang = lang;
+      document.body.dir = (lang === 'ar' || lang === 'fa') ? 'rtl' : 'ltr';
+
+      allElements.forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+    }
+
+    langSelect.addEventListener('change', () => {
+      const selectedLang = langSelect.value;
+      localStorage.setItem('preferredLang', selectedLang);
+      updateTexts(selectedLang);
+    });
+
+    const savedLang = localStorage.getItem('preferredLang') || 'tr';
+    langSelect.value = savedLang;
+    updateTexts(savedLang);
+  </script>
+
+  <!-- 🔐 Firebase ve Slider -->
   <script type="module">
     import { auth } from './firebaseConfig.js';
     import {
