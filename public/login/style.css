@@ -140,8 +140,9 @@ body, html {
   margin-top: 20px;
   font-size: 14px;
   text-align: left;
-  color: #333;
+  color: #ff1493; /* istediğin renk */
 }
+
 
 .login-highlights p {
   margin: 6px 0;
