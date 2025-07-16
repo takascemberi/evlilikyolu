@@ -2,51 +2,79 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title data-key="site_title">Evlilik Yolu - Giriş & Kayıt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-key="login_title">Giriş & Kayıt - Evlilik Yolu</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .slider-wrapper {
-      position: relative;
-      max-width: 700px;
-      margin: 50px auto 0 auto;
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('images/login1.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
-    .slider-image {
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      position: absolute;
-      left: 0;
-      top: 0;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
+
+    .auth-container {
+      background-color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
-    .slider-image.active {
-      opacity: 1;
-      z-index: 1;
-      position: relative;
+
+    .form-box {
+      flex: 1 1 45%;
+      padding: 20px;
     }
-    .blog-box {
-      max-width: 800px;
-      margin: 20px auto 50px auto;
-      background: rgba(255,255,255,0.1);
-      padding: 30px;
-      border-radius: 12px;
-      color: #fff;
-      font-size: 1.1rem;
-      line-height: 1.8;
+
+    .form-box h2 {
       text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      color: #e91e63;
     }
+
+    .form-box input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .form-box button {
+      width: 100%;
+      padding: 10px;
+      background-color: #e91e63;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .form-box button:hover {
+      background-color: #d81b60;
+    }
+
     #language-switcher {
-      position: absolute;
-      top: 10px;
-      right: 10px;
+      text-align: center;
+      padding: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .auth-container {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Dil Seçici -->
   <div id="language-switcher">
     <select id="lang-select">
       <option value="tr">🇹🇷 Türkçe</option>
@@ -56,166 +84,36 @@
     </select>
   </div>
 
-  <div class="overlay">
-    <div class="form-container">
-      <h1 data-key="app_name">Evlilik Yolu</h1>
-      <div class="tabs">
-        <div class="tab active" onclick="showTab('login')" data-key="tab_login">Giriş Yap</div>
-        <div class="tab" onclick="showTab('register')" data-key="tab_register">Kayıt Ol</div>
-      </div>
+  <div class="auth-container">
+    <!-- Kayıt Kutusu -->
+    <div class="form-box">
+      <h2 data-key="register_title">Kayıt Ol</h2>
+      <input type="text" placeholder="Kullanıcı Adı" data-key="username" />
+      <input type="email" placeholder="E-posta" data-key="email" />
+      <input type="password" placeholder="Şifre" data-key="password" />
+      <input type="password" placeholder="Şifre Tekrar" data-key="repeat_password" />
+      <button data-key="register">Kayıt Ol</button>
+    </div>
 
-      <form id="login" class="form active" onsubmit="handleLogin(event)">
-        <input type="email" id="loginEmail" placeholder="E-posta" required />
-        <input type="password" id="loginPassword" placeholder="Şifre" required />
-        <div class="forgot" onclick="alert('Şifre sıfırlama yakında!')" data-key="forgot">Şifremi Unuttum?</div>
-        <button type="submit" data-key="login">Giriş Yap</button>
-        <button type="button" class="google-btn" onclick="handleGoogleLogin()" data-key="google_login">Google ile Giriş Yap</button>
-      </form>
-
-      <form id="register" class="form" onsubmit="handleRegister(event)">
-        <input type="text" id="registerUsername" placeholder="Kullanıcı Adı" required />
-        <input type="email" id="registerEmail" placeholder="E-posta" required />
-        <input type="number" id="registerAge" placeholder="Yaş" min="18" max="120" required />
-        <input type="text" id="registerCountry" placeholder="Ülke" required />
-        <input type="text" id="registerCity" placeholder="Şehir" required />
-        <div class="radio-group">
-          <label data-key="gender">Cinsiyet:</label>
-          <div>
-            <input type="radio" id="male" name="gender" value="erkek" required />
-            <label for="male" data-key="male">Erkek</label>
-            <input type="radio" id="female" name="gender" value="kadin" required />
-            <label for="female" data-key="female">Kadın</label>
-          </div>
-        </div>
-        <div class="radio-group">
-          <label data-key="search_gender">Aradığı Cinsiyet:</label>
-          <div>
-            <input type="radio" id="search-male" name="searchGender" value="erkek" required />
-            <label for="search-male" data-key="male">Erkek</label>
-            <input type="radio" id="search-female" name="searchGender" value="kadin" required />
-            <label for="search-female" data-key="female">Kadın</label>
-          </div>
-        </div>
-        <input type="password" id="registerPassword" placeholder="Şifre" required />
-        <input type="password" id="registerPasswordConfirm" placeholder="Şifre Tekrar" required />
-        <button type="submit" data-key="register">Kayıt Ol</button>
-      </form>
-
-      <div class="info-text">
-        <p data-key="info1">💖 Ücretsiz üye ol</p>
-        <p data-key="info2">📍 Yakınındakilerle eşleş</p>
-        <p data-key="info3">🎥 Mesajlaş ve video ile canlı görüş</p>
-        <p data-key="info4">💍 Buluş ve hayatını değiştir</p>
-      </div>
+    <!-- Giriş Kutusu -->
+    <div class="form-box">
+      <h2 data-key="login_title">Giriş Yap</h2>
+      <input type="text" placeholder="Kullanıcı Adı veya E-posta" data-key="username_email" />
+      <input type="password" placeholder="Şifre" data-key="password" />
+      <button data-key="login">Giriş Yap</button>
+      <p style="text-align: center;"><a href="#" style="color:#e91e63;" data-key="forgot_password">Şifremi Unuttum</a></p>
     </div>
   </div>
 
-  <div class="slider-wrapper">
-    <img src="images/1.png" class="slider-image active" />
-    <img src="images/2.png" class="slider-image" />
-    <img src="images/3.png" class="slider-image" />
-    <img src="images/4.png" class="slider-image" />
-    <img src="images/5.png" class="slider-image" />
-  </div>
-
-  <div class="blog-box" data-key="blog_text">
-    💍 1990 Yılından İtibaren Binlerce Üyemizle Mutluluğa Aracılık Ediyoruz
-1990 yılından itibaren, insanların hayatlarını birleştirme yolculuğunda yanlarında olmak bizim için yalnızca bir hizmet değil, büyük bir onur oldu. “Evlilik Yolu” olarak çıktığımız bu yolda, her biri birbirinden özel binlerce üyemizin hikâyesine tanıklık ettik ve onları hayatlarının aşkıyla buluşturmanın mutluluğunu yaşadık.
-
-Zaman içinde teknoloji değişti, alışkanlıklar yenilendi, ancak değişmeyen tek şey; insanların sevgiye, güvene ve gerçek bir bağa duyduğu ihtiyaç oldu. Biz de bu ihtiyacı karşılamak, üyelerimize sadece bir tanışma değil, bir ömür boyu sürecek birliktelik fırsatı sunmak için buradayız.
-
-Bugün, Türkiye’nin dört bir yanından ve yurt dışından 50.000’in üzerinde aktif üyemiz, doğru kişiyi bulmak için platformumuzu tercih ediyor. Sistemimizde yer alan gelişmiş eşleşme algoritmaları, kullanıcıların değerlerini, hayallerini ve beklentilerini dikkate alarak onlara en uygun adayları sunar. Çünkü bizim için önemli olan yalnızca bir eşleşme değil, gerçek bir uyum sağlamaktır.
-
-Sitemize katılan herkesin güvenle ve huzurla iletişim kurabilmesi adına, kullanıcılarımızın kimliklerini ve profil bilgilerini titizlikle doğruluyoruz. Sahte profillere, kötü niyetli yaklaşımlara ve saygısız davranışlara karşı sıfır tolerans politikası uyguluyoruz. Güvenli, dürüst ve samimi bir ortam yaratmak, en temel ilkelerimiz arasında yer alıyor.
-
-Platformumuzda yalnızca bekar bireyler değil; evlilik düşüncesiyle yola çıkan, hayatını paylaşacak bir yol arkadaşı arayan her yaştan kullanıcıya özel alanlar bulunur. İster 20 yaşında olun, ister 60; burada her üye aynı saygı ve özenle karşılanır. Çünkü biz biliyoruz ki, aşkın yaşı yoktur.
-
-Ayrıca uzman psikologlarımız ve ilişki danışmanlarımız sayesinde, üyelerimiz yalnızca tanışmakla kalmaz; iletişim ve ilişki yönetimi konusunda da destek alır. Bu hizmetler, üyelerimizin karşılıklı anlayış ve empatiyle sağlam temellere dayalı ilişkiler kurmasına yardımcı olur.
-
-Her geçen gün, yeni evlilik haberleriyle dolan mesaj kutularımız, düğün fotoğraflarıyla süslenen galerimiz ve kullanıcılarımızdan aldığımız içten teşekkür mektupları; yaptığımız işin ne kadar değerli olduğunu bize bir kez daha hatırlatıyor.
-
-Siz de bu büyük aileye katılarak, hayatınızın en güzel yolculuğuna bizimle çıkmaya ne dersiniz?
-
-Çünkü mutluluk bir tesadüf değil, doğru yerde arandığında bulunan bir mucizedir… 
-  </div>
-
   <script src="lang.js"></script>
-  <script type="module">
-    import { auth } from './firebaseConfig.js';
-    import {
-      signInWithEmailAndPassword,
-      createUserWithEmailAndPassword,
-      signInWithPopup,
-      GoogleAuthProvider
-    } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-
-    window.showTab = function(tab) {
-      document.getElementById("login").classList.remove("active");
-      document.getElementById("register").classList.remove("active");
-      document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
-      if (tab === "login") {
-        document.getElementById("login").classList.add("active");
-        document.querySelectorAll(".tab")[0].classList.add("active");
-      } else {
-        document.getElementById("register").classList.add("active");
-        document.querySelectorAll(".tab")[1].classList.add("active");
-      }
-    };
-
-    window.handleLogin = async function(event) {
-      event.preventDefault();
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "home.html";
-      } catch (error) {
-        alert("Giriş başarısız: " + error.message);
-      }
-    };
-
-    window.handleRegister = async function(event) {
-      event.preventDefault();
-      const email = document.getElementById("registerEmail").value;
-      const password = document.getElementById("registerPassword").value;
-      const confirm = document.getElementById("registerPasswordConfirm").value;
-      if (password !== confirm) return alert("Şifreler uyuşmuyor!");
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        alert("Kayıt başarılı! Giriş yapabilirsiniz.");
-        showTab("login");
-      } catch (error) {
-        alert("Kayıt başarısız: " + error.message);
-      }
-    };
-
-    window.handleGoogleLogin = async function() {
-      const provider = new GoogleAuthProvider();
-      try {
-        await signInWithPopup(auth, provider);
-        window.location.href = "home.html";
-      } catch (error) {
-        alert("Google ile giriş başarısız: " + error.message);
-      }
-    };
-  </script>
-
   <script>
     const langSelect = document.getElementById('lang-select');
     const allElements = document.querySelectorAll('[data-key]');
-    const savedLang = localStorage.getItem('preferredLang') || 'tr';
-    langSelect.value = savedLang;
-    updateTexts(savedLang);
-
-    langSelect.addEventListener('change', () => {
-      const selectedLang = langSelect.value;
-      localStorage.setItem('preferredLang', selectedLang);
-      updateTexts(selectedLang);
-    });
 
     function updateTexts(lang) {
       document.documentElement.lang = lang;
       document.body.dir = (lang === 'ar' || lang === 'fa') ? 'rtl' : 'ltr';
+
       allElements.forEach(el => {
         const key = el.getAttribute('data-key');
         if (translations[lang] && translations[lang][key]) {
@@ -224,13 +122,15 @@ Siz de bu büyük aileye katılarak, hayatınızın en güzel yolculuğuna bizim
       });
     }
 
-    const images = document.querySelectorAll(".slider-image");
-    let current = 0;
-    setInterval(() => {
-      images[current].classList.remove("active");
-      current = (current + 1) % images.length;
-      images[current].classList.add("active");
-    }, 4000);
+    langSelect.addEventListener('change', () => {
+      const selectedLang = langSelect.value;
+      localStorage.setItem('preferredLang', selectedLang);
+      updateTexts(selectedLang);
+    });
+
+    const savedLang = localStorage.getItem('preferredLang') || 'tr';
+    langSelect.value = savedLang;
+    updateTexts(savedLang);
   </script>
 </body>
 </html>
