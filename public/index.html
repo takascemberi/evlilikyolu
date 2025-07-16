@@ -8,7 +8,7 @@
   <script src="/lang.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
@@ -34,6 +34,48 @@
           location.href = "home.html";
         } catch (error) {
           alert("Hatalı giriş. Lütfen bilgilerinizi kontrol edin.");
+        }
+      });
+
+      document.querySelector("#register").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const inputs = e.target.querySelectorAll("input");
+        const email = inputs[1].value;
+        const password = inputs[6].value;
+        const confirmPassword = inputs[7].value;
+
+        if (password !== confirmPassword) {
+          alert("Şifreler eşleşmiyor.");
+          return;
+        }
+
+        try {
+          await createUserWithEmailAndPassword(auth, email, password);
+          alert("Kayıt başarılı. Giriş yapabilirsiniz.");
+          showTab("login");
+        } catch (error) {
+          alert("Kayıt başarısız. " + error.message);
+        }
+      });
+
+      document.querySelector(".google-btn").addEventListener("click", async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+          await signInWithPopup(auth, provider);
+          location.href = "home.html";
+        } catch (error) {
+          alert("Google ile giriş başarısız. " + error.message);
+        }
+      });
+
+      document.querySelector(".forgot").addEventListener("click", async () => {
+        const email = prompt("Şifre sıfırlama için e-posta adresinizi girin:");
+        if (!email) return;
+        try {
+          await sendPasswordResetEmail(auth, email);
+          alert("Şifre sıfırlama e-postası gönderildi.");
+        } catch (error) {
+          alert("Şifre sıfırlama başarısız. " + error.message);
         }
       });
 
