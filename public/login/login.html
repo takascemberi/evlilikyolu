@@ -139,9 +139,7 @@
       index = (index + 1) % images.length;
       document.getElementById("galleryImage").src = `../images/${images[index]}`;
     }, 15000);
-
-        }, 15000);
-
+  
     function register() {
       const username = document.querySelector('#registerForm input[placeholder="Kullanıcı Adı"]').value;
       const age = document.querySelector('#registerForm input[placeholder="Yaş"]').value;
@@ -180,6 +178,6 @@
       registerTab.classList.add("active");
     };
 
-  </script>
+</script>
 </body>
 </html>
