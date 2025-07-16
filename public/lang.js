@@ -1,30 +1,56 @@
 const translations = {
   tr: {
-    site_title: "Evlilik Yolu - Giriş & Kayıt",
-    app_name: "Evlilik Yolu",
-    tab_login: "Giriş Yap",
-    tab_register: "Kayıt Ol",
-    login: "Giriş Yap",
-    register: "Kayıt Ol",
-    google_login: "Google ile Giriş Yap",
-    forgot: "Şifremi Unuttum?",
-    gender: "Cinsiyet:",
-    search_gender: "Aradığı Cinsiyet:",
-    male: "Erkek",
-    female: "Kadın",
-    info1: "💖 Ücretsiz üye ol",
-    info2: "📍 Yakınındakilerle eşleş",
-    info3: "🎥 Mesajlaş ve video ile canlı görüş",
-    info4: "💍 Buluş ve hayatını değiştir",
-    blog_text: "💍 1990 yılından itibaren, insanların hayatlarını birleştirme yolculuğunda yanlarında olmak bizim için yalnızca bir hizmet değil, büyük bir onur oldu. “Evlilik Yolu” olarak çıktığımız bu yolda, her biri birbirinden özel binlerce üyemizin hikâyesine tanıklık ettik ve onları hayatlarının aşkıyla buluşturmanın mutluluğunu yaşadık. Zaman içinde teknoloji değişti, alışkanlıklar yenilendi, ancak değişmeyen tek şey; insanların sevgiye, güvene ve gerçek bir bağa duyduğu ihtiyaç oldu. Biz de bu ihtiyacı karşılamak, üyelerimize sadece bir tanışma değil, bir ömür boyu sürecek birliktelik fırsatı sunmak için buradayız. Bugün, Türkiye’nin dört bir yanından ve yurt dışından 50.000’in üzerinde aktif üyemiz, doğru kişiyi bulmak için platformumuzu tercih ediyor. Sistemimizde yer alan gelişmiş eşleşme algoritmaları, kullanıcıların değerlerini, hayallerini ve beklentilerini dikkate alarak onlara en uygun adayları sunar. Çünkü bizim için önemli olan yalnızca bir eşleşme değil, gerçek bir uyum sağlamaktır. Sitemize katılan herkesin güvenle ve huzurla iletişim kurabilmesi adına, kullanıcılarımızın kimliklerini ve profil bilgilerini titizlikle doğruluyoruz. Sahte profillere, kötü niyetli yaklaşımlara ve saygısız davranışlara karşı sıfır tolerans politikası uyguluyoruz. Güvenli, dürüst ve samimi bir ortam yaratmak, en temel ilkelerimiz arasında yer alıyor. Platformumuzda yalnızca bekar bireyler değil; evlilik düşüncesiyle yola çıkan, hayatını paylaşacak bir yol arkadaşı arayan her yaştan kullanıcıya özel alanlar bulunur. İster 20 yaşında olun, ister 60; burada her üye aynı saygı ve özenle karşılanır. Çünkü biz biliyoruz ki, aşkın yaşı yoktur. Ayrıca uzman psikologlarımız ve ilişki danışmanlarımız sayesinde, üyelerimiz yalnızca tanışmakla kalmaz; iletişim ve ilişki yönetimi konusunda da destek alır. Bu hizmetler, üyelerimizin karşılıklı anlayış ve empatiyle sağlam temellere dayalı ilişkiler kurmasına yardımcı olur. Her geçen gün, yeni evlilik haberleriyle dolan mesaj kutularımız, düğün fotoğraflarıyla süslenen galerimiz ve kullanıcılarımızdan aldığımız içten teşekkür mektupları; yaptığımız işin ne kadar değerli olduğunu bize bir kez daha hatırlatıyor. Siz de bu büyük aileye katılarak, hayatınızın en güzel yolculuğuna bizimle çıkmaya ne dersiniz? Çünkü mutluluk bir tesadüf değil, doğru yerde arandığında bulunan bir mucizedir…"
+    loginTitle: "Giriş Yap",
+    loginBtn: "Giriş Yap",
+    forgotPass: "Şifremi Unuttum",
+    googleLogin: "Google ile Giriş",
+    gotoRegister: "Ücretsiz Kaydol",
+    registerTitle: "Kayıt Ol",
+    registerBtn: "Kayıt Ol",
+    gotoLogin: "Girişe Dön"
   },
   en: {
-    blog_text: "💍 Since 1990, it has been a great honor for us to be by people's side on their journey to unite their lives. On this path we set out as 'Marriage Path', we witnessed the stories of thousands of our special members and experienced the happiness of bringing them together with the love of their lives. Technology changed over time, habits evolved, but one thing never changed: people’s need for love, trust, and a true bond. That’s why we are here—to offer not just an encounter, but a lifelong opportunity for companionship. Today, with over 50,000 active members from all across Turkey and abroad, our platform is the trusted path to finding the right match. Our advanced matching algorithms consider values, dreams, and expectations to create real compatibility. Every new member is verified with care, and we maintain a zero-tolerance policy against fake profiles or disrespectful behavior. Here, respect, honesty, and sincerity are the foundation. Whether you're 20 or 60, looking for love and a life partner—you’re welcome. With the help of expert counselors and psychologists, we support not just meetings, but deep, empathetic relationships. Join our growing family and take the most meaningful journey of your life. Because happiness is not a coincidence—it’s a miracle found in the right place."
+    loginTitle: "Login",
+    loginBtn: "Login",
+    forgotPass: "Forgot Password",
+    googleLogin: "Login with Google",
+    gotoRegister: "Register for Free",
+    registerTitle: "Register",
+    registerBtn: "Register",
+    gotoLogin: "Back to Login"
   },
   fa: {
-    blog_text: "💍 از سال ۱۹۹۰، افتخار بزرگی برای ما بوده است که در مسیر پیوند زندگی افراد همراه‌شان باشیم. در این مسیر با نام «راه ازدواج» داستان هزاران عضو خاص را دیده‌ایم و شادی دیدار آنها با عشق واقعی‌شان را تجربه کرده‌ایم. با گذشت زمان، فناوری تغییر کرده و عادت‌ها نو شده‌اند، اما نیاز انسان‌ها به عشق، اعتماد و پیوند واقعی همچنان باقی مانده است. به همین دلیل اینجا هستیم تا فقط یک آشنایی ساده نه، بلکه فرصتی برای یک عمر زندگی مشترک ارائه دهیم. امروزه بیش از ۵۰ هزار عضو فعال از سراسر ایران و خارج از کشور، برای یافتن فرد مناسب از پلتفرم ما استفاده می‌کنند. الگوریتم‌های پیشرفته ما با در نظر گرفتن ارزش‌ها، رویاها و انتظارات کاربران، بهترین گزینه‌ها را پیشنهاد می‌دهند. تمامی اعضا به دقت تأیید می‌شوند و سیاست تحمل صفر نسبت به پروفایل‌های جعلی یا رفتارهای نامناسب داریم. چه ۲۰ ساله باشید، چه ۶۰؛ اینجا با احترام کامل پذیرفته می‌شوید. با کمک مشاوران و روانشناسان حرفه‌ای، تنها ملاقات نمی‌کنید بلکه روابط عمیق و واقعی شکل می‌دهید. اکنون زمان پیوستن به این خانواده بزرگ است. زیرا خوشبختی تصادفی نیست، معجزه‌ای است که در جای درست پیدا می‌شود."
+    loginTitle: "ورود",
+    loginBtn: "ورود",
+    forgotPass: "فراموشی رمز عبور",
+    googleLogin: "ورود با گوگل",
+    gotoRegister: "ثبت نام رایگان",
+    registerTitle: "ثبت نام",
+    registerBtn: "ثبت نام",
+    gotoLogin: "بازگشت به ورود"
   },
   ar: {
-    blog_text: "💍 منذ عام 1990، كان شرفًا كبيرًا لنا أن نكون بجانب الناس في رحلة توحيد حياتهم. على طريق \"طريق الزواج\"، شهدنا قصص آلاف الأعضاء المميزين، وسعدنا بجمعهم مع حب حياتهم. تغيرت التكنولوجيا والعادات بمرور الوقت، ولكن الحاجة إلى الحب والثقة والارتباط الحقيقي لم تتغير أبدًا. نحن هنا لنقدم ليس مجرد لقاء، بل فرصة لرفقة تدوم مدى الحياة. اليوم، يثق أكثر من 50,000 عضو نشط من جميع أنحاء تركيا والعالم في منصتنا للعثور على الشريك المناسب. خوارزميات المطابقة المتقدمة لدينا تأخذ في الاعتبار القيم والأحلام والتوقعات لتقديم توافق حقيقي. نتحقق بعناية من جميع الأعضاء، ونتبع سياسة عدم التسامح مع الحسابات المزيفة أو السلوك غير اللائق. هنا، تُبنى العلاقات على الاحترام والصدق والإخلاص. سواء كنت في العشرين من عمرك أو في الستين، فإنك مرحب بك هنا. بمساعدة مستشارينا النفسيين، لا تلتقي فقط، بل تبني علاقة متينة ومتعاطفة. انضم إلى عائلتنا الكبيرة وابدأ أجمل رحلة في حياتك. لأن السعادة ليست صدفة، بل معجزة تُكتشف في المكان الصحيح."
+    loginTitle: "تسجيل الدخول",
+    loginBtn: "تسجيل الدخول",
+    forgotPass: "نسيت كلمة المرور",
+    googleLogin: "تسجيل الدخول عبر Google",
+    gotoRegister: "سجل مجاناً",
+    registerTitle: "إنشاء حساب",
+    registerBtn: "سجل",
+    gotoLogin: "العودة لتسجيل الدخول"
   }
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  const switcher = document.getElementById("language-switcher");
+  switcher.addEventListener("change", (e) => {
+    const selected = e.target.value;
+    const allText = document.querySelectorAll("[data-lang]");
+    allText.forEach(el => {
+      const key = el.getAttribute("data-lang");
+      if (translations[selected] && translations[selected][key]) {
+        el.innerText = translations[selected][key];
+      }
+    });
+  });
+});
