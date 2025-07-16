@@ -18,7 +18,7 @@ function openNotifications() {
 }
 
 function goProfile() {
-  location.href = "profile/profile.html"; // Profil sayfası
+  location.href = "/profile/profile.html"; // Profil sayfası
 }
 
 function logout() {
