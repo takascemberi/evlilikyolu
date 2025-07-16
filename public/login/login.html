@@ -2,8 +2,8 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Evlilik Yolu - Giriş & Kayıt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Giriş / Kayıt</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -13,64 +13,69 @@
     <div class="login-container">
       <div class="tab-buttons">
         <button id="loginTab" class="active">Giriş</button>
-        <button id="registerTab">Kayıt</button>
+        <button id="registerTab">Kayıt Ol</button>
       </div>
 
-      <form id="loginForm" class="form">
-        <input type="email" placeholder="E-posta" required />
+      <!-- Giriş Formu -->
+      <div id="loginForm" class="form">
+        <h2>Giriş Yap</h2>
+        <input type="email" id="loginEmail" placeholder="E-posta" required />
         <div class="password-toggle">
-          <input type="password" placeholder="Şifre" id="loginPassword" required />
+          <input type="password" id="loginPassword" placeholder="Şifre" required />
           <span onclick="togglePassword('loginPassword')">👁️</span>
         </div>
-        <button type="submit">Giriş Yap</button>
-        <div class="forgot">
-          <a href="#">Şifremi Unuttum?</a>
-        </div>
-      </form>
+        <button onclick="goToHome()">Giriş Yap</button>
+        <p class="forgot"><a href="#">Şifremi Unuttum</a></p>
+        <div class="google-btn" onclick="goToHome()">Google ile Giriş Yap</div>
 
-      <form id="registerForm" class="form hidden">
+        <div class="login-highlights">
+          <p>✅ Ücretsiz kaydol</p>
+          <p>📍 Yakınındakilerle eşleş</p>
+          <p>🎥 Tanış, ister video ile anında canlı görüş</p>
+        </div>
+      </div>
+
+      <!-- Kayıt Formu -->
+      <div id="registerForm" class="form hidden">
+        <h2>Kayıt Ol</h2>
         <input type="text" placeholder="Kullanıcı Adı" required />
         <input type="email" placeholder="E-posta" required />
-        <input type="number" placeholder="Yaş" required />
-        <select required>
-          <option value="">Cinsiyet Seçin</option>
-          <option value="kadın">Kadın</option>
-          <option value="erkek">Erkek</option>
-        </select>
-        <select required>
-          <option value="">Aradığı Cinsiyet</option>
-          <option value="kadın">Kadın</option>
-          <option value="erkek">Erkek</option>
-        </select>
-        <select required>
+        <div class="password-toggle">
+          <input type="password" placeholder="Şifre" required />
+          <span onclick="togglePasswordByElement(this)">👁️</span>
+        </div>
+        <div class="password-toggle">
+          <input type="password" placeholder="Şifre Tekrar" required />
+          <span onclick="togglePasswordByElement(this)">👁️</span>
+        </div>
+        <input type="number" placeholder="Yaş" min="18" required />
+        <select>
           <option value="">Şehir Seçin</option>
-          <option>İstanbul</option>
-          <option>Ankara</option>
-          <option>İzmir</option>
-          <option>Bursa</option>
-          <option>Antalya</option>
+          <option>İstanbul</option><option>Ankara</option><option>İzmir</option>
+          <option>Bursa</option><option>Adana</option><option>Antalya</option>
         </select>
-        <div class="password-toggle">
-          <input type="password" placeholder="Şifre" id="registerPassword" required />
-          <span onclick="togglePassword('registerPassword')">👁️</span>
-        </div>
-        <div class="password-toggle">
-          <input type="password" placeholder="Şifre Tekrar" id="registerConfirm" required />
-          <span onclick="togglePassword('registerConfirm')">👁️</span>
-        </div>
-        <div class="checkbox-container">
-          <input type="checkbox" id="terms" required />
-          <label for="terms">Gizlilik şartlarını okudum ve kabul ediyorum</label>
-        </div>
-        <button type="submit">Kayıt Ol</button>
-      </form>
+        <select>
+          <option value="">Cinsiyetiniz</option>
+          <option>Erkek</option><option>Kadın</option><option>Diğer</option>
+        </select>
+        <select>
+          <option value="">Aradığınız</option>
+          <option>Erkek</option><option>Kadın</option><option>Fark etmez</option>
+        </select>
+        <label class="checkbox-container">
+          <input type="checkbox" required />
+          Gizlilik şartlarını okudum, kabul ediyorum.
+        </label>
+        <button onclick="goToHome()">Kayıt Ol</button>
+      </div>
     </div>
 
-    <div class="gallery">
-      <img id="slider" src="../images/1.jpg" alt="Düğün Fotoğrafı" />
-    </div>
-
+    <!-- Alt alan -->
     <div class="login-extra">
+      <div class="gallery">
+        <img id="galleryImage" src="../images/1.png" alt="Mutluluk">
+      </div>
+
       <div class="about-section">
         <div class="heart">💖 1990 Yılından Beri Mutluluğunuza Ortak Oluyoruz</div>
         <p>Evlilik Yolu ailesi olarak 1990 yılından bu yana binlerce üyemizin hayatına dokunduk, onların mutlu birlikteliklerine tanıklık ettik. Amacımız sadece tanışma fırsatı sunmak değil; samimi, güvenli ve ciddi ilişkilerin kurulmasına aracılık etmektir.</p>
@@ -88,31 +93,40 @@
   </div>
 
   <script>
-    document.getElementById("loginTab").addEventListener("click", () => {
-      document.getElementById("loginForm").classList.remove("hidden");
-      document.getElementById("registerForm").classList.add("hidden");
-      document.getElementById("loginTab").classList.add("active");
-      document.getElementById("registerTab").classList.remove("active");
-    });
+    const images = ["1.png", "2.png", "3.png", "4.png", "5.png"];
+    let index = 0;
+    setInterval(() => {
+      index = (index + 1) % images.length;
+      document.getElementById("galleryImage").src = `../images/${images[index]}`;
+    }, 15000);
 
-    document.getElementById("registerTab").addEventListener("click", () => {
-      document.getElementById("loginForm").classList.add("hidden");
-      document.getElementById("registerForm").classList.remove("hidden");
-      document.getElementById("loginTab").classList.remove("active");
-      document.getElementById("registerTab").classList.add("active");
-    });
+    function goToHome() {
+      window.location.href = "../home.html";
+    }
 
     function togglePassword(id) {
       const input = document.getElementById(id);
       input.type = input.type === "password" ? "text" : "password";
     }
 
-    const sliderImages = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg"];
-    let sliderIndex = 0;
-    setInterval(() => {
-      sliderIndex = (sliderIndex + 1) % sliderImages.length;
-      document.getElementById("slider").src = "../images/" + sliderImages[sliderIndex];
-    }, 15000);
+    function togglePasswordByElement(el) {
+      const input = el.previousElementSibling;
+      input.type = input.type === "password" ? "text" : "password";
+    }
+
+    document.getElementById("loginTab").onclick = () => {
+      document.getElementById("loginForm").classList.remove("hidden");
+      document.getElementById("registerForm").classList.add("hidden");
+      loginTab.classList.add("active");
+      registerTab.classList.remove("active");
+    };
+
+    document.getElementById("registerTab").onclick = () => {
+      document.getElementById("loginForm").classList.add("hidden");
+      document.getElementById("registerForm").classList.remove("hidden");
+      loginTab.classList.remove("active");
+      registerTab.classList.add("active");
+    };
   </script>
 </body>
 </html>
