@@ -22,10 +22,10 @@
     }
 
     .profile-pic-wrapper {
-      width: 220px;
-      height: 220px;
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
-      border: 5px solid #ff69b4;
+      border: 4px solid #ff69b4;
       overflow: hidden;
       margin: 0 auto 20px auto;
       background-color: #eee;
@@ -41,13 +41,13 @@
     }
 
     .username {
-      font-size: 26px;
+      font-size: 24px;
       font-weight: bold;
       color: #333;
     }
 
     .membership {
-      font-size: 18px;
+      font-size: 16px;
       color: #555;
       margin-top: 5px;
       margin-bottom: 15px;
@@ -64,9 +64,62 @@
       background-color: #ffb6c1;
       border: none;
       border-radius: 50%;
-      width: 54px;
-      height: 54px;
-      font-size: 22px;
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .extra-actions {
+      margin-top: 30px;
+      width: 90%;
+      max-width: 500px;
+      text-align: left;
+    }
+
+    .extra-actions button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 10px;
+      font-size: 16px;
+      background-color: #ff69b4;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .payment-section {
+      display: none;
+      background-color: #fff;
+      padding: 15px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .payment-section ul {
+      padding-left: 20px;
+    }
+
+    .iban-box {
+      margin-top: 10px;
+      padding: 10px;
+      background: #f0f0f0;
+      border-radius: 5px;
+      font-weight: bold;
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: #ff69b4;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
       cursor: pointer;
     }
 
@@ -96,21 +149,65 @@
       <button title="Fotoğraf">📷</button>
     </div>
 
+    <div class="extra-actions">
+      <button onclick="toggleSection('premium')">🛒 Satın Alımlar</button>
+      <div id="premium" class="payment-section">
+        <ul>
+          <li>1 Aylık Premium: 250 TL</li>
+          <li>3 Aylık Premium: 500 TL</li>
+          <li>6 Aylık Premium: 800 TL</li>
+          <li>1 Yıllık Premium: 1250 TL</li>
+        </ul>
+        <div class="iban-box">
+          IBAN: TR91 0001 0040 0452 2812 1550 07 <br />
+          Ad Soyad: NEJLA KOÇ <br />
+          Banka: ZİRAAT BANKASI
+          <button class="copy-btn" onclick="copyIban()">Kopyala</button>
+        </div>
+      </div>
+
+      <button onclick="toggleSection('jetons')">💎 Jeton Satın Al</button>
+      <div id="jetons" class="payment-section">
+        <ul>
+          <li>50 Jeton: 50 TL</li>
+          <li>100 Jeton: 75 TL</li>
+          <li>250 Jeton: 150 TL</li>
+          <li>500 Jeton: 250 TL</li>
+          <li>1000 Jeton: 500 TL</li>
+        </ul>
+        <div class="iban-box">
+          IBAN: TR91 0001 0040 0452 2812 1550 07 <br />
+          Ad Soyad: NEJLA KOÇ <br />
+          Banka: ZİRAAT BANKASI
+          <button class="copy-btn" onclick="copyIban()">Kopyala</button>
+        </div>
+      </div>
+    </div>
+
     <button class="back-button" onclick="location.href='../home.html'">Ana Sayfaya Dön</button>
   </div>
 
   <script>
-    // localStorage'dan verileri al
     const username = localStorage.getItem("username") || "Kullanıcı";
     const age = localStorage.getItem("age") || "00";
     const membership = localStorage.getItem("membership") || "Standart Üye";
     const profilePic = localStorage.getItem("profilePic");
 
-    // HTML'e yerleştir
     document.getElementById("username").innerText = `${username}, ${age}`;
     document.getElementById("membershipStatus").innerText = membership;
     if (profilePic) {
       document.getElementById("profileImage").src = profilePic;
+    }
+
+    function toggleSection(id) {
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === "block" ? "none" : "block";
+    }
+
+    function copyIban() {
+      navigator.clipboard.writeText("TR91 0001 0040 0452 2812 1550 07").then(() => {
+        alert("IBAN kopyalandı!");
+      });
     }
   </script>
 </body>
