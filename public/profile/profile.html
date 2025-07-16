@@ -148,6 +148,10 @@
       .iban-box {
         width: 90%;
       }
+
+      .extra-actions {
+        width: 100%;
+      }
     }
 
     .back-button {
@@ -193,6 +197,10 @@
         <button onclick="showIban('500 Jeton - 250 TL')">500 Jeton - 250 TL</button>
         <button onclick="showIban('1000 Jeton - 500 TL')">1000 Jeton - 500 TL</button>
       </div>
+
+      <button class="action-btn" onclick="location.href='gezenler.html'">👀 Profili Gezenler</button>
+      <button class="action-btn" onclick="location.href='hediyeler.html'">🎁 Aldığım Hediyeler</button>
+      <button class="action-btn" onclick="location.href='gulucukler.html'">😊 Gülümseyenler</button>
     </div>
 
     <div class="iban-box" id="ibanBox">
@@ -220,8 +228,8 @@
     }
 
     function toggleButtons(id) {
-      document.getElementById(id).style.display =
-        document.getElementById(id).style.display === "flex" ? "none" : "flex";
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === "flex" ? "none" : "flex";
     }
 
     function showIban(option) {
