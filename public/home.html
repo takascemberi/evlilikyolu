@@ -2,59 +2,141 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Evlilik Yolu - Ana Sayfa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-key="site_title">Ana Sayfa - Evlilik Yolu</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body style="background: #fff; font-family: 'Poppins', sans-serif; color: #333;">
-  <div style="padding: 30px; max-width: 900px; margin: auto; text-align: center;">
-    <h1 style="color: #d63384;">Evlilik Yolu’na Hoş Geldiniz</h1>
-    <p>Platformumuza giriş yaptınız. Dilerseniz profilinizi düzenleyebilir veya yeni insanlarla tanışabilirsiniz.</p>
-    <button onclick="handleLogout()" style="background: #d63384; color: white; padding: 10px 20px; border: none; border-radius: 30px; cursor: pointer; font-weight: 600; margin-top: 20px;">
-      Çıkış Yap
-    </button>
+<body>
+  <!-- Dil Seçici -->
+  <div id="language-switcher">
+    <select id="lang-select">
+      <option value="tr">🇹🇷 Türkçe</option>
+      <option value="en">🇬🇧 English</option>
+      <option value="fa">🇮🇷 فارسی</option>
+      <option value="ar">🇸🇦 العربية</option>
+    </select>
+  </div>
 
-    <!-- Düğün görselleri -->
-    <div class="image-slider" style="margin-top: 60px;">
-      <img src="images/1.jpg" class="slider-image active" />
-      <img src="images/2.jpg" class="slider-image" />
-      <img src="images/3.jpg" class="slider-image" />
-      <img src="images/4.jpg" class="slider-image" />
-      <img src="images/5.jpg" class="slider-image" />
+  <!-- Üst Bar -->
+  <header class="top-bar">
+    <div class="site-title" data-key="site_title">Evlilik Yolu</div>
+    <div class="online-count">🟢 <span id="onlineCount">1234</span> Online</div>
+    <button class="logout-btn" onclick="logout()" data-key="logout">Çıkış</button>
+  </header>
+
+  <!-- Canlı Destek Balonu -->
+  <div class="chat-bubble" onclick="toggleSupport()">
+    💬
+  </div>
+  <div id="supportPanel" class="support-panel hidden">
+    <div class="support-messages" id="supportMessages">
+      <div class="message system" data-key="support_msg">Tüm temsilcilerimiz diğer üyelerimize hizmet vermektedir. Tahmini bekleme süreniz 15 dakika.</div>
     </div>
-
-    <!-- Alt yazı -->
-    <div class="blog-box" style="margin-top: 250px;">
-      1990 yılından itibaren sizlerle birlikte mutluluğunuzu paylaşıyoruz<br />
-      ve yüzlerce üyemizin evliliğine şahit olduk.
+    <div class="support-input">
+      <input type="text" id="supportInput" placeholder="Yazın..." />
+      <button onclick="sendSupportMessage()" data-key="send">Gönder</button>
     </div>
   </div>
 
-  <!-- Firebase çıkış kodu -->
-  <script type="module">
-    import { auth } from './firebaseConfig.js';
-    import { signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+  <!-- Ana İçerik -->
+  <main>
+    <section class="post-box">
+      <textarea id="postInput" placeholder="Ne düşünüyorsun?" data-key="what_think"></textarea>
+      <button onclick="submitPost()" data-key="share">Paylaş</button>
+    </section>
 
-    window.handleLogout = async function () {
-      try {
-        await signOut(auth);
-        window.location.href = "index.html";
-      } catch (error) {
-        alert("Çıkış başarısız: " + error.message);
-      }
-    }
-  </script>
+    <section class="online-users" id="onlineUsers">
+      <!-- JS ile dinamik olarak online kullanıcılar buraya gelecek -->
+    </section>
 
-  <!-- Görsellerin geçiş animasyonu -->
+    <section class="posts" id="postList">
+      <!-- JS ile dinamik yorumlar ve tepkiler buraya gelecek -->
+    </section>
+  </main>
+
+  <!-- Alt Menü (Mobil ve sabit) -->
+  <nav class="bottom-nav">
+    <button onclick="goHome()">🏠</button>
+    <button onclick="toggleSearch()">🔍</button>
+    <button onclick="openMessages()">✉️</button>
+    <button onclick="openNotifications()">🔔</button>
+    <button onclick="goProfile()">👤</button>
+  </nav>
+
+  <!-- Arama Kutusu -->
+  <div id="searchBox" class="search-box hidden">
+    <input type="text" id="searchInput" placeholder="Kullanıcı adı ara...">
+    <button onclick="searchUser()" data-key="search">Ara</button>
+    <div id="searchResult"></div>
+  </div>
+
+  <!-- Premium Uyarısı -->
+  <div id="premiumModal" class="modal hidden">
+    <div class="modal-content">
+      <h3 data-key="select_package">HEMEN PAKETİNİ SEÇ</h3>
+      <ul>
+        <li data-key="premium1">7/24 sınırsız mesajlaşma</li>
+        <li data-key="premium2">Üyelerle sınırsız etkileşim</li>
+        <li data-key="premium3">Avantajlı hediye alma</li>
+        <li data-key="premium4">ŞANSINI ARTIR gösterimi</li>
+        <li data-key="premium5">Aramalarda üst sıralarda yer alma</li>
+      </ul>
+      <div class="packages">
+        <button onclick="selectPremium('1 Ay', 100)">1 Ay - 100 TL</button>
+        <button onclick="selectPremium('3 Ay', 250)">3 Ay - 250 TL</button>
+        <button onclick="selectPremium('6 Ay', 500)">6 Ay - 500 TL</button>
+        <button onclick="selectPremium('12 Ay', 800)">1 Yıl - 800 TL</button>
+      </div>
+      <p><strong>GARANTİ BBVA</strong><br>İBAN: <span id="iban">TR83 0006 2000 2310 0006 8172 69</span><br>ÖZKAN KOÇ</p>
+      <button onclick="copyIban()" data-key="copy">IBAN Kopyala</button>
+      <button onclick="closeModal('premiumModal')" data-key="close">Kapat</button>
+    </div>
+  </div>
+
+  <!-- Hediye Uyarısı -->
+  <div id="giftModal" class="modal hidden">
+    <div class="modal-content">
+      <h3 data-key="gift_none">Hediye krediniz bulunmamaktadır.</h3>
+      <p data-key="gift_info">Hediye yollayabilmek için hemen kredi satın alın!</p>
+      <div class="packages">
+        <button onclick="selectGift(50, 50)">50 Hediye - 50 TL</button>
+        <button onclick="selectGift(100, 75)">100 Hediye - 75 TL</button>
+        <button onclick="selectGift(250, 150)">250 Hediye - 150 TL</button>
+      </div>
+      <p><strong>GARANTİ BBVA</strong><br>İBAN: <span id="giftIban">TR83 0006 2000 2310 0006 8172 69</span><br>ÖZKAN KOÇ</p>
+      <button onclick="copyGiftIban()" data-key="copy">IBAN Kopyala</button>
+      <button onclick="closeModal('giftModal')" data-key="close">Kapat</button>
+    </div>
+  </div>
+
+  <script src="lang.js"></script>
   <script>
-    let current = 0;
-    const images = document.querySelectorAll(".slider-image");
+    const langSelect = document.getElementById('lang-select');
+    const allElements = document.querySelectorAll('[data-key]');
 
-    setInterval(() => {
-      images[current].classList.remove("active");
-      current = (current + 1) % images.length;
-      images[current].classList.add("active");
-    }, 4000);
+    function updateTexts(lang) {
+      document.documentElement.lang = lang;
+      document.body.dir = (lang === 'ar' || lang === 'fa') ? 'rtl' : 'ltr';
+
+      allElements.forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+    }
+
+    langSelect.addEventListener('change', () => {
+      const selectedLang = langSelect.value;
+      localStorage.setItem('preferredLang', selectedLang);
+      updateTexts(selectedLang);
+    });
+
+    const savedLang = localStorage.getItem('preferredLang') || 'tr';
+    langSelect.value = savedLang;
+    updateTexts(savedLang);
   </script>
+
+  <script src="home.js"></script>
 </body>
 </html>
