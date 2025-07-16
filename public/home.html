@@ -6,6 +6,46 @@
   <title>Evlilik Yolu - Giriş & Kayıt</title>
   <link rel="stylesheet" href="/style.css" />
   <script src="/lang.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
+      authDomain: "vipbulusma.firebaseapp.com",
+      projectId: "vipbulusma",
+      storageBucket: "vipbulusma.firebasestorage.app",
+      messagingSenderId: "552096712424",
+      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
+      measurementId: "G-CNQEJEV51C"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelector("#login").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = e.target.querySelector("input[type=email]").value;
+        const password = e.target.querySelector("input[type=password]").value;
+
+        try {
+          await signInWithEmailAndPassword(auth, email, password);
+          location.href = "home.html";
+        } catch (error) {
+          alert("Hatalı giriş. Lütfen bilgilerinizi kontrol edin.");
+        }
+      });
+
+      const sliderImages = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg"];
+      let current = 0;
+      const imgTag = document.getElementById("image-slider");
+      setInterval(() => {
+        current = (current + 1) % sliderImages.length;
+        imgTag.src = `/images/${sliderImages[current]}`;
+      }, 20000);
+    });
+  </script>
   <style>
     body {
       margin: 0;
@@ -13,6 +53,28 @@
       font-family: 'Poppins', sans-serif;
       background: url('/images/login1.png') no-repeat center center fixed;
       background-size: cover;
+    }
+
+    .overlay {
+      background: transparent;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 15px;
+      flex-direction: column;
+    }
+
+    .slider-box {
+      margin-top: 20px;
+      width: 300px;
+      height: auto;
+    }
+
+    .slider-box img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
   </style>
 </head>
@@ -70,6 +132,9 @@
         <p>🎥 Mesajlaş ve video ile canlı görüş</p>
         <p>💍 Buluş ve hayatını değiştir</p>
       </div>
+    </div>
+    <div class="slider-box">
+      <img id="image-slider" src="/images/1.jpg" alt="Tanıtım Görseli">
     </div>
   </div>
   <script>
