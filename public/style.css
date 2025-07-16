@@ -1,179 +1,97 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Evlilik Yolu - Giriş & Kayıt</title>
-  <link rel="stylesheet" href="/style.css" />
-  <script src="/lang.js"></script>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
-      authDomain: "vipbulusma.firebaseapp.com",
-      projectId: "vipbulusma",
-      storageBucket: "vipbulusma.firebasestorage.app",
-      messagingSenderId: "552096712424",
-      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
-      measurementId: "G-CNQEJEV51C"
-    };
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+body {
+  font-family: 'Poppins', sans-serif;
+  background: url('/images/login1.png') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+}
 
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelector("#login").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const email = e.target.querySelector("input[type=email]").value;
-        const password = e.target.querySelector("input[type=password]").value;
+.lang-select {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
 
-        try {
-          await signInWithEmailAndPassword(auth, email, password);
-          location.href = "home.html";
-        } catch (error) {
-          alert("Hatalı giriş. Lütfen bilgilerinizi kontrol edin.");
-        }
-      });
+.lang-select select {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  outline: none;
+}
 
-      document.querySelector("#register").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const inputs = e.target.querySelectorAll("input");
-        const email = inputs[1].value;
-        const password = inputs[6].value;
-        const confirmPassword = inputs[7].value;
+.overlay {
+  background: rgba(0, 0, 0, 0.6);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  flex-direction: column;
+}
 
-        if (password !== confirmPassword) {
-          alert("Şifreler eşleşmiyor.");
-          return;
-        }
+.form-container {
+  background: rgba(255,255,255,0.05);
+  padding: 30px 25px;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 100%;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
 
-        try {
-          await createUserWithEmailAndPassword(auth, email, password);
-          alert("Kayıt başarılı. Giriş yapabilirsiniz.");
-          showTab("login");
-        } catch (error) {
-          alert("Kayıt başarısız. " + error.message);
-        }
-      });
+.form-container h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
 
-      document.querySelector(".google-btn").addEventListener("click", async () => {
-        const provider = new GoogleAuthProvider();
-        try {
-          await signInWithPopup(auth, provider);
-          location.href = "home.html";
-        } catch (error) {
-          alert("Google ile giriş başarısız. " + error.message);
-        }
-      });
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
 
-      document.querySelector(".forgot").addEventListener("click", async () => {
-        const email = prompt("Şifre sıfırlama için e-posta adresinizi girin:");
-        if (!email) return;
-        try {
-          await sendPasswordResetEmail(auth, email);
-          alert("Şifre sıfırlama e-postası gönderildi.");
-        } catch (error) {
-          alert("Şifre sıfırlama başarısız. " + error.message);
-        }
-      });
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #eee;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
 
-      const sliderImages = ["1.png", "2.png", "3.png", "4.png", "5.png"];
-      let current = 0;
-      const imgTag = document.getElementById("image-slider");
-      setInterval(() => {
-        current = (current + 1) % sliderImages.length;
-        imgTag.src = `/images/${sliderImages[current]}`;
-      }, 20000);
+.tab:hover {
+  background-color: rgba(255, 105, 180, 0.2);
+  color: #fff;
+}
 
-      // Şifre görünürlüğü
-      document.querySelectorAll(".toggle-password").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const input = btn.previousElementSibling;
-          input.type = input.type === "password" ? "text" : "password";
-          btn.innerText = input.type === "password" ? "👁" : "🙈";
-        });
-      });
+.tab.active {
+  background: #ff69b4;
+  color: white;
+}
 
-      // KAYIT OL sekmesine tıklanırsa paneli aç
-      document.querySelector(".tab[data-key='register']").addEventListener("click", () => {
-        showTab("register");
-      });
-    });
-  </script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: url('/images/login1.png') no-repeat center center fixed;
-      background-size: cover;
-    }
+.slider-box {
+  margin-top: 30px;
+  width: 300px;
+}
 
-    .overlay {
-      background: transparent;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 30px 15px;
-      flex-direction: column;
-    }
-
-    .slider-box {
-      margin-top: 20px;
-      width: 300px;
-      height: auto;
-    }
-
-    .slider-box img {
-      width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-
-    .lang-select select {
-      background-color: rgba(0, 0, 255, 0.3);
-      color: white;
-    }
-
-    .password-wrapper {
-      position: relative;
-    }
-
-    .toggle-password {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      font-size: 1.1rem;
-    }
-
-    .tab[data-key="register"] {
-      cursor: pointer;
-      background-color: #ffc0cb;
-      padding: 10px;
-      border-radius: 10px;
-      font-weight: bold;
-    }
-
-    .tab:hover {
-      background-color: rgba(255, 105, 180, 0.2);
-      color: #fff;
-    }
-
-    .tab:active {
-      background-color: #ff69b4;
-      color: #fff;
-    }
-  </style>
-</head>
-<body>
-  ... (aynı şekilde devam eder)
-</body>
-</html>
+.slider-box img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+}
