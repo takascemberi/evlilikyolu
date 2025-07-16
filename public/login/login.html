@@ -24,9 +24,9 @@
           <input type="password" id="loginPassword" placeholder="Şifre" required />
           <span onclick="togglePassword('loginPassword')">👁️</span>
         </div>
-        <button onclick="login()">Giriş Yap</button>
-        <p class="forgot"><a href="#" onclick="resetPassword()">Şifremi Unuttum</a></p>
-        <div class="google-btn" onclick="googleSignIn()">Google ile Giriş Yap</div>
+        <button onclick="goToHome()">Giriş Yap</button>
+        <p class="forgot"><a href="#">Şifremi Unuttum</a></p>
+        <div class="google-btn" onclick="goToHome()">Google ile Giriş Yap</div>
 
         <div class="login-highlights">
           <p>✅ Ücretsiz kaydol</p>
@@ -38,49 +38,39 @@
       <!-- Kayıt Formu -->
       <div id="registerForm" class="form hidden">
         <h2>Kayıt Ol</h2>
-        <input type="text" id="registerName" placeholder="Kullanıcı Adı" required />
-        <input type="email" id="registerEmail" placeholder="E-posta" required />
+        <input type="text" placeholder="Kullanıcı Adı" required />
+        <input type="email" placeholder="E-posta" required />
         <div class="password-toggle">
-          <input type="password" id="registerPassword" placeholder="Şifre" required />
-          <span onclick="togglePassword('registerPassword')">👁️</span>
+          <input type="password" placeholder="Şifre" required />
+          <span onclick="togglePasswordByElement(this)">👁️</span>
         </div>
         <div class="password-toggle">
-          <input type="password" id="registerConfirm" placeholder="Şifre Tekrar" required />
-          <span onclick="togglePassword('registerConfirm')">👁️</span>
+          <input type="password" placeholder="Şifre Tekrar" required />
+          <span onclick="togglePasswordByElement(this)">👁️</span>
         </div>
-        <input type="number" id="registerAge" placeholder="Yaş" min="18" required />
-        <select id="registerCity">
+        <input type="number" placeholder="Yaş" min="18" required />
+        <select>
           <option value="">Şehir Seçin</option>
-          <option>İstanbul</option>
-          <option>Ankara</option>
-          <option>İzmir</option>
-          <option>Bursa</option>
-          <option>Adana</option>
-          <option>Antalya</option>
-          <option>Konya</option>
-          <option>Gaziantep</option>
+          <option>İstanbul</option><option>Ankara</option><option>İzmir</option>
+          <option>Bursa</option><option>Adana</option><option>Antalya</option>
         </select>
-        <select id="registerGender">
+        <select>
           <option value="">Cinsiyetiniz</option>
-          <option>Erkek</option>
-          <option>Kadın</option>
-          <option>Diğer</option>
+          <option>Erkek</option><option>Kadın</option><option>Diğer</option>
         </select>
-        <select id="registerLookingFor">
+        <select>
           <option value="">Aradığınız</option>
-          <option>Erkek</option>
-          <option>Kadın</option>
-          <option>Fark etmez</option>
+          <option>Erkek</option><option>Kadın</option><option>Fark etmez</option>
         </select>
         <label class="checkbox-container">
-          <input type="checkbox" id="privacyCheck" required />
+          <input type="checkbox" required />
           Gizlilik şartlarını okudum, kabul ediyorum.
         </label>
-        <button onclick="register()">Kayıt Ol</button>
+        <button onclick="goToHome()">Kayıt Ol</button>
       </div>
     </div>
 
-    <!-- Alt alan: görsel + yazı -->
+    <!-- Alt alan -->
     <div class="login-extra">
       <div class="gallery">
         <img id="galleryImage" src="../images/1.png" alt="Mutluluk">
@@ -88,22 +78,16 @@
 
       <div class="about-section">
         <p class="heart">💖 1990 Yılından Beri Mutluluğunuza Ortak Oluyoruz</p>
-        <p>Evlilik Yolu ailesi olarak 1990 yılından bu yana binlerce üyemizin hayatına dokunduk, onların mutlu birlikteliklerine tanıklık ettik. Amacımız sadece tanışma fırsatı sunmak değil; samimi, güvenli ve ciddi ilişkilerin kurulmasına aracılık etmektir.</p>
-        <p>Bugüne kadar evlenmiş, nişanlanmış veya uzun soluklu ilişki kurmuş yüzlerce çiftin hikayesi platformumuzda başlamıştır. Her gün büyüyen topluluğumuzla birlikte; aşkın, saygının ve sadakatin hala değerli olduğunu gösteriyoruz.</p>
-        <p>Platformumuz, kullanıcıların kişisel verilerini yüksek güvenlik önlemleriyle korur. Taciz, hakaret ya da kötü niyetli davranışlara karşı sıfır tolerans politikamız vardır. 7/24 aktif destek ekibimiz, her üyemizin güvenli ve huzurlu bir deneyim yaşaması için titizlikle çalışmaktadır.</p>
-        <p>Farklı yaş gruplarına, şehir ve ülkelere göre gelişmiş filtreleme sistemimiz sayesinde, kendinize en uygun kişiyi kolayca bulabilirsiniz. Üstelik görüntülü görüşme ve mesajlaşma özellikleriyle, tanışmalar çok daha gerçek ve güçlü bir bağa dönüşüyor.</p>
-        <p>Siz de bu büyük ailenin bir parçası olun. Kendi hikayenizi yazmaya bugünden başlayın. Çünkü her güzel hikâye, doğru bir başlangıçla başlar…</p>
-        <p>📌 Kişisel verileriniz KVKK (Kişisel Verileri Koruma Kanunu) güvencesi altındadır.</p>
-        <p>🛡️ Sahte hesaplara ve taciz içeriklerine karşı otomatik denetleme sistemleri ve moderasyon ekibi 7/24 aktiftir.</p>
-        <p>👮‍♀️ Ciddi niyetli bireylerin bir araya gelebilmesi için her üyemizin kimlik doğrulaması, fotoğraf onayı ve davranış analizi sistemlerimizle kontrolü sağlanır.</p>
-        <p>🎯 Tüm görüşmeler görüntülü ve güvenli şekilde yapılır. Tanışmalar güçlü bir bağa dönüşür.</p>
+        <p>Evlilik Yolu ailesi olarak 1990 yılından bu yana binlerce üyemizin hayatına dokunduk...</p>
+        <p>Bugüne kadar evlenmiş, nişanlanmış veya uzun soluklu ilişki kurmuş yüzlerce çiftin hikayesi platformumuzda başlamıştır...</p>
+        <p>Platformumuz, kullanıcıların kişisel verilerini yüksek güvenlik önlemleriyle korur...</p>
+        <p>Farklı yaş gruplarına, şehir ve ülkelere göre gelişmiş filtreleme sistemimiz sayesinde...</p>
+        <p>Siz de bu büyük ailenin bir parçası olun. Kendi hikayenizi yazmaya bugünden başlayın...</p>
         <p><strong>Evlilik Yolu – Ciddi ilişkiler burada başlar.</strong></p>
       </div>
     </div>
   </div>
 
-  <script type="module" src="/firebaseConfig.js"></script>
-  <script src="script.js"></script>
   <script>
     const images = ["1.png", "2.png", "3.png", "4.png", "5.png"];
     let index = 0;
@@ -111,6 +95,34 @@
       index = (index + 1) % images.length;
       document.getElementById("galleryImage").src = `../images/${images[index]}`;
     }, 15000);
+
+    function goToHome() {
+      window.location.href = "../home.html";
+    }
+
+    function togglePassword(id) {
+      const input = document.getElementById(id);
+      input.type = input.type === "password" ? "text" : "password";
+    }
+
+    function togglePasswordByElement(el) {
+      const input = el.previousElementSibling;
+      input.type = input.type === "password" ? "text" : "password";
+    }
+
+    document.getElementById("loginTab").onclick = () => {
+      document.getElementById("loginForm").classList.remove("hidden");
+      document.getElementById("registerForm").classList.add("hidden");
+      loginTab.classList.add("active");
+      registerTab.classList.remove("active");
+    };
+
+    document.getElementById("registerTab").onclick = () => {
+      document.getElementById("loginForm").classList.add("hidden");
+      document.getElementById("registerForm").classList.remove("hidden");
+      loginTab.classList.remove("active");
+      registerTab.classList.add("active");
+    };
   </script>
 </body>
 </html>
