@@ -36,6 +36,14 @@
           alert("Hatalı giriş. Lütfen bilgilerinizi kontrol edin.");
         }
       });
+
+      const sliderImages = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg"];
+      let current = 0;
+      const imgTag = document.getElementById("image-slider");
+      setInterval(() => {
+        current = (current + 1) % sliderImages.length;
+        imgTag.src = `/images/${sliderImages[current]}`;
+      }, 20000);
     });
   </script>
   <style>
@@ -54,40 +62,19 @@
       justify-content: center;
       align-items: center;
       padding: 30px 15px;
+      flex-direction: column;
     }
 
-    .slider-wrapper {
-      position: relative;
-      max-width: 700px;
-      margin: 50px auto 0 auto;
-    }
-    .slider-image {
-      width: 100%;
+    .slider-box {
+      margin-top: 20px;
+      width: 300px;
       height: auto;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      position: absolute;
-      left: 0;
-      top: 0;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
     }
-    .slider-image.active {
-      opacity: 1;
-      z-index: 1;
-      position: relative;
-    }
-    .blog-box {
-      max-width: 800px;
-      margin: 20px auto 50px auto;
-      background: rgba(255,255,255,0.1);
-      padding: 30px;
+
+    .slider-box img {
+      width: 100%;
       border-radius: 12px;
-      color: #fff;
-      font-size: 1.1rem;
-      line-height: 1.8;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
   </style>
 </head>
@@ -145,6 +132,9 @@
         <p>🎥 Mesajlaş ve video ile canlı görüş</p>
         <p>💍 Buluş ve hayatını değiştir</p>
       </div>
+    </div>
+    <div class="slider-box">
+      <img id="image-slider" src="/images/1.jpg" alt="Tanıtım Görseli">
     </div>
   </div>
   <script>
