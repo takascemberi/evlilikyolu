@@ -37,7 +37,7 @@
         }
       });
 
-      document.querySelector("#register").addEventListener("submit", async (e) => {
+      document.querySelector("#register").addEventListener("submit", async function(e) {
         e.preventDefault();
         const form = e.target;
         const email = form.querySelector('input[type="email"]').value;
