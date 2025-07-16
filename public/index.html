@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Evlilik Yolu - Giriş & Kayıt</title>
+  <title>Evlilik Yolu - Giriş & Kıyat</title>
   <link rel="stylesheet" href="/style.css" />
   <script src="/lang.js"></script>
   <script type="module">
@@ -39,10 +39,9 @@
 
       document.querySelector("#register").addEventListener("submit", async (e) => {
         e.preventDefault();
-        const inputs = e.target.querySelectorAll("input");
-        const email = inputs[1].value;
-        const password = inputs[6].value;
-        const confirmPassword = inputs[7].value;
+        const email = e.target.querySelector('input[type="email"]').value;
+        const password = e.target.querySelector('input[placeholder="Şifre"]').value;
+        const confirmPassword = e.target.querySelector('input[placeholder="Şifre Tekrar"]').value;
 
         if (password !== confirmPassword) {
           alert("Şifreler eşleşmiyor.");
@@ -87,7 +86,6 @@
         imgTag.src = `/images/${sliderImages[current]}`;
       }, 20000);
 
-      // Şifre görünürlüğü
       document.querySelectorAll(".toggle-password").forEach(btn => {
         btn.addEventListener("click", () => {
           const input = btn.previousElementSibling;
@@ -208,7 +206,7 @@
         <button type="submit">Kayıt Ol</button>
       </form>
       <div class="info-text">
-        <p>💖 Ücretsiz üye ol</p>
+        <p>💖 Üretsiz üye ol</p>
         <p>📍 Yakınındakilerle eşleş</p>
         <p>🎥 Mesajlaş ve video ile canlı görüş</p>
         <p>💍 Buluş ve hayatını değiştir</p>
@@ -232,6 +230,7 @@
       }
     }
 
+    const translations = window.translations || {};
     const langSelect = document.getElementById('lang-select');
     const allElements = document.querySelectorAll('[data-key]');
 
