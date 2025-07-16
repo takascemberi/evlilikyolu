@@ -5,6 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Giriş / Kayıt</title>
   <link rel="stylesheet" href="style.css" />
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
+      authDomain: "vipbulusma.firebaseapp.com",
+      projectId: "vipbulusma",
+      storageBucket: "vipbulusma.firebasestorage.app",
+      messagingSenderId: "552096712424",
+      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.login = async function () {
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "../home.html";
+      } catch (error) {
+        alert("Hatalı e-posta veya şifre!");
+      }
+    };
+  </script>
 </head>
 <body>
   <div class="background"></div>
@@ -15,7 +42,7 @@
         <button id="loginTab" class="active">Giriş</button>
         <button id="registerTab">Kayıt Ol</button>
       </div>
-
+      
       <!-- Giriş Formu -->
       <div id="loginForm" class="form">
         <h2>Giriş Yap</h2>
