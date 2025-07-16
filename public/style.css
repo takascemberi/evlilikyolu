@@ -207,3 +207,17 @@ body {
   text-align: center;
   box-shadow: 0 0 10px rgba(0,0,0,0.4);
 }
+
+/* Alt yorum ikonları */
+.post-icons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  font-size: 22px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.post-icons .icon:hover {
+  transform: scale(1.2);
+  transition: 0.2s;
+}
