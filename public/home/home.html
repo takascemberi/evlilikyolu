@@ -259,6 +259,13 @@
     <button onclick="goProfile()">👤</button>
   </nav>
 
+  <script>
+    function logout() {
+      localStorage.clear();
+      location.href = "/login/login.html";
+    }
+  </script>
+
   <script src="home.js"></script>
 </body>
 </html>
