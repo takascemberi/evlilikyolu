@@ -23,7 +23,7 @@ function goProfile() {
 
 function logout() {
   localStorage.clear();
-  location.href = "login/login.html"; // Giriş ekranı
+  location.href = "/login/login.html"; // Başında mutlaka "/" olmalı!
 }
 
 function toggleSupport() {
