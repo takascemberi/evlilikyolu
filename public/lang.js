@@ -27,17 +27,17 @@ const translations = {
     gotoRegister: "ثبت نام رایگان",
     registerTitle: "ثبت نام",
     registerBtn: "ثبت نام",
-    gotoLogin: "بازگشت به ورود"
+    gotoLogin: "بازگشت"
   },
   ar: {
     loginTitle: "تسجيل الدخول",
-    loginBtn: "تسجيل الدخول",
-    forgotPass: "نسيت كلمة المرور",
-    googleLogin: "تسجيل الدخول عبر Google",
-    gotoRegister: "سجل مجاناً",
-    registerTitle: "إنشاء حساب",
-    registerBtn: "سجل",
-    gotoLogin: "العودة لتسجيل الدخول"
+    loginBtn: "دخول",
+    forgotPass: "نسيت كلمة المرور؟",
+    googleLogin: "تسجيل بواسطة جوجل",
+    gotoRegister: "إنشاء حساب",
+    registerTitle: "التسجيل",
+    registerBtn: "سجل الآن",
+    gotoLogin: "عودة لتسجيل الدخول"
   }
 };
 
