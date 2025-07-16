@@ -19,6 +19,7 @@
     .profile-container {
       text-align: center;
       margin-top: 30px;
+      position: relative;
     }
 
     .profile-pic-wrapper {
@@ -108,7 +109,10 @@
 
     .iban-box {
       display: none;
-      margin-top: 25px;
+      position: fixed;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
       padding: 20px;
       background: #fff;
       border: 3px solid #ff69b4;
@@ -117,7 +121,8 @@
       font-size: 16px;
       text-align: left;
       max-width: 500px;
-      position: relative;
+      z-index: 9999;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     }
 
     .iban-box button {
@@ -128,6 +133,15 @@
       padding: 8px 14px;
       border-radius: 6px;
       cursor: pointer;
+    }
+
+    .iban-close {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #ff69b4;
     }
 
     .back-button {
@@ -176,6 +190,7 @@
     </div>
 
     <div class="iban-box" id="ibanBox">
+      <div class="iban-close" onclick="hideIban()">✖️</div>
       <div id="selectionText">Seçim:</div>
       IBAN: TR91 0001 0040 0452 2812 1550 07<br />
       Ad Soyad: NEJLA KOÇ<br />
@@ -206,7 +221,10 @@
     function showIban(option) {
       document.getElementById("ibanBox").style.display = "block";
       document.getElementById("selectionText").innerText = `Seçim: ${option}`;
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function hideIban() {
+      document.getElementById("ibanBox").style.display = "none";
     }
 
     function copyIban() {
