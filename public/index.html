@@ -86,6 +86,15 @@
         current = (current + 1) % sliderImages.length;
         imgTag.src = `/images/${sliderImages[current]}`;
       }, 20000);
+
+      // Şifre görünürlüğü
+      document.querySelectorAll(".toggle-password").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const input = btn.previousElementSibling;
+          input.type = input.type === "password" ? "text" : "password";
+          btn.innerText = input.type === "password" ? "👁" : "🙈";
+        });
+      });
     });
   </script>
   <style>
@@ -118,6 +127,27 @@
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
+
+    .lang-select select {
+      background-color: rgba(0, 0, 255, 0.3);
+      color: white;
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
   </style>
 </head>
 <body>
@@ -138,8 +168,11 @@
       </div>
       <form id="login" class="form active">
         <input type="email" placeholder="E-posta" required />
-        <input type="password" placeholder="Şifre" required />
-        <div class="forgot">Şifremi unuttum</div>
+        <div class="password-wrapper">
+          <input type="password" placeholder="Şifre" required />
+          <button type="button" class="toggle-password">👁</button>
+        </div>
+        <div class="forgot" data-key="forgot">Şifremi unuttum</div>
         <button type="submit">Giriş Yap</button>
         <button type="button" class="google-btn">Google ile Giriş Yap</button>
       </form>
@@ -164,8 +197,14 @@
             <input type="radio" name="searchGender" value="kadin" required /> Kadın
           </div>
         </div>
-        <input type="password" placeholder="Şifre" required />
-        <input type="password" placeholder="Şifre Tekrar" required />
+        <div class="password-wrapper">
+          <input type="password" placeholder="Şifre" required />
+          <button type="button" class="toggle-password">👁</button>
+        </div>
+        <div class="password-wrapper">
+          <input type="password" placeholder="Şifre Tekrar" required />
+          <button type="button" class="toggle-password">👁</button>
+        </div>
         <button type="submit">Kayıt Ol</button>
       </form>
       <div class="info-text">
