@@ -4,171 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Evlilik Yolu - Giriş & Kayıt</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="lang.js"></script>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/lang.js"></script>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: 'Poppins', sans-serif;
-      background: url('images/login1.png') no-repeat center center fixed;
+      background: url('/images/login1.png') no-repeat center center fixed;
       background-size: cover;
     }
 
-    .lang-select {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-    }
-
-    .lang-select select {
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: none;
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-      font-weight: bold;
-    }
-
     .overlay {
-      background: rgba(0, 0, 0, 0.6);
+      background: transparent;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 30px 15px;
-    }
-
-    .form-container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 20px;
-      padding: 40px 30px;
-      width: 100%;
-      max-width: 400px;
-      color: white;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      position: relative;
-    }
-
-    .form-container h1 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 20px;
-      color: #fff;
-    }
-
-    .tabs {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    .tab {
-      width: 50%;
-      padding: 10px;
-      text-align: center;
-      cursor: pointer;
-      font-weight: bold;
-      color: #ddd;
-      background: transparent;
-      transition: 0.3s ease;
-    }
-
-    .tab.active {
-      background: #ff69b4;
-      color: #fff;
-    }
-
-    .form {
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .form.active {
-      display: flex;
-    }
-
-    .form input {
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.15);
-      color: #fff;
-      font-size: 1rem;
-      outline: none;
-    }
-
-    .form input::placeholder {
-      color: #eee;
-    }
-
-    .form button {
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #ff69b4;
-      color: white;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .form button:hover {
-      background: #ff85c1;
-    }
-
-    .google-btn {
-      background: #4285F4 !important;
-      margin-top: 8px;
-    }
-
-    .google-btn:hover {
-      background: #5a95f5 !important;
-    }
-
-    .forgot {
-      color: #ccc;
-      font-size: 0.9rem;
-      cursor: pointer;
-      text-align: right;
-      margin-top: -8px;
-      margin-bottom: 8px;
-    }
-
-    .info-text {
-      margin-top: 20px;
-      font-size: 0.95rem;
-      color: #fff;
-      text-align: center;
-      line-height: 1.6;
-    }
-
-    .radio-group {
-      display: flex;
-      flex-direction: column;
-      color: #fff;
-      font-size: 0.95rem;
-      gap: 6px;
-    }
-
-    .radio-group div {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .radio-group input[type="radio"] {
-      accent-color: #ff69b4;
-      transform: scale(1.2);
     }
 
     .slider-wrapper {
@@ -222,10 +75,60 @@
         <div class="tab active" onclick="showTab('login')" data-key="login">Giriş Yap</div>
         <div class="tab" onclick="showTab('register')" data-key="register">Kayıt Ol</div>
       </div>
-      <!-- Giriş ve kayıt formları JS ile yüklenecek veya eklenebilir -->
+      <form id="login" class="form active">
+        <input type="email" placeholder="E-posta" required />
+        <input type="password" placeholder="Şifre" required />
+        <div class="forgot">Şifremi unuttum</div>
+        <button type="submit">Giriş Yap</button>
+        <button type="button" class="google-btn">Google ile Giriş Yap</button>
+      </form>
+
+      <form id="register" class="form">
+        <input type="text" placeholder="Kullanıcı Adı" required />
+        <input type="email" placeholder="E-posta" required />
+        <input type="number" placeholder="Yaş" min="18" max="99" required />
+        <input type="text" placeholder="Ülke" required />
+        <input type="text" placeholder="Şehir" required />
+        <div class="radio-group">
+          <label>Cinsiyet:</label>
+          <div>
+            <input type="radio" name="gender" value="erkek" required /> Erkek
+            <input type="radio" name="gender" value="kadin" required /> Kadın
+          </div>
+        </div>
+        <div class="radio-group">
+          <label>Aradığı Cinsiyet:</label>
+          <div>
+            <input type="radio" name="searchGender" value="erkek" required /> Erkek
+            <input type="radio" name="searchGender" value="kadin" required /> Kadın
+          </div>
+        </div>
+        <input type="password" placeholder="Şifre" required />
+        <input type="password" placeholder="Şifre Tekrar" required />
+        <button type="submit">Kayıt Ol</button>
+      </form>
+      <div class="info-text">
+        <p>💖 Ücretsiz üye ol</p>
+        <p>📍 Yakınındakilerle eşleş</p>
+        <p>🎥 Mesajlaş ve video ile canlı görüş</p>
+        <p>💍 Buluş ve hayatını değiştir</p>
+      </div>
     </div>
   </div>
   <script>
+    function showTab(tab) {
+      document.getElementById("login").classList.remove("active");
+      document.getElementById("register").classList.remove("active");
+      document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
+      if (tab === "login") {
+        document.getElementById("login").classList.add("active");
+        document.querySelectorAll(".tab")[0].classList.add("active");
+      } else {
+        document.getElementById("register").classList.add("active");
+        document.querySelectorAll(".tab")[1].classList.add("active");
+      }
+    }
+
     const langSelect = document.getElementById('lang-select');
     const allElements = document.querySelectorAll('[data-key]');
 
