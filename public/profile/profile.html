@@ -73,11 +73,11 @@
     .extra-actions {
       margin-top: 30px;
       width: 90%;
-      max-width: 500px;
-      text-align: left;
+      max-width: 600px;
+      text-align: center;
     }
 
-    .extra-actions button {
+    .extra-actions button.action-btn {
       width: 100%;
       padding: 15px;
       margin-top: 10px;
@@ -89,37 +89,44 @@
       cursor: pointer;
     }
 
-    .payment-section {
+    .payment-buttons {
+      margin-top: 15px;
       display: none;
-      background-color: #fff;
-      padding: 15px;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-      margin-top: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
     }
 
-    .payment-section ul {
-      padding-left: 20px;
+    .payment-buttons button {
+      padding: 10px 20px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: none;
+      background: #ffe4e1;
+      cursor: pointer;
     }
 
     .iban-box {
-      margin-top: 10px;
-      padding: 10px;
-      background: #f0f0f0;
-      border-radius: 5px;
+      display: none;
+      margin-top: 25px;
+      padding: 20px;
+      background: #fff;
+      border: 3px solid #ff69b4;
+      border-radius: 10px;
       font-weight: bold;
+      font-size: 16px;
+      text-align: left;
+      max-width: 500px;
       position: relative;
     }
 
-    .copy-btn {
-      position: absolute;
-      right: 10px;
-      top: 10px;
+    .iban-box button {
+      margin-top: 10px;
       background: #ff69b4;
       color: white;
       border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
+      padding: 8px 14px;
+      border-radius: 6px;
       cursor: pointer;
     }
 
@@ -150,38 +157,30 @@
     </div>
 
     <div class="extra-actions">
-      <button onclick="toggleSection('premium')">🛒 Satın Alımlar</button>
-      <div id="premium" class="payment-section">
-        <ul>
-          <li>1 Aylık Premium: 250 TL</li>
-          <li>3 Aylık Premium: 500 TL</li>
-          <li>6 Aylık Premium: 800 TL</li>
-          <li>1 Yıllık Premium: 1250 TL</li>
-        </ul>
-        <div class="iban-box">
-          IBAN: TR91 0001 0040 0452 2812 1550 07 <br />
-          Ad Soyad: NEJLA KOÇ <br />
-          Banka: ZİRAAT BANKASI
-          <button class="copy-btn" onclick="copyIban()">Kopyala</button>
-        </div>
+      <button class="action-btn" onclick="toggleButtons('premiumOptions')">🛒 Satın Alımlar</button>
+      <div class="payment-buttons" id="premiumOptions">
+        <button onclick="showIban('1 Aylık Premium - 250 TL')">1 Ay - 250 TL</button>
+        <button onclick="showIban('3 Ay - 500 TL')">3 Ay - 500 TL</button>
+        <button onclick="showIban('6 Ay - 800 TL')">6 Ay - 800 TL</button>
+        <button onclick="showIban('1 Yıl - 1250 TL')">1 Yıl - 1250 TL</button>
       </div>
 
-      <button onclick="toggleSection('jetons')">💎 Jeton Satın Al</button>
-      <div id="jetons" class="payment-section">
-        <ul>
-          <li>50 Jeton: 50 TL</li>
-          <li>100 Jeton: 75 TL</li>
-          <li>250 Jeton: 150 TL</li>
-          <li>500 Jeton: 250 TL</li>
-          <li>1000 Jeton: 500 TL</li>
-        </ul>
-        <div class="iban-box">
-          IBAN: TR91 0001 0040 0452 2812 1550 07 <br />
-          Ad Soyad: NEJLA KOÇ <br />
-          Banka: ZİRAAT BANKASI
-          <button class="copy-btn" onclick="copyIban()">Kopyala</button>
-        </div>
+      <button class="action-btn" onclick="toggleButtons('jetonOptions')">💎 Jeton Satın Al</button>
+      <div class="payment-buttons" id="jetonOptions">
+        <button onclick="showIban('50 Jeton - 50 TL')">50 Jeton - 50 TL</button>
+        <button onclick="showIban('100 Jeton - 75 TL')">100 Jeton - 75 TL</button>
+        <button onclick="showIban('250 Jeton - 150 TL')">250 Jeton - 150 TL</button>
+        <button onclick="showIban('500 Jeton - 250 TL')">500 Jeton - 250 TL</button>
+        <button onclick="showIban('1000 Jeton - 500 TL')">1000 Jeton - 500 TL</button>
       </div>
+    </div>
+
+    <div class="iban-box" id="ibanBox">
+      <div id="selectionText">Seçim:</div>
+      IBAN: TR91 0001 0040 0452 2812 1550 07<br />
+      Ad Soyad: NEJLA KOÇ<br />
+      Banka: ZİRAAT BANKASI<br />
+      <button onclick="copyIban()">IBAN'ı Kopyala</button>
     </div>
 
     <button class="back-button" onclick="location.href='../home.html'">Ana Sayfaya Dön</button>
@@ -199,13 +198,19 @@
       document.getElementById("profileImage").src = profilePic;
     }
 
-    function toggleSection(id) {
-      const el = document.getElementById(id);
-      el.style.display = el.style.display === "block" ? "none" : "block";
+    function toggleButtons(id) {
+      document.getElementById(id).style.display =
+        document.getElementById(id).style.display === "flex" ? "none" : "flex";
+    }
+
+    function showIban(option) {
+      document.getElementById("ibanBox").style.display = "block";
+      document.getElementById("selectionText").innerText = `Seçim: ${option}`;
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function copyIban() {
-      navigator.clipboard.writeText("TR91 0001 0040 0452 2812 1550 07").then(() => {
+      navigator.clipboard.writeText("TR910001004004522812155007").then(() => {
         alert("IBAN kopyalandı!");
       });
     }
