@@ -11,3 +11,8 @@ document.getElementById("registerTab").addEventListener("click", () => {
   document.getElementById("loginTab").classList.remove("active");
   document.getElementById("registerTab").classList.add("active");
 });
+
+function togglePassword(id) {
+  const input = document.getElementById(id);
+  input.type = input.type === "password" ? "text" : "password";
+}

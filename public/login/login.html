@@ -15,21 +15,60 @@
       <button id="registerTab">Kayıt Ol</button>
     </div>
 
+    <!-- Giriş Formu -->
     <div id="loginForm" class="form">
       <h2>Giriş Yap</h2>
       <input type="email" id="loginEmail" placeholder="E-posta" required />
-      <input type="password" id="loginPassword" placeholder="Şifre" required />
+      <div class="password-toggle">
+        <input type="password" id="loginPassword" placeholder="Şifre" required />
+        <span onclick="togglePassword('loginPassword')">👁️</span>
+      </div>
       <button onclick="login()">Giriş Yap</button>
       <p class="forgot"><a href="#" onclick="resetPassword()">Şifremi Unuttum</a></p>
       <div class="google-btn" onclick="googleSignIn()">Google ile Giriş Yap</div>
     </div>
 
+    <!-- Kayıt Formu -->
     <div id="registerForm" class="form hidden">
       <h2>Kayıt Ol</h2>
       <input type="text" id="registerName" placeholder="Kullanıcı Adı" required />
       <input type="email" id="registerEmail" placeholder="E-posta" required />
-      <input type="password" id="registerPassword" placeholder="Şifre" required />
-      <input type="password" id="registerConfirm" placeholder="Şifre Tekrar" required />
+      <div class="password-toggle">
+        <input type="password" id="registerPassword" placeholder="Şifre" required />
+        <span onclick="togglePassword('registerPassword')">👁️</span>
+      </div>
+      <div class="password-toggle">
+        <input type="password" id="registerConfirm" placeholder="Şifre Tekrar" required />
+        <span onclick="togglePassword('registerConfirm')">👁️</span>
+      </div>
+      <input type="number" id="registerAge" placeholder="Yaş" min="18" required />
+      <select id="registerCity">
+        <option value="">Şehir Seçin</option>
+        <option>İstanbul</option>
+        <option>Ankara</option>
+        <option>İzmir</option>
+        <option>Bursa</option>
+        <option>Adana</option>
+        <option>Antalya</option>
+        <option>Konya</option>
+        <option>Gaziantep</option>
+      </select>
+      <select id="registerGender">
+        <option value="">Cinsiyetiniz</option>
+        <option>Erkek</option>
+        <option>Kadın</option>
+        <option>Diğer</option>
+      </select>
+      <select id="registerLookingFor">
+        <option value="">Aradığınız</option>
+        <option>Erkek</option>
+        <option>Kadın</option>
+        <option>Fark etmez</option>
+      </select>
+      <label class="checkbox-container">
+        <input type="checkbox" id="privacyCheck" required />
+        Gizlilik şartlarını okudum, kabul ediyorum.
+      </label>
       <button onclick="register()">Kayıt Ol</button>
     </div>
   </div>
