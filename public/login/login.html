@@ -3,20 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Giriş Yap</title>
+  <title>Giriş / Kayıt</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="background"></div>
 
   <div class="login-container">
-    <h2>Giriş Yap</h2>
-    <form>
-      <input type="email" placeholder="E-posta" required />
-      <input type="password" placeholder="Şifre" required />
-      <button type="submit">Giriş Yap</button>
-      <p class="forgot"><a href="#">Şifremi Unuttum</a></p>
-    </form>
+    <div class="tab-buttons">
+      <button id="loginTab" class="active">Giriş</button>
+      <button id="registerTab">Kayıt Ol</button>
+    </div>
+
+    <div id="loginForm" class="form">
+      <h2>Giriş Yap</h2>
+      <input type="email" id="loginEmail" placeholder="E-posta" required />
+      <input type="password" id="loginPassword" placeholder="Şifre" required />
+      <button onclick="login()">Giriş Yap</button>
+      <p class="forgot"><a href="#" onclick="resetPassword()">Şifremi Unuttum</a></p>
+      <div class="google-btn" onclick="googleSignIn()">Google ile Giriş Yap</div>
+    </div>
+
+    <div id="registerForm" class="form hidden">
+      <h2>Kayıt Ol</h2>
+      <input type="text" id="registerName" placeholder="Kullanıcı Adı" required />
+      <input type="email" id="registerEmail" placeholder="E-posta" required />
+      <input type="password" id="registerPassword" placeholder="Şifre" required />
+      <input type="password" id="registerConfirm" placeholder="Şifre Tekrar" required />
+      <button onclick="register()">Kayıt Ol</button>
+    </div>
   </div>
+
+  <script type="module" src="/firebaseConfig.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
