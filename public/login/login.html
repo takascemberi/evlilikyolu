@@ -78,13 +78,14 @@
       </label>
       <button onclick="register()">Kayıt Ol</button>
     </div>
+  </div>
 
-    <!-- Galeri (otomatik geçişli) -->
+  <!-- Dış alan: resim ve tanıtım -->
+  <div class="login-extra">
     <div class="gallery">
       <img id="galleryImage" src="../images/1.png" alt="Mutluluk">
     </div>
 
-    <!-- Tanıtım yazısı -->
     <div class="about-section">
       <p class="heart">💖 1990 Yılından Beri Mutluluğunuza Ortak Oluyoruz</p>
       <p>Evlilik Yolu ailesi olarak 1990 yılından bu yana binlerce üyemizin hayatına dokunduk, onların mutlu birlikteliklerine tanıklık ettik. Amacımız sadece tanışma fırsatı sunmak değil; samimi, güvenli ve ciddi ilişkilerin kurulmasına aracılık etmektir.</p>
@@ -102,14 +103,13 @@
 
   <script type="module" src="/firebaseConfig.js"></script>
   <script src="script.js"></script>
-
   <script>
     const images = ["1.png", "2.png", "3.png", "4.png", "5.png"];
     let index = 0;
     setInterval(() => {
       index = (index + 1) % images.length;
       document.getElementById("galleryImage").src = `../images/${images[index]}`;
-    }, 15000); // 15 saniyede bir değiştir
+    }, 15000);
   </script>
 </body>
 </html>
