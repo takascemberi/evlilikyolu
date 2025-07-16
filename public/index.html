@@ -39,9 +39,10 @@
 
       document.querySelector("#register").addEventListener("submit", async (e) => {
         e.preventDefault();
-        const email = e.target.querySelector('input[type="email"]').value;
-        const password = e.target.querySelector('input[placeholder="Şifre"]').value;
-        const confirmPassword = e.target.querySelector('input[placeholder="Şifre Tekrar"]').value;
+        const form = e.target;
+        const email = form.querySelector('input[type="email"]').value;
+        const password = form.querySelector('input[placeholder="Şifre"]').value;
+        const confirmPassword = form.querySelector('input[placeholder="Şifre Tekrar"]').value;
 
         if (password !== confirmPassword) {
           alert("Şifreler eşleşmiyor.");
