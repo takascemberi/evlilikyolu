@@ -1,170 +1,97 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Evlilik Yolu - Giriş & Kayıt</title>
-  <link rel="stylesheet" href="/style.css" />
-  <script src="/lang.js"></script>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
-      authDomain: "vipbulusma.firebaseapp.com",
-      projectId: "vipbulusma",
-      storageBucket: "vipbulusma.firebasestorage.app",
-      messagingSenderId: "552096712424",
-      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
-      measurementId: "G-CNQEJEV51C"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelector("#login").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const email = e.target.querySelector("input[type=email]").value;
-        const password = e.target.querySelector("input[type=password]").value;
-
-        try {
-          await signInWithEmailAndPassword(auth, email, password);
-          location.href = "home.html";
-        } catch (error) {
-          alert("Hatalı giriş. Lütfen bilgilerinizi kontrol edin.");
-        }
-      });
-
-      const sliderImages = ["1.png", "2.png", "3.png", "4.png", "5.png"];
-      let current = 0;
-      const imgTag = document.getElementById("image-slider");
-      setInterval(() => {
-        current = (current + 1) % sliderImages.length;
-        imgTag.src = `/images/${sliderImages[current]}`;
-      }, 20000);
-    });
-  </script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: url('/images/login1.png') no-repeat center center fixed;
-      background-size: cover;
-    }
-
-    .overlay {
-      background: transparent;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 30px 15px;
-      flex-direction: column;
-    }
-
-    .slider-box {
-      margin-top: 20px;
-      width: 300px;
-      height: auto;
-    }
-
-    .slider-box img {
-      width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-  </style>
-</head>
-<body>
-  <div class="lang-select">
-    <select id="lang-select" onchange="updateTexts(this.value)">
-      <option value="tr">🇹🇷 Türkçe</option>
-      <option value="en">🇬🇧 English</option>
-      <option value="fr">🇫🇷 Français</option>
-      <option value="ar">🇸🇦 العربية</option>
-    </select>
-  </div>
-  <div class="overlay">
-    <div class="form-container">
-      <h1 data-key="title">Evlilik Yolu</h1>
-      <div class="tabs">
-        <div class="tab active" onclick="showTab('login')" data-key="login">Giriş Yap</div>
-        <div class="tab" onclick="showTab('register')" data-key="register">Kayıt Ol</div>
-      </div>
-      <form id="login" class="form active">
-        <input type="email" placeholder="E-posta" required />
-        <input type="password" placeholder="Şifre" required />
-        <div class="forgot">Şifremi unuttum</div>
-        <button type="submit">Giriş Yap</button>
-        <button type="button" class="google-btn">Google ile Giriş Yap</button>
-      </form>
-
-      <form id="register" class="form">
-        <input type="text" placeholder="Kullanıcı Adı" required />
-        <input type="email" placeholder="E-posta" required />
-        <input type="number" placeholder="Yaş" min="18" max="99" required />
-        <input type="text" placeholder="Ülke" required />
-        <input type="text" placeholder="Şehir" required />
-        <div class="radio-group">
-          <label>Cinsiyet:</label>
-          <div>
-            <input type="radio" name="gender" value="erkek" required /> Erkek
-            <input type="radio" name="gender" value="kadin" required /> Kadın
-          </div>
-        </div>
-        <div class="radio-group">
-          <label>Aradığı Cinsiyet:</label>
-          <div>
-            <input type="radio" name="searchGender" value="erkek" required /> Erkek
-            <input type="radio" name="searchGender" value="kadin" required /> Kadın
-          </div>
-        </div>
-        <input type="password" placeholder="Şifre" required />
-        <input type="password" placeholder="Şifre Tekrar" required />
-        <button type="submit">Kayıt Ol</button>
-      </form>
-      <div class="info-text">
-        <p>💖 Ücretsiz üye ol</p>
-        <p>📍 Yakınındakilerle eşleş</p>
-        <p>🎥 Mesajlaş ve video ile canlı görüş</p>
-        <p>💍 Buluş ve hayatını değiştir</p>
-      </div>
-    </div>
-    <div class="slider-box">
-      <img id="image-slider" src="/images/1.png" alt="Tanıtım Görseli">
-    </div>
-  </div>
+...
+  <script src="lang.js"></script>
   <script>
-    function showTab(tab) {
-      document.getElementById("login").classList.remove("active");
-      document.getElementById("register").classList.remove("active");
-      document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
-      if (tab === "login") {
-        document.getElementById("login").classList.add("active");
-        document.querySelectorAll(".tab")[0].classList.add("active");
-      } else {
-        document.getElementById("register").classList.add("active");
-        document.querySelectorAll(".tab")[1].classList.add("active");
-      }
-    }
-
     const langSelect = document.getElementById('lang-select');
     const allElements = document.querySelectorAll('[data-key]');
 
     function updateTexts(lang) {
       document.documentElement.lang = lang;
-      document.body.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+      document.body.dir = (lang === 'ar' || lang === 'fa') ? 'rtl' : 'ltr';
 
       allElements.forEach(el => {
         const key = el.getAttribute('data-key');
         if (translations[lang] && translations[lang][key]) {
-          el.innerText = translations[lang][key];
+          el.textContent = translations[lang][key];
         }
       });
     }
+
+    langSelect.addEventListener('change', () => {
+      const selectedLang = langSelect.value;
+      localStorage.setItem('preferredLang', selectedLang);
+      updateTexts(selectedLang);
+    });
+
+    const savedLang = localStorage.getItem('preferredLang') || 'tr';
+    langSelect.value = savedLang;
+    updateTexts(savedLang);
   </script>
+
+  <script>
+    function goHome() {
+      alert("Ana sayfaya yönlendiriliyorsunuz...");
+      // window.location.href = 'home.html';
+    }
+
+    function toggleSearch() {
+      const searchBox = document.getElementById('searchBox');
+      searchBox.classList.toggle('hidden');
+    }
+
+    function openMessages() {
+      alert("Mesaj kutusu açılacak (simülasyon).");
+    }
+
+    function openNotifications() {
+      alert("Bildirim paneli açılacak (simülasyon).");
+    }
+
+    function goProfile() {
+      alert("Profil sayfasına gidiliyor...");
+      // window.location.href = 'profile.html';
+    }
+
+    function logout() {
+      alert("Çıkış yapıldı!");
+      // window.location.href = 'index.html';
+    }
+
+    function toggleSupport() {
+      document.getElementById("supportPanel").classList.toggle("hidden");
+    }
+
+    function sendSupportMessage() {
+      const input = document.getElementById("supportInput");
+      const message = input.value.trim();
+      if (message !== "") {
+        const msgEl = document.createElement("div");
+        msgEl.className = "message user";
+        msgEl.textContent = message;
+        document.getElementById("supportMessages").appendChild(msgEl);
+        input.value = "";
+      }
+    }
+
+    function submitPost() {
+      const post = document.getElementById("postInput").value.trim();
+      if (post !== "") {
+        const postEl = document.createElement("div");
+        postEl.className = "post";
+        postEl.textContent = post;
+        document.getElementById("postList").appendChild(postEl);
+        document.getElementById("postInput").value = "";
+      }
+    }
+
+    function searchUser() {
+      const query = document.getElementById("searchInput").value.trim().toLowerCase();
+      const resultBox = document.getElementById("searchResult");
+      resultBox.innerHTML = query === "mehmet"
+        ? "<strong>✅ Mehmet bulundu!</strong>"
+        : "<span style='color:red'>❌ Kullanıcı bulunamadı.</span>";
+    }
+  </script>
+
+  <script src="home.js"></script>
 </body>
 </html>
