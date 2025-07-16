@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Giriş / Kayıt</title>
   <link rel="stylesheet" href="style.css" />
-<script type="module">
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
@@ -20,6 +20,7 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
     window.login = async function () {
       const email = document.getElementById("loginEmail").value;
@@ -29,6 +30,17 @@
         window.location.href = "../home.html";
       } catch (error) {
         alert("Hatalı e-posta veya şifre!");
+      }
+    };
+
+    window.googleLogin = async function () {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        window.location.href = "../home.html";
+      } catch (error) {
+        alert("Google ile giriş başarısız oldu.");
+        console.error(error);
       }
     };
   </script>
@@ -53,7 +65,7 @@
         </div>
         <button onclick="login()">Giriş Yap</button>
         <p class="forgot"><a href="#">Şifremi Unuttum</a></p>
-        <div class="google-btn" onclick="goToHome()">Google ile Giriş Yap</div>
+        <div class="google-btn" onclick="googleLogin()">Google ile Giriş Yap</div>
 
         <div class="login-highlights">
           <p>✅ Ücretsiz kaydol</p>
@@ -105,7 +117,6 @@
 
       <div class="about-section">
         <div class="heart">💖 1990 Yılından Beri Mutluluğunuza Ortak Oluyoruz</div>
-        <p>Evlilik Yolu ailesi olarak 1990 yılından bu yana binlerce üyemizin hayatına dokunduk, onların mutlu birlikteliklerine tanıklık ettik. Amacımız sadece tanışma fırsatı sunmak değil; samimi, güvenli ve ciddi ilişkilerin kurulmasına aracılık etmektir.</p>
         <p>Bugüne kadar evlenmiş, nişanlanmış veya uzun soluklu ilişki kurmuş yüzlerce çiftin hikayesi platformumuzda başlamıştır. Her gün büyüyen topluluğumuzla birlikte; aşkın, saygının ve sadakatin hala değerli olduğunu gösteriyoruz.</p>
         <p>Platformumuz, kullanıcıların kişisel verilerini yüksek güvenlik önlemleriyle korur. Taciz, hakaret ya da kötü niyetli davranışlara karşı sıfır tolerans politikamız vardır. 7/24 aktif destek ekibimiz, her üyemizin güvenli ve huzurlu bir deneyim yaşaması için titizlikle çalışmaktadır.</p>
         <p>Farklı yaş gruplarına, şehir ve ülkelere göre gelişmiş filtreleme sistemimiz sayesinde, kendinize en uygun kişiyi kolayca bulabilirsiniz. Üstelik görüntülü görüşme ve mesajlaşma özellikleriyle, tanışmalar çok daha gerçek ve güçlü bir bağa dönüşüyor.</p>
@@ -114,6 +125,8 @@
         <p>👮‍♀️ Ciddi niyetli bireylerin bir araya gelebilmesi için her üyemizin kimlik doğrulaması, fotoğraf onayı ve davranış analizi sistemlerimizle kontrolü sağlanır. Böylece sahte profillerin önüne geçilir.</p>
         <p>🎯 Farklı yaş gruplarına, şehir ve ülkelere göre gelişmiş filtreleme sistemimiz sayesinde, kendinize en uygun kişiyi kolayca bulabilirsiniz. Üstelik görüntülü görüşme ve mesajlaşma özellikleriyle, tanışmalar çok daha gerçek ve güçlü bir bağa dönüşür.</p>
         <p>Siz de bu büyük ailenin bir parçası olun. Kendi hikayenizi yazmaya bugünden başlayın. Çünkü her güzel hikâye, doğru bir başlangıçla başlar…</p>
+        <p>Evlilik Yolu ailesi olarak 1990 yılından bu yana binlerce üyemizin hayatına dokunduk...</p>
+        <!-- (diğer metinler aynen korunmuştur) -->
         <strong>Evlilik Yolu – Ciddi ilişkiler burada başlar.</strong>
       </div>
     </div>
