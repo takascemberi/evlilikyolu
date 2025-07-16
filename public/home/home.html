@@ -8,6 +8,7 @@
   <style>
     @media (min-width: 768px) {
       .desktop-toolbar {
+        position: relative;
         display: flex;
         gap: 15px;
         margin-left: auto;
@@ -29,25 +30,6 @@
         text-align: center;
         width: 100%;
         margin-top: 10px;
-      }
-      .online-count {
-        font-size: 16px;
-        text-align: center;
-        width: 100%;
-        margin-top: 5px;
-        color: white;
-      }
-      .logout-btn {
-        background-color: #ff4d4d;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 8px;
-        font-weight: bold;
-        cursor: pointer;
-        position: absolute;
-        top: 10px;
-        left: 10px;
       }
     }
 
@@ -75,9 +57,22 @@
         cursor: pointer;
       }
       .site-title {
-        font-size: 36px;
-        color: white;
+        font-size: 32px;
         font-weight: bold;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      .animated-heart {
+        font-size: 20px;
+        animation: rotateColor 2s linear infinite;
+      }
+      @keyframes rotateColor {
+        0% { transform: rotate(0deg); color: red; }
+        50% { transform: rotate(180deg); color: deepskyblue; }
+        100% { transform: rotate(360deg); color: crimson; }
       }
     }
 
@@ -89,6 +84,20 @@
       align-items: center;
       position: relative;
     }
+
+    .logout-btn {
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+
     .chat-bubble {
       position: fixed;
       bottom: 80px;
@@ -181,12 +190,23 @@
       border: 1px solid #ccc;
     }
 
+    .online-count {
+      font-size: 16px;
+      text-align: center;
+      width: 100%;
+      margin-top: 5px;
+      color: white;
+    }
   </style>
 </head>
 <body>
 
   <header class="top-bar">
-    <div class="site-title">Evlilik Yolu</div>
+    <div class="site-title">
+      <span class="animated-heart">❤️</span>
+      Evlilik Yolu
+      <span class="animated-heart">❤️</span>
+    </div>
     <div class="online-count">🟢 <span id="onlineCount">1234</span> Online</div>
     <button class="logout-btn" onclick="logout()">Çıkış</button>
     <div class="desktop-toolbar">
