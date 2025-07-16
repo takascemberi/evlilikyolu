@@ -1,10 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Evlilik Yolu</title>
-
   <link rel="stylesheet" href="style.css" />
   <style>
     @media (min-width: 768px) {
@@ -196,6 +195,68 @@
     updateTexts(savedLang);
   </script>
 
+  <script>
+    function goHome() {
+      alert("Ana sayfaya yönlendiriliyorsunuz...");
+    }
+
+    function toggleSearch() {
+      const searchBox = document.getElementById('searchBox');
+      searchBox.classList.toggle('hidden');
+    }
+
+    function openMessages() {
+      alert("Mesaj kutusu açılacak (simülasyon).");
+    }
+
+    function openNotifications() {
+      alert("Bildirim paneli açılacak (simülasyon).");
+    }
+
+    function goProfile() {
+      alert("Profil sayfasına gidiliyor...");
+    }
+
+    function logout() {
+      alert("Çıkış yapıldı!");
+    }
+
+    function toggleSupport() {
+      document.getElementById("supportPanel").classList.toggle("hidden");
+    }
+
+    function sendSupportMessage() {
+      const input = document.getElementById("supportInput");
+      const message = input.value.trim();
+      if (message !== "") {
+        const msgEl = document.createElement("div");
+        msgEl.className = "message user";
+        msgEl.textContent = message;
+        document.getElementById("supportMessages").appendChild(msgEl);
+        input.value = "";
+      }
+    }
+
+    function submitPost() {
+      const post = document.getElementById("postInput").value.trim();
+      if (post !== "") {
+        const postEl = document.createElement("div");
+        postEl.className = "post";
+        postEl.textContent = post;
+        document.getElementById("postList").appendChild(postEl);
+        document.getElementById("postInput").value = "";
+      }
+    }
+
+    function searchUser() {
+      const query = document.getElementById("searchInput").value.trim().toLowerCase();
+      const resultBox = document.getElementById("searchResult");
+      resultBox.innerHTML = query === "mehmet"
+        ? "<strong>✅ Mehmet bulundu!</strong>"
+        : "<span style='color:red'>❌ Kullanıcı bulunamadı.</span>";
+    }
+  </script>
+
   <script src="home.js"></script>
 </body>
-</html>  
+</html>
