@@ -5,25 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-key="site_title">Ana Sayfa - Evlilik Yolu</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    @media (min-width: 768px) {
-      .desktop-toolbar {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        padding: 10px;
-        background: #fff;
-        border-bottom: 1px solid #ccc;
-        margin-bottom: 10px;
-      }
-    }
-
-    @media (max-width: 767px) {
-      .desktop-toolbar {
-        display: none;
-      }
-    }
-  </style>
 </head>
 <body>
   <!-- Dil Seçici -->
@@ -41,17 +22,15 @@
     <div class="site-title" data-key="site_title">Evlilik Yolu</div>
     <div class="online-count">🟢 <span id="onlineCount">1234</span> Online</div>
     <button class="logout-btn" onclick="logout()" data-key="logout">Çıkış</button>
+    <div class="desktop-toolbar">
+      <button onclick="submitPost()" data-key="share">Paylaş</button>
+      <button onclick="goHome()">🏠</button>
+      <button onclick="toggleSearch()">🔍</button>
+      <button onclick="openMessages()">✉️</button>
+      <button onclick="openNotifications()">🔔</button>
+      <button onclick="goProfile()">👤</button>
+    </div>
   </header>
-
-  <!-- Masaüstü için üst araç çubuğu -->
-  <div class="desktop-toolbar">
-    <button onclick="submitPost()" data-key="share">Paylaş</button>
-    <button onclick="goHome()">🏠</button>
-    <button onclick="toggleSearch()">🔍</button>
-    <button onclick="openMessages()">✉️</button>
-    <button onclick="openNotifications()">🔔</button>
-    <button onclick="goProfile()">👤</button>
-  </div>
 
   <!-- Canlı Destek Balonu -->
   <div class="chat-bubble" onclick="toggleSupport()">
