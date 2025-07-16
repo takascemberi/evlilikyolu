@@ -1,13 +1,211 @@
-...
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evlilik Yolu</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    @media (min-width: 768px) {
+      .desktop-toolbar {
+        display: flex;
+        gap: 15px;
+        margin-left: auto;
+      }
+      .desktop-toolbar button {
+        background: #e3fcec;
+        color: #007b33;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .site-title {
+        font-size: 42px;
+        font-weight: 800;
+        color: #fff5f5;
+        font-family: 'Georgia', serif;
+        text-align: center;
+        width: 100%;
+        margin-top: 10px;
+      }
+      .online-count {
+        font-size: 16px;
+        text-align: center;
+        width: 100%;
+        margin-top: 5px;
+        color: white;
+      }
+      .logout-btn {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .desktop-toolbar {
+        display: none;
+      }
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #c5f7d3;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px 0;
+        z-index: 1000;
+        box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+      }
+      .bottom-nav button {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+      .site-title {
+        font-size: 36px;
+        color: white;
+        font-weight: bold;
+      }
+    }
+
+    .top-bar {
+      background: #ff69b4;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .chat-bubble {
+      position: fixed;
+      bottom: 80px;
+      right: 15px;
+      background: #f9a;
+      padding: 10px 15px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .support-panel {
+      position: fixed;
+      bottom: 140px;
+      right: 15px;
+      width: 250px;
+      max-height: 300px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1000;
+    }
+    .support-panel.hidden {
+      display: none;
+    }
+    .support-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+    .support-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+    .support-input input {
+      flex: 1;
+      border: none;
+      padding: 10px;
+    }
+    .support-input button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="language-switcher">
+    <select id="lang-select">
+      <option value="tr">🇹🇷 Türkçe</option>
+      <option value="en">🇬🇧 English</option>
+      <option value="fa">🇮🇷 فارسی</option>
+      <option value="ar">🇸🇦 العربية</option>
+    </select>
+  </div>
+
+  <header class="top-bar">
+    <div class="site-title" data-key="site_title">Evlilik Yolu</div>
+    <div class="online-count">🟢 <span id="onlineCount">1234</span> Online</div>
+    <button class="logout-btn" onclick="logout()" data-key="logout">Çıkış</button>
+    <div class="desktop-toolbar">
+      <button onclick="goHome()">🏠</button>
+      <button onclick="toggleSearch()">🔍</button>
+      <button onclick="openMessages()">✉️</button>
+      <button onclick="openNotifications()">🔔</button>
+      <button onclick="goProfile()">👤</button>
+    </div>
+  </header>
+
+  <div class="chat-bubble" onclick="toggleSupport()">💬</div>
+  <div id="supportPanel" class="support-panel hidden">
+    <div class="support-messages" id="supportMessages">
+      <div class="message system" data-key="support_msg">Tüm temsilcilerimiz diğer üyelerimize hizmet vermektedir. Tahmini bekleme süreniz 15 dakika.</div>
+    </div>
+    <div class="support-input">
+      <input type="text" id="supportInput" placeholder="Yazın..." />
+      <button onclick="sendSupportMessage()" data-key="send">Gönder</button>
+    </div>
+  </div>
+
+  <main>
+    <section class="post-box">
+      <textarea id="postInput" placeholder="Ne düşünüyorsun?" data-key="what_think"></textarea>
+      <button onclick="submitPost()" data-key="share">Paylaş</button>
+    </section>
+    <section class="online-users" id="onlineUsers"></section>
+    <section class="posts" id="postList"></section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button onclick="goHome()">🏠</button>
+    <button onclick="toggleSearch()">🔍</button>
+    <button onclick="openMessages()">✉️</button>
+    <button onclick="openNotifications()">🔔</button>
+    <button onclick="goProfile()">👤</button>
+  </nav>
+
+  <div id="searchBox" class="search-box hidden">
+    <input type="text" id="searchInput" placeholder="Kullanıcı adı ara...">
+    <button onclick="searchUser()" data-key="search">Ara</button>
+    <div id="searchResult"></div>
+  </div>
+
   <script src="lang.js"></script>
   <script>
     const langSelect = document.getElementById('lang-select');
     const allElements = document.querySelectorAll('[data-key]');
-
     function updateTexts(lang) {
       document.documentElement.lang = lang;
       document.body.dir = (lang === 'ar' || lang === 'fa') ? 'rtl' : 'ltr';
-
       allElements.forEach(el => {
         const key = el.getAttribute('data-key');
         if (translations[lang] && translations[lang][key]) {
@@ -15,83 +213,15 @@
         }
       });
     }
-
     langSelect.addEventListener('change', () => {
       const selectedLang = langSelect.value;
       localStorage.setItem('preferredLang', selectedLang);
       updateTexts(selectedLang);
     });
-
     const savedLang = localStorage.getItem('preferredLang') || 'tr';
     langSelect.value = savedLang;
     updateTexts(savedLang);
   </script>
-
-  <script>
-    function goHome() {
-      alert("Ana sayfaya yönlendiriliyorsunuz...");
-      // window.location.href = 'home.html';
-    }
-
-    function toggleSearch() {
-      const searchBox = document.getElementById('searchBox');
-      searchBox.classList.toggle('hidden');
-    }
-
-    function openMessages() {
-      alert("Mesaj kutusu açılacak (simülasyon).");
-    }
-
-    function openNotifications() {
-      alert("Bildirim paneli açılacak (simülasyon).");
-    }
-
-    function goProfile() {
-      alert("Profil sayfasına gidiliyor...");
-      // window.location.href = 'profile.html';
-    }
-
-    function logout() {
-      alert("Çıkış yapıldı!");
-      // window.location.href = 'index.html';
-    }
-
-    function toggleSupport() {
-      document.getElementById("supportPanel").classList.toggle("hidden");
-    }
-
-    function sendSupportMessage() {
-      const input = document.getElementById("supportInput");
-      const message = input.value.trim();
-      if (message !== "") {
-        const msgEl = document.createElement("div");
-        msgEl.className = "message user";
-        msgEl.textContent = message;
-        document.getElementById("supportMessages").appendChild(msgEl);
-        input.value = "";
-      }
-    }
-
-    function submitPost() {
-      const post = document.getElementById("postInput").value.trim();
-      if (post !== "") {
-        const postEl = document.createElement("div");
-        postEl.className = "post";
-        postEl.textContent = post;
-        document.getElementById("postList").appendChild(postEl);
-        document.getElementById("postInput").value = "";
-      }
-    }
-
-    function searchUser() {
-      const query = document.getElementById("searchInput").value.trim().toLowerCase();
-      const resultBox = document.getElementById("searchResult");
-      resultBox.innerHTML = query === "mehmet"
-        ? "<strong>✅ Mehmet bulundu!</strong>"
-        : "<span style='color:red'>❌ Kullanıcı bulunamadı.</span>";
-    }
-  </script>
-
   <script src="home.js"></script>
 </body>
 </html>
