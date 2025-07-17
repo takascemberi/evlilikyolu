@@ -7,6 +7,8 @@ import {
   sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { auth } from "/firebaseConfig.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const db = getFirestore();
 
 // Form geçişleri
 document.getElementById("loginTab").addEventListener("click", () => {
