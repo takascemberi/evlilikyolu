@@ -29,6 +29,16 @@ let currentUserUID = null;
 let onlineDocRef = null;
 
 const container = document.getElementById("online-user-list");
+if (container) {
+  container.style.display = "flex";
+  container.style.flexWrap = "wrap";
+  container.style.justifyContent = "center";
+  container.style.gap = "10px";
+  container.style.padding = "10px";
+  container.style.marginTop = "20px";
+  container.style.zIndex = "999";
+  container.style.position = "relative";
+}
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
@@ -62,10 +72,11 @@ onAuthStateChanged(auth, async (user) => {
           card.style.alignItems = "center";
           card.style.position = "relative";
           card.style.width = "60px";
+          card.style.zIndex = "1000";
 
           const photo = document.createElement("img");
           photo.src = user.profileImage || "/images/default.png";
-          photo.alt = user.name || "Kullanıcı";
+          photo.alt = user.displayName || "Kullanıcı";
           photo.style.width = "50px";
           photo.style.height = "50px";
           photo.style.borderRadius = "50%";
