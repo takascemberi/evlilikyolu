@@ -28,19 +28,13 @@ const auth = getAuth(app);
 let currentUserUID = null;
 let onlineDocRef = null;
 
-const container = document.createElement("div");
-container.style.display = "flex";
-container.style.justifyContent = "center";
-container.style.flexWrap = "wrap";
-container.style.gap = "10px";
-container.style.margin = "10px";
-document.body.insertBefore(container, document.body.children[1]); // top-bar'dan sonra yerleştir
+// 🔧 BURASI DEĞİŞTİ: Artık hazır div'i kullanıyoruz
+const container = document.getElementById("online-user-list");
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUserUID = user.uid;
 
-    // Kullanıcı Firestore'a eklensin
     const docRef = doc(db, "onlineUsers", user.uid);
     await setDoc(docRef, {
       uid: user.uid,
@@ -48,14 +42,12 @@ onAuthStateChanged(auth, async (user) => {
     });
     onlineDocRef = docRef;
 
-    // Sayfa kapanınca kullanıcı silinsin
     window.addEventListener("beforeunload", async () => {
       if (onlineDocRef) {
         await deleteDoc(onlineDocRef);
       }
     });
 
-    // Online kullanıcıları sadece giriş yapan kullanıcıdan sonra dinle
     const onlineQuery = query(collection(db, "onlineUsers"));
     onSnapshot(onlineQuery, async (snapshot) => {
       const onlineUIDs = snapshot.docs.map(doc => doc.data().uid);
