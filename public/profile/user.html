@@ -1,0 +1,137 @@
+<!-- eskisini sil, yenisini yapıştır -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kullanıcı Profili</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="/lang.js"></script>
+</head>
+<body>
+  <div class="profile-card">
+    <div class="profile-picture"></div>
+    <h2 id="username">Ayşe</h2>
+    <p id="age">24 Yaşında</p>
+    <p id="location">İstanbul</p>
+    <p id="about">Ben Ayşe, hiç evlenmedim. İstanbul'da yaşıyorum, yaşım 24.</p>
+    
+    <div class="user-status">Standart Üye</div>
+
+    <div class="action-buttons">
+      <button id="messageBtn">💌 Mesaj Gönder</button>
+      <button id="giftBtn">🎁 Hediye Gönder</button>
+      <button id="reportBtn">🚨 Şikayet Et</button>
+    </div>
+  </div>
+
+  <!-- Şikayet popup -->
+  <div id="reportPopup" class="popup hidden">
+    <h3>Şikayet Et</h3>
+    <textarea id="reportReason" placeholder="Şikayet sebebinizi yazın..."></textarea>
+    <input type="file" id="screenshot" accept="image/*" />
+    <button onclick="sendReport()">Gönder</button>
+    <button onclick="closeReport()">Kapat</button>
+  </div>
+
+  <script>
+    // Örnek: premium ve jeton kontrolü
+    const isPremium = false;
+    const userTokens = 3;
+
+    const messageBtn = document.getElementById('messageBtn');
+    const giftBtn = document.getElementById('giftBtn');
+    const reportBtn = document.getElementById('reportBtn');
+    const reportPopup = document.getElementById('reportPopup');
+
+    messageBtn.addEventListener('click', () => {
+      if (!isPremium) {
+        alert("Mesaj gönderebilmek için Premium üye olmalısınız.");
+        return;
+      }
+      alert("Mesaj gönderme penceresi açılır.");
+    });
+
+    giftBtn.addEventListener('click', () => {
+      if (userTokens < 1) {
+        alert("Hediye göndermek için yeterli jetonunuz yok.");
+        return;
+      }
+      alert("Hediye gönderme penceresi açılır.");
+    });
+
+    reportBtn.addEventListener('click', () => {
+      reportPopup.classList.remove("hidden");
+    });
+
+    function closeReport() {
+      reportPopup.classList.add("hidden");
+    }
+
+    function sendReport() {
+      const reason = document.getElementById('reportReason').value;
+      const file = document.getElementById('screenshot').files[0];
+      if (!reason) {
+        alert("Lütfen şikayet sebebini belirtin.");
+        return;
+      }
+
+      alert("Şikayet gönderildi. Admin en kısa sürede inceleyecek.");
+      // Burada Firebase'e veya admin mesaj sistemine gönderim yapılabilir
+      closeReport();
+    }
+  </script>
+
+  <style>
+    .profile-card {
+      max-width: 400px;
+      margin: 40px auto;
+      padding: 20px;
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .profile-picture {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin: auto;
+      background: gray;
+    }
+
+    .action-buttons button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #ff69b4;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .popup {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+      z-index: 999;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    textarea {
+      width: 100%;
+      height: 80px;
+      margin-bottom: 10px;
+    }
+  </style>
+</body>
+</html>
