@@ -6,7 +6,7 @@ import {
   query,
   onSnapshot,
   serverTimestamp,
-  setDoc,       // ✅ addDoc yerine setDoc kullanıldı
+  setDoc,
   deleteDoc,
   doc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -28,27 +28,6 @@ const auth = getAuth(app);
 let currentUserUID = null;
 let onlineDocRef = null;
 
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    currentUserUID = user.uid;
-
-    // ✅ addDoc yerine setDoc kullanıldı ve doc ID olarak uid verildi
-    const docRef = doc(db, "onlineUsers", user.uid);
-    await setDoc(docRef, {
-      uid: user.uid,
-      timestamp: serverTimestamp()
-    });
-    onlineDocRef = docRef;
-
-    // Çıkınca listeden çıkar
-    window.addEventListener("beforeunload", async () => {
-      if (onlineDocRef) {
-        await deleteDoc(onlineDocRef);
-      }
-    });
-  }
-});
-
 const container = document.createElement("div");
 container.style.display = "flex";
 container.style.justifyContent = "center";
@@ -57,56 +36,78 @@ container.style.gap = "10px";
 container.style.margin = "10px";
 document.body.insertBefore(container, document.body.children[1]); // top-bar'dan sonra yerleştir
 
-const onlineQuery = query(collection(db, "onlineUsers"));
-onSnapshot(onlineQuery, async (snapshot) => {
-  const onlineUIDs = snapshot.docs.map(doc => doc.data().uid);
-  container.innerHTML = "";
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUserUID = user.uid;
 
-  const usersSnapshot = await getDocs(collection(db, "users"));
-  usersSnapshot.forEach(doc => {
-    const user = doc.data();
-    if (onlineUIDs.includes(user.uid) && user.uid !== currentUserUID) {
-      const card = document.createElement("div");
-      card.style.display = "flex";
-      card.style.flexDirection = "column";
-      card.style.alignItems = "center";
-      card.style.position = "relative";
-      card.style.width = "60px";
+    // Kullanıcı Firestore'a eklensin
+    const docRef = doc(db, "onlineUsers", user.uid);
+    await setDoc(docRef, {
+      uid: user.uid,
+      timestamp: serverTimestamp()
+    });
+    onlineDocRef = docRef;
 
-      const photo = document.createElement("img");
-      photo.src = user.profileImage || "/images/default.png";
-      photo.alt = user.name || "Kullanıcı";
-      photo.style.width = "50px";
-      photo.style.height = "50px";
-      photo.style.borderRadius = "50%";
-      photo.style.objectFit = "cover";
-      card.appendChild(photo);
+    // Sayfa kapanınca kullanıcı silinsin
+    window.addEventListener("beforeunload", async () => {
+      if (onlineDocRef) {
+        await deleteDoc(onlineDocRef);
+      }
+    });
 
-      const greenDot = document.createElement("div");
-      greenDot.style.position = "absolute";
-      greenDot.style.top = "0px";
-      greenDot.style.right = "5px";
-      greenDot.style.width = "10px";
-      greenDot.style.height = "10px";
-      greenDot.style.background = "limegreen";
-      greenDot.style.borderRadius = "50%";
-      greenDot.style.border = "1px solid white";
-      card.appendChild(greenDot);
+    // Online kullanıcıları sadece giriş yapan kullanıcıdan sonra dinle
+    const onlineQuery = query(collection(db, "onlineUsers"));
+    onSnapshot(onlineQuery, async (snapshot) => {
+      const onlineUIDs = snapshot.docs.map(doc => doc.data().uid);
+      container.innerHTML = "";
 
-      const name = document.createElement("div");
-      name.textContent = user.displayName || "Kullanıcı";
-      name.style.fontSize = "12px";
-      name.style.color = "black";
-      name.style.marginTop = "3px";
-      card.appendChild(name);
+      const usersSnapshot = await getDocs(collection(db, "users"));
+      usersSnapshot.forEach(doc => {
+        const user = doc.data();
+        if (onlineUIDs.includes(user.uid) && user.uid !== currentUserUID) {
+          const card = document.createElement("div");
+          card.style.display = "flex";
+          card.style.flexDirection = "column";
+          card.style.alignItems = "center";
+          card.style.position = "relative";
+          card.style.width = "60px";
 
-      const age = document.createElement("div");
-      age.textContent = user.age ? `${user.age} yaş` : "";
-      age.style.fontSize = "11px";
-      age.style.color = "#444";
-      card.appendChild(age);
+          const photo = document.createElement("img");
+          photo.src = user.profileImage || "/images/default.png";
+          photo.alt = user.name || "Kullanıcı";
+          photo.style.width = "50px";
+          photo.style.height = "50px";
+          photo.style.borderRadius = "50%";
+          photo.style.objectFit = "cover";
+          card.appendChild(photo);
 
-      container.appendChild(card);
-    }
-  });
+          const greenDot = document.createElement("div");
+          greenDot.style.position = "absolute";
+          greenDot.style.top = "0px";
+          greenDot.style.right = "5px";
+          greenDot.style.width = "10px";
+          greenDot.style.height = "10px";
+          greenDot.style.background = "limegreen";
+          greenDot.style.borderRadius = "50%";
+          greenDot.style.border = "1px solid white";
+          card.appendChild(greenDot);
+
+          const name = document.createElement("div");
+          name.textContent = user.displayName || "Kullanıcı";
+          name.style.fontSize = "12px";
+          name.style.color = "black";
+          name.style.marginTop = "3px";
+          card.appendChild(name);
+
+          const age = document.createElement("div");
+          age.textContent = user.age ? `${user.age} yaş` : "";
+          age.style.fontSize = "11px";
+          age.style.color = "#444";
+          card.appendChild(age);
+
+          container.appendChild(card);
+        }
+      });
+    });
+  }
 });
