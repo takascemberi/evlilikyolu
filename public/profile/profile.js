@@ -53,6 +53,9 @@ document.querySelector('button[title="Fotoğraf"]').addEventListener("click", ()
         await updateDoc(userRef, {
           profileImage: downloadURL
         });
+
+        // Profil bilgisi sayfa yenilendiğinde korunsun
+        location.reload();
       }
     });
   };
