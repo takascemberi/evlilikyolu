@@ -7,16 +7,50 @@
   <title>Kullanıcı Profili</title>
   <link rel="stylesheet" href="style.css" />
   <script src="/lang.js"></script>
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
+      authDomain: "vipbulusma.firebaseapp.com",
+      projectId: "vipbulusma",
+      storageBucket: "vipbulusma.firebasestorage.app",
+      messagingSenderId: "552096712424",
+      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
+      measurementId: "G-CNQEJEV51C"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
+    const ref = doc(db, "users", userId);
+
+    getDoc(ref).then((docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.getElementById("username").textContent = data.username || "Bilinmiyor";
+        document.getElementById("age").textContent = data.age ? `${data.age} Yaşında` : "";
+        document.getElementById("location").textContent = data.city || "";
+        document.getElementById("about").textContent = data.about || "Kullanıcı hakkında bilgi paylaşmamış.";
+        document.getElementById("status").textContent = data.premium ? "Premium Üye" : "Standart Üye";
+      } else {
+        alert("Kullanıcı bulunamadı.");
+      }
+    });
+  </script>
 </head>
 <body>
   <div class="profile-card">
     <div class="profile-picture"></div>
-    <h2 id="username">Ayşe</h2>
-    <p id="age">24 Yaşında</p>
-    <p id="location">İstanbul</p>
-    <p id="about">Ben Ayşe, hiç evlenmedim. İstanbul'da yaşıyorum, yaşım 24.</p>
-    
-    <div class="user-status">Standart Üye</div>
+    <h2 id="username">...</h2>
+    <p id="age"></p>
+    <p id="location"></p>
+    <p id="about"></p>
+    <div class="user-status" id="status">...</div>
 
     <div class="action-buttons">
       <button id="messageBtn">💌 Mesaj Gönder</button>
@@ -25,7 +59,36 @@
     </div>
   </div>
 
-  <!-- Şikayet popup -->
+  <!-- 🎁 Hediye Gönder Popup -->
+  <div id="giftPopup" class="popup hidden">
+    <h3>Hediye Seç</h3>
+    <label><input type="radio" name="gift" value="Gül" data-cost="2" /> 🌹 Gül (2 Jeton)</label><br/>
+    <label><input type="radio" name="gift" value="Kalpli Ayıcık" data-cost="5" /> 🧸 Kalpli Ayıcık (5 Jeton)</label><br/>
+    <label><input type="radio" name="gift" value="Kahve" data-cost="3" /> ☕ Kahve (3 Jeton)</label><br/><br/>
+    <button onclick="sendGift()">Gönder</button>
+    <button onclick="closeGift()">İptal</button>
+  </div>
+
+  <!-- 💳 Jeton Yetersiz Popup -->
+  <div id="noTokenPopup" class="popup hidden">
+    <h3>Yetersiz Jeton</h3>
+    <p>Bu hediyeyi göndermek için yeterli jetonunuz yok.</p>
+    <p><strong>Jeton almak için:</strong></p>
+    <p>💳 IBAN: <b>TR91 0001 0040 0452 2812 1550 07</b></p>
+    <p>👤 Alıcı: <b>NEJLA KOÇ</b></p>
+    <p>🏦 Banka: <b>Ziraat Bankası</b></p>
+    <button onclick="closeNoToken()">Tamam</button>
+  </div>
+
+  <!-- 💌 Mesaj Gönderme Popup -->
+  <div id="messagePopup" class="popup hidden">
+    <h3>Mesaj Gönder</h3>
+    <textarea id="messageContent" placeholder="Mesajınızı yazın..."></textarea>
+    <button onclick="sendMessage()">Gönder</button>
+    <button onclick="closeMessage()">Kapat</button>
+  </div>
+
+  <!-- 🚨 Şikayet Et Popup -->
   <div id="reportPopup" class="popup hidden">
     <h3>Şikayet Et</h3>
     <textarea id="reportReason" placeholder="Şikayet sebebinizi yazın..."></textarea>
@@ -35,31 +98,75 @@
   </div>
 
   <script>
-    // Örnek: premium ve jeton kontrolü
     const isPremium = false;
-    const userTokens = 3;
+    let userTokens = 3;
 
     const messageBtn = document.getElementById('messageBtn');
     const giftBtn = document.getElementById('giftBtn');
     const reportBtn = document.getElementById('reportBtn');
-    const reportPopup = document.getElementById('reportPopup');
 
+    const giftPopup = document.getElementById('giftPopup');
+    const noTokenPopup = document.getElementById('noTokenPopup');
+    const reportPopup = document.getElementById('reportPopup');
+    const messagePopup = document.getElementById('messagePopup');
+
+    // 🎁 Hediye
+    giftBtn.addEventListener('click', () => {
+      giftPopup.classList.remove("hidden");
+    });
+
+    function closeGift() {
+      giftPopup.classList.add("hidden");
+    }
+
+    function sendGift() {
+      const selectedGift = document.querySelector('input[name="gift"]:checked');
+      if (!selectedGift) {
+        alert("Lütfen bir hediye seçin.");
+        return;
+      }
+
+      const cost = parseInt(selectedGift.getAttribute("data-cost"));
+      if (userTokens < cost) {
+        closeGift();
+        noTokenPopup.classList.remove("hidden");
+        return;
+      }
+
+      userTokens -= cost;
+      alert("Hediye gönderildi!");
+      closeGift();
+    }
+
+    function closeNoToken() {
+      noTokenPopup.classList.add("hidden");
+    }
+
+    // 💌 Mesaj
     messageBtn.addEventListener('click', () => {
       if (!isPremium) {
         alert("Mesaj gönderebilmek için Premium üye olmalısınız.");
         return;
       }
-      alert("Mesaj gönderme penceresi açılır.");
+      messagePopup.classList.remove("hidden");
     });
 
-    giftBtn.addEventListener('click', () => {
-      if (userTokens < 1) {
-        alert("Hediye göndermek için yeterli jetonunuz yok.");
+    function closeMessage() {
+      messagePopup.classList.add("hidden");
+    }
+
+    function sendMessage() {
+      const message = document.getElementById("messageContent").value;
+      if (!message) {
+        alert("Lütfen bir mesaj yazın.");
         return;
       }
-      alert("Hediye gönderme penceresi açılır.");
-    });
 
+      alert("Mesaj gönderildi!");
+      closeMessage();
+    }
+
+    // 🚨 Şikayet
     reportBtn.addEventListener('click', () => {
       reportPopup.classList.remove("hidden");
     });
@@ -77,12 +184,16 @@
       }
 
       alert("Şikayet gönderildi. Admin en kısa sürede inceleyecek.");
-      // Burada Firebase'e veya admin mesaj sistemine gönderim yapılabilir
       closeReport();
     }
   </script>
 
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+    }
+
     .profile-card {
       max-width: 400px;
       margin: 40px auto;
@@ -121,6 +232,7 @@
       border-radius: 10px;
       box-shadow: 0 0 10px #000;
       z-index: 999;
+      width: 300px;
     }
 
     .hidden {
@@ -131,6 +243,19 @@
       width: 100%;
       height: 80px;
       margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      resize: none;
+    }
+
+    input[type="file"] {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin: 6px 0;
     }
   </style>
 </body>
