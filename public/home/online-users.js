@@ -2,25 +2,24 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
   getFirestore,
   collection,
-  query,
-  onSnapshot,
-  serverTimestamp,
   addDoc,
   deleteDoc,
+  doc,
+  onSnapshot,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {
   getAuth,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// Firebase yapılandırması
 const firebaseConfig = {
   apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
   authDomain: "vipbulusma.firebaseapp.com",
   projectId: "vipbulusma",
   storageBucket: "vipbulusma.firebasestorage.app",
   messagingSenderId: "552096712424",
-  appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
+  appId: "1:552096712424:web:2c5afb59f00dcd24092b5d"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -40,7 +39,7 @@ onAuthStateChanged(auth, async (user) => {
     const docRef = await addDoc(collection(db, "onlineUsers"), userInfo);
     onlineDocRef = docRef;
 
-    // Sayfa kapanınca kullanıcıyı sil
+    // Sayfa kapanınca kullanıcıyı çıkar
     window.addEventListener("beforeunload", async () => {
       if (onlineDocRef) {
         await deleteDoc(onlineDocRef);
@@ -50,23 +49,38 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 // Online kullanıcıları göster
-const bar = document.querySelector(".top-bar");
-const q = query(collection(db, "onlineUsers"));
+const q = collection(db, "onlineUsers");
 
 onSnapshot(q, (snapshot) => {
   const users = snapshot.docs.map(doc => doc.data());
-  let html = `<div class="online-count">🟢 Şu an aktif olan kullanıcı sayısı: ${users.length}</div>`;
-  html += `<div class="user-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;">`;
+
+  const listDiv = document.createElement("div");
+  listDiv.style.display = "flex";
+  listDiv.style.justifyContent = "center";
+  listDiv.style.gap = "15px";
+  listDiv.style.margin = "10px 0";
+  listDiv.style.flexWrap = "wrap";
 
   users.forEach(user => {
-    html += `
-      <div style="display: flex; flex-direction: column; align-items: center;">
+    if (user.uid !== auth.currentUser?.uid) {
+      const userBox = document.createElement("div");
+      userBox.style.display = "flex";
+      userBox.style.flexDirection = "column";
+      userBox.style.alignItems = "center";
+      userBox.innerHTML = `
         <div style="width: 50px; height: 50px; border-radius: 50%; background: #ccc;"></div>
-        <span style="font-size: 12px; color: white;">${user.name || "Üye"}</span>
-      </div>`;
+        <span style="font-size: 13px; color: #333;">${user.name || "Üye"}</span>
+      `;
+      listDiv.appendChild(userBox);
+    }
   });
 
-  html += `</div>`;
-  bar.innerHTML = html;
-});
+  let existing = document.getElementById("onlineUserList");
+  if (existing) existing.remove();
 
+  listDiv.id = "onlineUserList";
+  const target = document.querySelector(".top-bar");
+  if (target) {
+    target.insertAdjacentElement("afterend", listDiv);
+  }
+});
