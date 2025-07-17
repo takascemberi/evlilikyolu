@@ -7,10 +7,10 @@
   <title>Kullanıcı Profili</title>
   <link rel="stylesheet" href="style.css" />
   <script src="/lang.js"></script>
-  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
@@ -23,12 +23,14 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore();
+    const db = getFirestore(app);
+    const storage = getStorage(app);
 
     const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('id');
-    const ref = doc(db, "users", userId);
+    const profileId = urlParams.get('id');
+    const loggedInUserId = localStorage.getItem("userID") || "bilinmeyen";
 
+    const ref = doc(db, "users", profileId);
     getDoc(ref).then((docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
@@ -41,6 +43,36 @@
         alert("Kullanıcı bulunamadı.");
       }
     });
+
+    window.sendReport = async function () {
+      const reason = document.getElementById('reportReason').value;
+      const file = document.getElementById('screenshot').files[0];
+      if (!reason) {
+        alert("Lütfen şikayet sebebini yazınız.");
+        return;
+      }
+
+      let screenshotUrl = "";
+      if (file) {
+        const fileRef = storageRef(storage, `complaints/${Date.now()}_${file.name}`);
+        const uploadResult = await uploadBytes(fileRef, file);
+        screenshotUrl = await getDownloadURL(uploadResult.ref);
+      }
+
+      await addDoc(collection(db, "complaints"), {
+        from: loggedInUserId,
+        against: profileId,
+        reason: reason,
+        screenshotUrl: screenshotUrl,
+        timestamp: serverTimestamp()
+      });
+
+      const audio = new Audio("/ses/adminmesaj.wav");
+      audio.play();
+
+      alert("Şikayetiniz gönderildi. Teşekkürler.");
+      document.getElementById("reportPopup").classList.add("hidden");
+    };
   </script>
 </head>
 <body>
@@ -110,7 +142,6 @@
     const reportPopup = document.getElementById('reportPopup');
     const messagePopup = document.getElementById('messagePopup');
 
-    // 🎁 Hediye
     giftBtn.addEventListener('click', () => {
       giftPopup.classList.remove("hidden");
     });
@@ -142,7 +173,6 @@
       noTokenPopup.classList.add("hidden");
     }
 
-    // 💌 Mesaj
     messageBtn.addEventListener('click', () => {
       if (!isPremium) {
         alert("Mesaj gönderebilmek için Premium üye olmalısınız.");
@@ -166,25 +196,12 @@
       closeMessage();
     }
 
-    // 🚨 Şikayet
     reportBtn.addEventListener('click', () => {
       reportPopup.classList.remove("hidden");
     });
 
     function closeReport() {
       reportPopup.classList.add("hidden");
-    }
-
-    function sendReport() {
-      const reason = document.getElementById('reportReason').value;
-      const file = document.getElementById('screenshot').files[0];
-      if (!reason) {
-        alert("Lütfen şikayet sebebini belirtin.");
-        return;
-      }
-
-      alert("Şikayet gönderildi. Admin en kısa sürede inceleyecek.");
-      closeReport();
     }
   </script>
 
