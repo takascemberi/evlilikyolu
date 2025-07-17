@@ -29,7 +29,63 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// 📷 Fotoğraf makinesi butonuna tıklanınca dosya yükle
+// Profil bilgilerini göster
+const username = localStorage.getItem("username") || "Kullanıcı";
+const age = localStorage.getItem("age") || "00";
+const membership = localStorage.getItem("membership") || "Standart Üye";
+const profilePic = localStorage.getItem("profilePic");
+const bioText = localStorage.getItem("userBio");
+
+document.getElementById("username").innerText = `${username}, ${age}`;
+document.getElementById("membershipStatus").innerText = membership;
+if (profilePic) {
+  document.getElementById("profileImage").src = profilePic;
+}
+
+// Bio yazısı düzenleme
+window.openBioEdit = function () {
+  const bioArea = document.getElementById("bioEdit");
+  const textarea = document.getElementById("bioText");
+  bioArea.style.display = "block";
+  textarea.value = bioText || "";
+};
+
+window.saveBio = function () {
+  const text = document.getElementById("bioText").value;
+  const badWords = ["amk", "aq", "orospu", "piç", "siktir", "salak"];
+  for (let word of badWords) {
+    if (text.toLowerCase().includes(word)) {
+      alert("Lütfen küfür veya argo kelime kullanmayınız.");
+      return;
+    }
+  }
+  localStorage.setItem("userBio", text);
+  alert("Profil yazısı kaydedildi.");
+};
+
+// IBAN göster/kopyala işlemleri
+window.showIban = function (option) {
+  document.getElementById("ibanBox").style.display = "block";
+  document.getElementById("selectionText").innerText = `Seçim: ${option}`;
+};
+
+window.hideIban = function () {
+  document.getElementById("ibanBox").style.display = "none";
+};
+
+window.copyIban = function () {
+  navigator.clipboard.writeText("TR910001004004522812155007").then(() => {
+    alert("IBAN kopyalandı!");
+  });
+};
+
+// Satın alım seçeneklerini aç/kapat
+window.toggleButtons = function (id) {
+  const el = document.getElementById(id);
+  el.style.display = el.style.display === "flex" ? "none" : "flex";
+};
+
+// Fotoğraf yükleme
 document.querySelector('button[title="Fotoğraf"]').addEventListener("click", () => {
   const input = document.createElement("input");
   input.type = "file";
@@ -44,17 +100,12 @@ document.querySelector('button[title="Fotoğraf"]').addEventListener("click", ()
         await uploadBytes(storageRef, file);
         const downloadURL = await getDownloadURL(storageRef);
 
-        // Profil resmini güncelle
         localStorage.setItem("profilePic", downloadURL);
         document.getElementById("profileImage").src = downloadURL;
 
-        // Firestore'a da kaydet
         const userRef = doc(db, "users", user.uid);
-        await updateDoc(userRef, {
-          profileImage: downloadURL
-        });
+        await updateDoc(userRef, { profileImage: downloadURL });
 
-        // Profil bilgisi sayfa yenilendiğinde korunsun
         location.reload();
       }
     });
