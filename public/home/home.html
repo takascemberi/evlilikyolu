@@ -243,12 +243,12 @@
   </div>
 
   <div class="bottom-nav">
-    <button>🏠</button>
-    <button>🔍</button>
-    <button>✉️</button>
-    <button>🔔</button>
-    <button>👤</button>
-    <button>🚪</button>
+    <button onclick="goHome()">🏠</button>
+    <button onclick="search()">🔍</button>
+    <button onclick="openMessages()">✉️</button>
+    <button onclick="openNotifications()">🔔</button>
+    <button onclick="openProfile()">👤</button>
+    <button onclick="logout()">🚪</button>
   </div>
 
   <script>
@@ -287,6 +287,31 @@
         container.prepend(post);
         input.value = "";
       }
+    }
+
+    // Buton işlevleri
+    function goHome() {
+      alert("Ana sayfaya gidiliyor.");
+    }
+
+    function search() {
+      alert("Arama açılıyor.");
+    }
+
+    function openMessages() {
+      alert("Mesajlar açılıyor.");
+    }
+
+    function openNotifications() {
+      alert("Bildirimler açılıyor.");
+    }
+
+    function openProfile() {
+      alert("Profil sayfasına geçiliyor.");
+    }
+
+    function logout() {
+      alert("Çıkış yapılıyor.");
     }
   </script>
 </body>
