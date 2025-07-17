@@ -1,3 +1,4 @@
+<!-- eskisini sil, yenisini yapıştır -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -150,6 +151,12 @@
       <p>Jeton ile hediye alma istekleri</p>
       <button class="button" onclick="playSound()">Kontrol Et</button>
     </div>
+
+    <div class="card">
+      <h3>Şikayetler</h3>
+      <p>Gelen kullanıcı şikayetlerini görüntüle</p>
+      <button class="button" onclick="goToComplaints()">Şikayetleri Aç</button>
+    </div>
   </div>
 
   <audio id="admin-sound" src="adminmesaj.wav" preload="auto"></audio>
@@ -163,10 +170,12 @@
       window.location.href = "admin-login.html";
     }
 
-    // Otomatik tetikleme örneği (test amaçlı 5 saniyede bir çalışır)
+    function goToComplaints() {
+      window.location.href = "admin-complaints.html";
+    }
+
     setInterval(() => {
-      // Gerçek sistemde kontrol yapılır (örnek: fetch ile veri kontrolü)
-      playSound();
+      playSound(); // örnek otomatik tetikleme
     }, 5000);
   </script>
 </body>
