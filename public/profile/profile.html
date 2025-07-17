@@ -226,7 +226,26 @@
 
   <input type="file" id="photoUploadInput" accept="image/*" onchange="previewImage(event)">
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
+      authDomain: "vipbulusma.firebaseapp.com",
+      projectId: "vipbulusma",
+      storageBucket: "vipbulusma.appspot.com",
+      messagingSenderId: "552096712424",
+      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+    const db = getFirestore(app);
+
     const username = localStorage.getItem("username") || "Kullanıcı";
     const age = localStorage.getItem("age") || "00";
     const membership = localStorage.getItem("membership") || "Standart Üye";
@@ -249,46 +268,4 @@
       document.getElementById("selectionText").innerText = `Seçim: ${option}`;
     }
 
-    function hideIban() {
-      document.getElementById("ibanBox").style.display = "none";
-    }
-
-    function copyIban() {
-      navigator.clipboard.writeText("TR910001004004522812155007").then(() => {
-        alert("IBAN kopyalandı!");
-      });
-    }
-
-    function openBioEdit() {
-      const bioArea = document.getElementById("bioEdit");
-      const textarea = document.getElementById("bioText");
-      bioArea.style.display = "block";
-      textarea.value = bioText || "";
-    }
-
-    function saveBio() {
-      const text = document.getElementById("bioText").value;
-      const badWords = ["amk", "aq", "orospu", "piç", "siktir", "salak"];
-      for (let word of badWords) {
-        if (text.toLowerCase().includes(word)) {
-          alert("Lütfen küfür veya argo kelime kullanmayınız.");
-          return;
-        }
-      }
-      localStorage.setItem("userBio", text);
-      alert("Profil yazısı kaydedildi.");
-    }
-
-    function previewImage(event) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const imageUrl = e.target.result;
-        localStorage.setItem("profilePic", imageUrl);
-        document.getElementById("profileImage").src = imageUrl;
-      };
-      if (file) reader.readAsDataURL(file);
-    }
-  </script>
-</body>
-</html>
+    function hid
