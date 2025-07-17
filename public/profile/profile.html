@@ -226,46 +226,6 @@
 
   <input type="file" id="photoUploadInput" accept="image/*" onchange="previewImage(event)">
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
-      authDomain: "vipbulusma.firebaseapp.com",
-      projectId: "vipbulusma",
-      storageBucket: "vipbulusma.appspot.com",
-      messagingSenderId: "552096712424",
-      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const storage = getStorage(app);
-    const db = getFirestore(app);
-
-    const username = localStorage.getItem("username") || "Kullanıcı";
-    const age = localStorage.getItem("age") || "00";
-    const membership = localStorage.getItem("membership") || "Standart Üye";
-    const profilePic = localStorage.getItem("profilePic");
-    const bioText = localStorage.getItem("userBio");
-
-    document.getElementById("username").innerText = `${username}, ${age}`;
-    document.getElementById("membershipStatus").innerText = membership;
-    if (profilePic) {
-      document.getElementById("profileImage").src = profilePic;
-    }
-
-    function toggleButtons(id) {
-      const el = document.getElementById(id);
-      el.style.display = el.style.display === "flex" ? "none" : "flex";
-    }
-
-    function showIban(option) {
-      document.getElementById("ibanBox").style.display = "block";
-      document.getElementById("selectionText").innerText = `Seçim: ${option}`;
-    }
-
-    function hid
+  <script type="module" src="profile.js"></script>
+</body>
+</html>
