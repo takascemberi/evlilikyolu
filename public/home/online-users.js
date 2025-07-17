@@ -63,8 +63,8 @@ onSnapshot(onlineQuery, async (snapshot) => {
       card.style.width = "60px";
 
       const photo = document.createElement("img");
-      photo.src = user.photoURL || "/images/default.png";
-      photo.alt = user.displayName || "Kullanıcı";
+      photo.src = user.profileImage || "/images/default.png";
+      photo.alt = user.name || "Kullanıcı";
       photo.style.width = "50px";
       photo.style.height = "50px";
       photo.style.borderRadius = "50%";
