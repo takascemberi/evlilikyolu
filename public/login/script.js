@@ -54,6 +54,18 @@ window.register = async function () {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await sendEmailVerification(userCredential.user);
+
+   await setDoc(doc(db, "users", userCredential.user.uid), {
+  uid: userCredential.user.uid,
+  name: name,
+  age: age,
+  gender: gender,
+  looking: looking,
+  city: city,
+  profileImage: "",
+  timestamp: Date.now()
+});
+ 
     alert("Kayıt başarılı! Lütfen e-posta adresinize gelen doğrulama bağlantısını onaylayın.");
   } catch (error) {
     alert("Hata: " + error.message);
@@ -89,7 +101,7 @@ window.resetPassword = async function () {
 
   try {
     await sendPasswordResetEmail(auth, email);
-    alert("Şifre sıfırlama bağlantısı gönderildi.");
+       alert("Şifre sıfırlama bağlantısı gönderildi.");
   } catch (error) {
     alert("Hata: " + error.message);
   }
