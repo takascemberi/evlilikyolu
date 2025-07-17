@@ -1,0 +1,137 @@
+<!-- eskisini sil, yenisini yapıştır -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gelen Şikayetler</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #6a1b9a;
+    }
+
+    .complaint-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .complaint-card h3 {
+      margin-top: 0;
+      color: #6a1b9a;
+    }
+
+    .complaint-card p {
+      margin: 8px 0;
+    }
+
+    .complaint-card a {
+      color: #0288d1;
+      text-decoration: underline;
+    }
+
+    .delete-btn {
+      background: #e53935;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .delete-btn:hover {
+      background: #c62828;
+    }
+
+    .back-btn {
+      background: #6a1b9a;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      margin: 30px auto 10px;
+      text-align: center;
+    }
+
+    .back-btn:hover {
+      background: #8e24aa;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gelen Şikayetler</h1>
+  <div id="complaints"></div>
+  <button class="back-btn" onclick="window.location.href='admin.html'">← Admin Paneline Dön</button>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
+      authDomain: "vipbulusma.firebaseapp.com",
+      projectId: "vipbulusma",
+      storageBucket: "vipbulusma.firebasestorage.app",
+      messagingSenderId: "552096712424",
+      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
+      measurementId: "G-CNQEJEV51C"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const complaintsDiv = document.getElementById("complaints");
+
+    async function fetchComplaints() {
+      const querySnapshot = await getDocs(collection(db, "complaints"));
+      complaintsDiv.innerHTML = "";
+
+      if (querySnapshot.empty) {
+        complaintsDiv.innerHTML = "<p>Henüz şikayet bulunmamaktadır.</p>";
+        return;
+      }
+
+      querySnapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const date = data.timestamp?.toDate().toLocaleString("tr-TR") || "Tarih yok";
+
+        const card = document.createElement("div");
+        card.className = "complaint-card";
+        card.innerHTML = `
+          <h3>Şikayet #${docSnap.id}</h3>
+          <p><strong>Şikayetçi:</strong> ${data.from}</p>
+          <p><strong>Şikayet Edilen:</strong> ${data.against}</p>
+          <p><strong>Sebep:</strong> ${data.reason}</p>
+          ${data.screenshotUrl ? `<p><a href="${data.screenshotUrl}" target="_blank">📎 Ekran Görüntüsünü Aç</a></p>` : ""}
+          <p><strong>Tarih:</strong> ${date}</p>
+          <button class="delete-btn" onclick="deleteComplaint('${docSnap.id}')">Sil</button>
+        `;
+        complaintsDiv.appendChild(card);
+      });
+    }
+
+    window.deleteComplaint = async function(id) {
+      if (confirm("Bu şikayeti silmek istediğinizden emin misiniz?")) {
+        await deleteDoc(doc(db, "complaints", id));
+        alert("Şikayet silindi.");
+        fetchComplaints();
+      }
+    };
+
+    fetchComplaints();
+  </script>
+</body>
+</html>
