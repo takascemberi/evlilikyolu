@@ -28,12 +28,11 @@ const auth = getAuth(app);
 let currentUserUID = null;
 let onlineDocRef = null;
 
-// 🔧 BURASI DEĞİŞTİ: Artık hazır div'i kullanıyoruz
-const container = document.getElementById("online-user-list");
-
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUserUID = user.uid;
+
+    const container = document.getElementById("online-user-list");
 
     const docRef = doc(db, "onlineUsers", user.uid);
     await setDoc(docRef, {
