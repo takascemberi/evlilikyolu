@@ -1,5 +1,15 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs, query, onSnapshot, serverTimestamp, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  onSnapshot,
+  serverTimestamp,
+  setDoc,       // ✅ addDoc yerine setDoc kullanıldı
+  deleteDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
@@ -22,8 +32,9 @@ onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUserUID = user.uid;
 
-    // Online listesine ekle
-    const docRef = await addDoc(collection(db, "onlineUsers"), {
+    // ✅ addDoc yerine setDoc kullanıldı ve doc ID olarak uid verildi
+    const docRef = doc(db, "onlineUsers", user.uid);
+    await setDoc(docRef, {
       uid: user.uid,
       timestamp: serverTimestamp()
     });
