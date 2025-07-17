@@ -8,7 +8,8 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    
     const firebaseConfig = {
       apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
       authDomain: "vipbulusma.firebaseapp.com",
@@ -27,6 +28,16 @@
       const password = document.getElementById("loginPassword").value;
       try {
         await signInWithEmailAndPassword(auth, email, password);
+
+        const user = auth.currentUser;
+const db = getFirestore(app);
+await setDoc(doc(db, "users", user.uid), {
+  uid: user.uid,
+  displayName: user.displayName || "Bilinmeyen",
+  age: 25,
+  profileImage: user.photoURL || ""
+}, { merge: true });
+
         window.location.href = "../home.html";
       } catch (error) {
         alert("Hatalı e-posta veya şifre!");
@@ -37,6 +48,15 @@
       try {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
+        
+const db = getFirestore(app);
+await setDoc(doc(db, "users", user.uid), {
+  uid: user.uid,
+  displayName: user.displayName || "Bilinmeyen",
+  age: 25,
+  profileImage: user.photoURL || ""
+}, { merge: true });
+        
         window.location.href = "../home.html";
       } catch (error) {
         alert("Google ile giriş başarısız oldu.");
