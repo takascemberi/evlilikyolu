@@ -33,6 +33,7 @@ onAuthStateChanged(auth, async (user) => {
     currentUserUID = user.uid;
 
     const container = document.getElementById("online-user-list");
+    if (!container) return;
 
     const docRef = doc(db, "onlineUsers", user.uid);
     await setDoc(docRef, {
@@ -61,21 +62,23 @@ onAuthStateChanged(auth, async (user) => {
           card.style.flexDirection = "column";
           card.style.alignItems = "center";
           card.style.position = "relative";
-          card.style.width = "60px";
+          card.style.width = "70px";
+          card.style.margin = "5px";
 
           const photo = document.createElement("img");
           photo.src = user.profileImage || "/images/default.png";
-          photo.alt = user.name || "Kullanıcı";
-          photo.style.width = "50px";
-          photo.style.height = "50px";
+          photo.alt = user.displayName || "Kullanıcı";
+          photo.style.width = "60px";
+          photo.style.height = "60px";
           photo.style.borderRadius = "50%";
           photo.style.objectFit = "cover";
+          photo.style.border = "2px solid #ff69b4";
           card.appendChild(photo);
 
           const greenDot = document.createElement("div");
           greenDot.style.position = "absolute";
-          greenDot.style.top = "0px";
-          greenDot.style.right = "5px";
+          greenDot.style.top = "3px";
+          greenDot.style.right = "8px";
           greenDot.style.width = "10px";
           greenDot.style.height = "10px";
           greenDot.style.background = "limegreen";
@@ -88,12 +91,13 @@ onAuthStateChanged(auth, async (user) => {
           name.style.fontSize = "12px";
           name.style.color = "black";
           name.style.marginTop = "3px";
+          name.style.textAlign = "center";
           card.appendChild(name);
 
           const age = document.createElement("div");
           age.textContent = user.age ? `${user.age} yaş` : "";
           age.style.fontSize = "11px";
-          age.style.color = "#444";
+          age.style.color = "#555";
           card.appendChild(age);
 
           container.appendChild(card);
