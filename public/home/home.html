@@ -290,29 +290,24 @@
     }
 
     // Buton işlevleri
-    function goHome() {
-      alert("Ana sayfaya gidiliyor.");
-    }
+       }
 
-    function search() {
-      alert("Arama açılıyor.");
-    }
+  function openMessages() {
+    location.href = "/profile/user.html"; // Mesajlar bu sayfadaysa
+  }
 
-    function openMessages() {
-      alert("Mesajlar açılıyor.");
-    }
+  function openNotifications() {
+    location.href = "/profile/gulucukler.html"; // Bildirim sayfası burasıysa
+  }
 
-    function openNotifications() {
-      alert("Bildirimler açılıyor.");
-    }
+  function openProfile() {
+    location.href = "/profile/profile.html";
+  }
 
-    function openProfile() {
-      alert("Profil sayfasına geçiliyor.");
-    }
-
-    function logout() {
-      alert("Çıkış yapılıyor.");
-    }
+  function logout() {
+    location.href = "/login/login.html";
+  }
+</script>
   </script>
 </body>
 </html>
