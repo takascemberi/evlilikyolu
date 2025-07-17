@@ -86,29 +86,25 @@ window.toggleButtons = function (id) {
 };
 
 // Fotoğraf yükleme
-document.querySelector('button[title="Fotoğraf"]').addEventListener("click", () => {
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "image/*";
-  input.onchange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+window.previewImage = async function (event) {
+  const file = event.target.files[0];
+  if (!file) return;
 
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const storageRef = ref(storage, `profileImages/${user.uid}`);
-        await uploadBytes(storageRef, file);
-        const downloadURL = await getDownloadURL(storageRef);
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const storageRef = ref(storage, `profileImages/${user.uid}`);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
 
-        localStorage.setItem("profilePic", downloadURL);
-        document.getElementById("profileImage").src = downloadURL;
+      localStorage.setItem("profilePic", downloadURL);
+      document.getElementById("profileImage").src = downloadURL;
 
-        const userRef = doc(db, "users", user.uid);
-        await updateDoc(userRef, { profileImage: downloadURL });
+      const userRef = doc(db, "users", user.uid);
+      await updateDoc(userRef, { profileImage: downloadURL });
 
-        location.reload();
-      }
-    });
-  };
-  input.click();
-});
+      alert("Profil fotoğrafı güncellendi.");
+    } else {
+      alert("Oturum açmış bir kullanıcı bulunamadı.");
+    }
+  });
+};
