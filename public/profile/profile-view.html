@@ -236,13 +236,15 @@
       if (data.profileImage) {
         document.getElementById("profileImage").src = data.profileImage;
       } else {
-        if (data.gender === "Kadın") {
-          document.getElementById("profileImage").src = "/images/kadin.png";
-        } else if (data.gender === "Erkek") {
-          document.getElementById("profileImage").src = "/images/erkek.png";
-        } else {
-          document.getElementById("profileImage").src = "/images/default.png";
-        }
+        const genderLower = (data.gender || "").toLowerCase();
+if (genderLower === "kadın") {
+  document.getElementById("profileImage").src = "/images/kadin.png";
+} else if (genderLower === "erkek") {
+  document.getElementById("profileImage").src = "/images/erkek.png";
+} else {
+  document.getElementById("profileImage").src = "/images/default.png";
+}
+
       }
 
       if (data.bio && data.bio.trim()) {
