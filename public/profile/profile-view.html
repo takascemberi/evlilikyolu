@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       padding: 20px;
       text-align: center;
-      background-color: #f9f9f9;
+      background-color: #ffc0cb; /* şeker pembesi */
     }
     #profile-container {
       max-width: 400px;
@@ -17,7 +17,7 @@
       background: white;
       border-radius: 10px;
       padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
     #profileImage {
       width: 120px;
@@ -30,6 +30,52 @@
       font-size: 18px;
       margin: 6px 0;
     }
+    .buttons {
+      margin-top: 15px;
+    }
+    .buttons button {
+      margin: 5px;
+      padding: 10px 20px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #extraInfo {
+      margin-top: 15px;
+      background: #fff0f5;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    #popup {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    #popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: left;
+      max-width: 300px;
+    }
+    #popup-content h3 {
+      margin-top: 0;
+    }
+    #popup-content button {
+      background: crimson;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      margin-top: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -38,6 +84,27 @@
     <div class="info" id="username">Yükleniyor...</div>
     <div class="info" id="age"></div>
     <div class="info" id="membershipStatus"></div>
+    <div class="buttons">
+      <button onclick="sendMessage()">✉️ Mesaj Gönder</button>
+      <button onclick="sendGift()">🎁 Hediye Gönder</button>
+      <button onclick="startVideoCall()">📹 Görüntülü Ara</button>
+    </div>
+    <div id="extraInfo">
+      <div id="bioText"></div>
+      <div id="city"></div>
+      <div id="status"></div>
+      <div id="zodiac"></div>
+    </div>
+  </div>
+
+  <div id="popup">
+    <div id="popup-content">
+      <h3>Bu özellik için ödeme gereklidir</h3>
+      <p><strong>IBAN:</strong> TR910001004004522812155007</p>
+      <p><strong>Alıcı:</strong> Nejla Koç</p>
+      <p>Not: Açılan seçeneklerden birini ödeme yaparak aktifleştirebilirsiniz.</p>
+      <button onclick="closePopup()">Kapat</button>
+    </div>
   </div>
 
   <script type="module">
@@ -60,9 +127,41 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    let currentUserData = null;
+
     function getUidFromURL() {
       const params = new URLSearchParams(window.location.search);
       return params.get("uid");
+    }
+
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+
+    function showPopup() {
+      document.getElementById("popup").style.display = "flex";
+    }
+
+    function sendMessage() {
+      alert("Mesaj gönderme ekranı yakında eklenecek.");
+    }
+
+    function sendGift() {
+      const tokens = currentUserData?.tokens || 0;
+      if (tokens < 5) {
+        showPopup();
+      } else {
+        alert("Hediye gönderildi!");
+      }
+    }
+
+    function startVideoCall() {
+      const membership = currentUserData?.membership || "";
+      if (membership.toLowerCase().includes("premium")) {
+        alert("Görüntülü arama başlatılıyor...");
+      } else {
+        showPopup();
+      }
     }
 
     async function loadProfile() {
@@ -77,10 +176,16 @@
 
       if (userSnap.exists()) {
         const data = userSnap.data();
+        currentUserData = data;
+
         document.getElementById("username").textContent = data.displayName || "Kullanıcı";
         document.getElementById("age").textContent = data.age ? `${data.age} yaş` : "";
         document.getElementById("membershipStatus").textContent = data.membership || "Standart Üye";
         document.getElementById("profileImage").src = data.profileImage || "/images/default.png";
+        document.getElementById("bioText").textContent = data.bio ? `Hakkında: ${data.bio}` : "";
+        document.getElementById("city").textContent = data.city ? `Şehir: ${data.city}` : "";
+        document.getElementById("status").textContent = data.status ? `Durum: ${data.status}` : "";
+        document.getElementById("zodiac").textContent = data.zodiac ? `Burç: ${data.zodiac}` : "";
       } else {
         document.getElementById("username").textContent = "Kullanıcı bulunamadı.";
       }
