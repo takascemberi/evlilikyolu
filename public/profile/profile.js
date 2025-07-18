@@ -36,9 +36,13 @@ const membership = localStorage.getItem("membership") || "Standart Üye";
 const profilePic = localStorage.getItem("profilePic");
 const bioText = localStorage.getItem("userBio");
 
-document.getElementById("username").innerText = `${username}, ${age}`;
-document.getElementById("membershipStatus").innerText = membership;
-if (profilePic) {
+if (document.getElementById("username"))
+  document.getElementById("username").innerText = `${username}, ${age}`;
+
+if (document.getElementById("membershipStatus"))
+  document.getElementById("membershipStatus").innerText = membership;
+
+if (profilePic && document.getElementById("profileImage")) {
   document.getElementById("profileImage").src = profilePic;
 }
 
@@ -46,8 +50,10 @@ if (profilePic) {
 window.openBioEdit = function () {
   const bioArea = document.getElementById("bioEdit");
   const textarea = document.getElementById("bioText");
-  bioArea.style.display = "block";
-  textarea.value = bioText || "";
+  if (bioArea && textarea) {
+    bioArea.style.display = "block";
+    textarea.value = bioText || "";
+  }
 };
 
 window.saveBio = function () {
@@ -65,12 +71,17 @@ window.saveBio = function () {
 
 // IBAN göster/kopyala işlemleri
 window.showIban = function (option) {
-  document.getElementById("ibanBox").style.display = "block";
-  document.getElementById("selectionText").innerText = `Seçim: ${option}`;
+  const box = document.getElementById("ibanBox");
+  const label = document.getElementById("selectionText");
+  if (box && label) {
+    box.style.display = "block";
+    label.innerText = `Seçim: ${option}`;
+  }
 };
 
 window.hideIban = function () {
-  document.getElementById("ibanBox").style.display = "none";
+  const box = document.getElementById("ibanBox");
+  if (box) box.style.display = "none";
 };
 
 window.copyIban = function () {
@@ -82,7 +93,7 @@ window.copyIban = function () {
 // Satın alım seçeneklerini aç/kapat
 window.toggleButtons = function (id) {
   const el = document.getElementById(id);
-  el.style.display = el.style.display === "flex" ? "none" : "flex";
+  if (el) el.style.display = el.style.display === "flex" ? "none" : "flex";
 };
 
 // Fotoğraf yükleme
@@ -92,17 +103,25 @@ window.previewImage = async function (event) {
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      const storageRef = ref(storage, `profileImages/${user.uid}`);
-      await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(storageRef);
+      try {
+        const storageRef = ref(storage, `profileImages/${user.uid}`);
+        await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(storageRef);
 
-      localStorage.setItem("profilePic", downloadURL);
-      document.getElementById("profileImage").src = downloadURL;
+        localStorage.setItem("profilePic", downloadURL);
 
-      const userRef = doc(db, "users", user.uid);
-      await updateDoc(userRef, { profileImage: downloadURL });
+        if (document.getElementById("profileImage")) {
+          document.getElementById("profileImage").src = downloadURL;
+        }
 
-      alert("Profil fotoğrafı güncellendi.");
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, { profileImage: downloadURL });
+
+        alert("Profil fotoğrafı güncellendi.");
+      } catch (error) {
+        console.error("Fotoğraf yüklenirken hata oluştu:", error);
+        alert("Fotoğraf yüklenirken bir hata oluştu.");
+      }
     } else {
       alert("Oturum açmış bir kullanıcı bulunamadı.");
     }
