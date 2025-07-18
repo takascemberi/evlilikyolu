@@ -52,8 +52,10 @@ function getAvatar(user) {
 }
 
 onAuthStateChanged(auth, async (user) => {
+  console.log("Auth user:", user);
   if (user) {
     currentUserUID = user.uid;
+    console.log("Adding online user doc for UID:", user.uid);
 
     // Online listesine ekle
     const docRef = doc(db, "onlineUsers", user.uid);
@@ -63,23 +65,25 @@ onAuthStateChanged(auth, async (user) => {
     });
     onlineDocRef = docRef;
 
-    // Sayfa tamamen kapatılırsa listeden çıkar
     window.addEventListener("beforeunload", async () => {
       if (onlineDocRef) {
+        console.log("Removing online user doc for UID:", user.uid);
         await deleteDoc(onlineDocRef);
       }
     });
 
-    // Online kullanıcıları izle
     const onlineQuery = query(collection(db, "onlineUsers"));
     onSnapshot(onlineQuery, async (snapshot) => {
       const onlineUIDs = snapshot.docs.map(doc => doc.data().uid);
+      console.log("Online UIDs:", onlineUIDs);
+
       if (container) container.innerHTML = "";
 
       const usersSnapshot = await getDocs(collection(db, "users"));
       usersSnapshot.forEach(doc => {
         const user = doc.data();
         if (onlineUIDs.includes(user.uid) && user.uid !== currentUserUID) {
+          console.log("Showing user:", user.name || user.displayName || "Kullanıcı");
           const card = document.createElement("div");
           card.style.display = "flex";
           card.style.flexDirection = "column";
@@ -96,7 +100,7 @@ onAuthStateChanged(auth, async (user) => {
 
           const photo = document.createElement("img");
           photo.src = getAvatar(user);
-          photo.alt = user.displayName || "Kullanıcı";
+          photo.alt = user.name || user.displayName || "Kullanıcı";
           photo.style.width = "50px";
           photo.style.height = "50px";
           photo.style.borderRadius = "50%";
@@ -115,7 +119,7 @@ onAuthStateChanged(auth, async (user) => {
           card.appendChild(greenDot);
 
           const name = document.createElement("div");
-          name.textContent = user.displayName || "Kullanıcı";
+          name.textContent = user.name || user.displayName || "Kullanıcı";
           name.style.fontSize = "12px";
           name.style.color = "black";
           name.style.marginTop = "3px";
@@ -131,5 +135,7 @@ onAuthStateChanged(auth, async (user) => {
         }
       });
     });
+  } else {
+    console.log("No auth user");
   }
 });
