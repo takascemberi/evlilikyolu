@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       padding: 20px;
       text-align: center;
-      background-color: #ffc0cb; /* şeker pembesi */
+      background-color: #ffc0cb;
     }
     #profile-container {
       max-width: 400px;
@@ -47,6 +47,7 @@
       background: #fff0f5;
       padding: 10px;
       border-radius: 10px;
+      text-align: left;
     }
     #popup {
       position: fixed;
@@ -62,7 +63,7 @@
       padding: 20px;
       border-radius: 12px;
       text-align: left;
-      max-width: 300px;
+      max-width: 320px;
     }
     #popup-content h3 {
       margin-top: 0;
@@ -76,6 +77,26 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    .gift-option {
+      margin-top: 8px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fefefe;
+      cursor: pointer;
+    }
+    .gift-option:hover {
+      background: #f0f0f0;
+    }
+    .back-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #888;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -86,7 +107,7 @@
     <div class="info" id="membershipStatus"></div>
     <div class="buttons">
       <button onclick="sendMessage()">✉️ Mesaj Gönder</button>
-      <button onclick="sendGift()">🎁 Hediye Gönder</button>
+      <button onclick="showGiftOptions()">🎁 Hediye Gönder</button>
       <button onclick="startVideoCall()">📹 Görüntülü Ara</button>
     </div>
     <div id="extraInfo">
@@ -95,14 +116,12 @@
       <div id="status"></div>
       <div id="zodiac"></div>
     </div>
+    <button class="back-btn" onclick="goHome()">🏠 Ana Sayfaya Dön</button>
   </div>
 
   <div id="popup">
     <div id="popup-content">
-      <h3>Bu özellik için ödeme gereklidir</h3>
-      <p><strong>IBAN:</strong> TR910001004004522812155007</p>
-      <p><strong>Alıcı:</strong> Nejla Koç</p>
-      <p>Not: Açılan seçeneklerden birini ödeme yaparak aktifleştirebilirsiniz.</p>
+      <div id="popup-body"></div>
       <button onclick="closePopup()">Kapat</button>
     </div>
   </div>
@@ -136,22 +155,34 @@
 
     function closePopup() {
       document.getElementById("popup").style.display = "none";
+      document.getElementById("popup-body").innerHTML = "";
     }
 
-    function showPopup() {
+    function showPopup(contentHTML) {
+      document.getElementById("popup-body").innerHTML = contentHTML;
       document.getElementById("popup").style.display = "flex";
     }
 
     function sendMessage() {
-      alert("Mesaj gönderme ekranı yakında eklenecek.");
+      alert("Mesaj gönderme özelliği yakında eklenecek.");
     }
 
-    function sendGift() {
+    function showGiftOptions() {
       const tokens = currentUserData?.tokens || 0;
       if (tokens < 5) {
-        showPopup();
+        showPopup(`
+          <h3>Yetersiz bakiye</h3>
+          <p>Hediye gönderebilmek için jeton bakiyeniz yetersiz.</p>
+          <p><strong>IBAN:</strong> TR910001004004522812155007</p>
+          <p><strong>Alıcı:</strong> Nejla Koç</p>
+        `);
       } else {
-        alert("Hediye gönderildi!");
+        showPopup(`
+          <h3>Hediye Seç</h3>
+          <div class="gift-option" onclick="alert('Kalpli Ayıcık gönderildi!')">🧸 Kalpli Ayıcık – 5 Jeton</div>
+          <div class="gift-option" onclick="alert('Gül gönderildi!')">🌹 Gül – 2 Jeton</div>
+          <div class="gift-option" onclick="alert('Kahve gönderildi!')">☕ Kahve – 3 Jeton</div>
+        `);
       }
     }
 
@@ -160,7 +191,12 @@
       if (membership.toLowerCase().includes("premium")) {
         alert("Görüntülü arama başlatılıyor...");
       } else {
-        showPopup();
+        showPopup(`
+          <h3>Sadece Premium Üyelere Özel</h3>
+          <p>Bu özellik yalnızca Premium üyeler için aktiftir.</p>
+          <p><strong>IBAN:</strong> TR910001004004522812155007</p>
+          <p><strong>Alıcı:</strong> Nejla Koç</p>
+        `);
       }
     }
 
@@ -178,17 +214,21 @@
         const data = userSnap.data();
         currentUserData = data;
 
-        document.getElementById("username").textContent = data.displayName || "Kullanıcı";
+        document.getElementById("username").textContent = data.displayName || "Bilinmeyen";
         document.getElementById("age").textContent = data.age ? `${data.age} yaş` : "";
         document.getElementById("membershipStatus").textContent = data.membership || "Standart Üye";
         document.getElementById("profileImage").src = data.profileImage || "/images/default.png";
-        document.getElementById("bioText").textContent = data.bio ? `Hakkında: ${data.bio}` : "";
+        document.getElementById("bioText").textContent = data.bio ? `📝 ${data.bio}` : "";
         document.getElementById("city").textContent = data.city ? `Şehir: ${data.city}` : "";
         document.getElementById("status").textContent = data.status ? `Durum: ${data.status}` : "";
         document.getElementById("zodiac").textContent = data.zodiac ? `Burç: ${data.zodiac}` : "";
       } else {
         document.getElementById("username").textContent = "Kullanıcı bulunamadı.";
       }
+    }
+
+    function goHome() {
+      location.href = "/home/home.html";
     }
 
     loadProfile();
