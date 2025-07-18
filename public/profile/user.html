@@ -27,18 +27,22 @@
     const storage = getStorage(app);
 
     const urlParams = new URLSearchParams(window.location.search);
-    const profileId = urlParams.get('id');
+    const profileId = urlParams.get('uid');
     const loggedInUserId = localStorage.getItem("userID") || "bilinmeyen";
+
+    let isPremium = false;
+    let userTokens = 3;
 
     const ref = doc(db, "users", profileId);
     getDoc(ref).then((docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         document.getElementById("username").textContent = data.username || "Bilinmiyor";
-        document.getElementById("age").textContent = data.age ? `${data.age} Yaşında` : "";
+        document.getElementById("age").textContent = data.age ? `${data.age} yaşında` : "";
         document.getElementById("location").textContent = data.city || "";
-        document.getElementById("about").textContent = data.about || "Kullanıcı hakkında bilgi paylaşmamış.";
+        document.getElementById("about").textContent = data.about?.trim() ? data.about : "Bu kullanıcı hakkında bir şey yazmamış.";
         document.getElementById("status").textContent = data.premium ? "Premium Üye" : "Standart Üye";
+        isPremium = data.premium || false;
       } else {
         alert("Kullanıcı bulunamadı.");
       }
@@ -79,8 +83,7 @@
   <div class="profile-card">
     <div class="profile-picture"></div>
     <h2 id="username">...</h2>
-    <p id="age"></p>
-    <p id="location"></p>
+    <p><span id="age"></span> <span id="location"></span></p>
     <p id="about"></p>
     <div class="user-status" id="status">...</div>
 
@@ -130,9 +133,6 @@
   </div>
 
   <script>
-    const isPremium = false;
-    let userTokens = 3;
-
     const messageBtn = document.getElementById('messageBtn');
     const giftBtn = document.getElementById('giftBtn');
     const reportBtn = document.getElementById('reportBtn');
