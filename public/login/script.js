@@ -7,7 +7,7 @@ import {
   sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { auth } from "/firebaseConfig.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const db = getFirestore();
 
 // Form geçişleri
@@ -55,17 +55,20 @@ window.register = async function () {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await sendEmailVerification(userCredential.user);
 
-   await setDoc(doc(db, "users", userCredential.user.uid), {
-  uid: userCredential.user.uid,
-  name: name,
-  age: age,
-  gender: gender,
-  looking: looking,
-  city: city,
-  profileImage: "",
-  timestamp: Date.now()
-});
- 
+    // Cinsiyete göre avatar belirle
+    const profileImage = gender === "kadın" ? "/images/kadın.png" : "/images/erkek.png";
+
+    await setDoc(doc(db, "users", userCredential.user.uid), {
+      uid: userCredential.user.uid,
+      name: name,
+      age: age,
+      gender: gender,
+      looking: looking,
+      city: city,
+      profileImage: profileImage,
+      timestamp: serverTimestamp()
+    });
+
     alert("Kayıt başarılı! Lütfen e-posta adresinize gelen doğrulama bağlantısını onaylayın.");
   } catch (error) {
     alert("Hata: " + error.message);
@@ -101,7 +104,7 @@ window.resetPassword = async function () {
 
   try {
     await sendPasswordResetEmail(auth, email);
-       alert("Şifre sıfırlama bağlantısı gönderildi.");
+    alert("Şifre sıfırlama bağlantısı gönderildi.");
   } catch (error) {
     alert("Hata: " + error.message);
   }
