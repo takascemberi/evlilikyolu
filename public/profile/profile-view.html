@@ -2,102 +2,91 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kullanıcı Profili</title>
-  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #fff0f5;
       padding: 20px;
       text-align: center;
+      background-color: #f9f9f9;
     }
-    .profile-box {
+    #profile-container {
       max-width: 400px;
-      margin: auto;
+      margin: 0 auto;
       background: white;
-      border-radius: 15px;
+      border-radius: 10px;
       padding: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .profile-box img {
-      width: 150px;
-      height: 150px;
+    #profileImage {
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      margin-bottom: 15px;
-      border: 3px solid #ff69b4;
+      margin-bottom: 10px;
     }
-    .profile-box h2 {
-      font-size: 24px;
-      color: #333;
-    }
-    .profile-box p {
-      font-size: 16px;
-      color: #555;
-      margin: 5px 0;
-    }
-    .back-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #ff69b4;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
+    .info {
+      font-size: 18px;
+      margin: 6px 0;
     }
   </style>
 </head>
 <body>
-  <div class="profile-box">
+  <div id="profile-container">
     <img id="profileImage" src="/images/default.png" alt="Profil Resmi" />
-    <h2 id="displayName">Kullanıcı</h2>
-    <p id="age">Yaş: </p>
-    <p id="membership">Üyelik: </p>
-    <p id="bio">Yükleniyor...</p>
+    <div class="info" id="username">Yükleniyor...</div>
+    <div class="info" id="age"></div>
+    <div class="info" id="membershipStatus"></div>
   </div>
-  <button class="back-btn" onclick="history.back()">← Geri Dön</button>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
       authDomain: "vipbulusma.firebaseapp.com",
       projectId: "vipbulusma",
-      storageBucket: "vipbulusma.appspot.com",
+      storageBucket: "vipbulusma.firebasestorage.app",
       messagingSenderId: "552096712424",
-      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d"
+      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const params = new URLSearchParams(window.location.search);
-    const uid = params.get("uid");
-
-    if (uid) {
-      const userRef = doc(db, "users", uid);
-      getDoc(userRef).then((docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          document.getElementById("profileImage").src = data.profileImage || "/images/default.png";
-          document.getElementById("displayName").innerText = data.displayName || "Kullanıcı";
-          document.getElementById("age").innerText = "Yaş: " + (data.age || "Bilinmiyor");
-          document.getElementById("membership").innerText = "Üyelik: " + (data.membership || "Standart Üye");
-          document.getElementById("bio").innerText = data.bio || "Profil yazısı eklenmemiş.";
-        } else {
-          alert("Kullanıcı profili bulunamadı.");
-        }
-      }).catch((error) => {
-        console.error("Hata:", error);
-        alert("Profil yüklenirken hata oluştu.");
-      });
-    } else {
-      alert("Geçersiz kullanıcı.");
+    function getUidFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("uid");
     }
+
+    async function loadProfile() {
+      const uid = getUidFromURL();
+      if (!uid) {
+        document.getElementById("username").textContent = "Kullanıcı bulunamadı.";
+        return;
+      }
+
+      const userRef = doc(db, "users", uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        document.getElementById("username").textContent = data.displayName || "Kullanıcı";
+        document.getElementById("age").textContent = data.age ? `${data.age} yaş` : "";
+        document.getElementById("membershipStatus").textContent = data.membership || "Standart Üye";
+        document.getElementById("profileImage").src = data.profileImage || "/images/default.png";
+      } else {
+        document.getElementById("username").textContent = "Kullanıcı bulunamadı.";
+      }
+    }
+
+    loadProfile();
   </script>
 </body>
 </html>
