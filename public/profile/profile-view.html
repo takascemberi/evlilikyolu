@@ -138,123 +138,127 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getFirestore,
-      doc,
-      getDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
-      authDomain: "vipbulusma.firebaseapp.com",
-      projectId: "vipbulusma",
-      storageBucket: "vipbulusma.firebasestorage.app",
-      messagingSenderId: "552096712424",
-      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
+    authDomain: "vipbulusma.firebaseapp.com",
+    projectId: "vipbulusma",
+    storageBucket: "vipbulusma.firebasestorage.app",
+    messagingSenderId: "552096712424",
+    appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  let currentUserData = null;
 
-    let currentUserData = null;
+  window.sendMessage = function () {
+    alert("Mesaj gönderme özelliği yakında eklenecek.");
+  }
 
-    function getUidFromURL() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get("uid");
+  window.showGiftOptions = function () {
+    const tokens = currentUserData?.tokens || 0;
+    if (tokens < 5) {
+      showPopup(`
+        <h3>Yetersiz bakiye</h3>
+        <p>Hediye gönderebilmek için jeton bakiyeniz yetersiz.</p>
+        <p><strong>IBAN:</strong> TR910001004004522812155007</p>
+        <p><strong>Alıcı:</strong> Nejla Koç</p>
+      `);
+    } else {
+      showPopup(`
+        <h3>Hediye Seç</h3>
+        <div class="gift-option" onclick="alert('Kalpli Ayıcık gönderildi!')">🧸 Kalpli Ayıcık – 5 Jeton</div>
+        <div class="gift-option" onclick="alert('Gül gönderildi!')">🌹 Gül – 2 Jeton</div>
+        <div class="gift-option" onclick="alert('Kahve gönderildi!')">☕ Kahve – 3 Jeton</div>
+      `);
+    }
+  }
+
+  window.startVideoCall = function () {
+    const membership = currentUserData?.membership || "";
+    if (membership.toLowerCase().includes("premium")) {
+      alert("Görüntülü arama başlatılıyor...");
+    } else {
+      showPopup(`
+        <h3>Sadece Premium Üyelere Özel</h3>
+        <p>Bu özellik yalnızca Premium üyeler için aktiftir.</p>
+        <p><strong>IBAN:</strong> TR910001004004522812155007</p>
+        <p><strong>Alıcı:</strong> Nejla Koç</p>
+      `);
+    }
+  }
+
+  window.goHome = function () {
+    location.href = "/home/home.html";
+  }
+
+  window.closePopup = function () {
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("popup-body").innerHTML = "";
+  }
+
+  function showPopup(contentHTML) {
+    document.getElementById("popup-body").innerHTML = contentHTML;
+    document.getElementById("popup").style.display = "flex";
+  }
+
+  function getUidFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("uid");
+  }
+
+  async function loadProfile() {
+    const uid = getUidFromURL();
+    if (!uid) {
+      document.getElementById("username").textContent = "Kullanıcı bulunamadı.";
+      return;
     }
 
-    function closePopup() {
-      document.getElementById("popup").style.display = "none";
-      document.getElementById("popup-body").innerHTML = "";
-    }
+    const userRef = doc(db, "users", uid);
+    const userSnap = await getDoc(userRef);
 
-    function showPopup(contentHTML) {
-      document.getElementById("popup-body").innerHTML = contentHTML;
-      document.getElementById("popup").style.display = "flex";
-    }
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      currentUserData = data;
 
-    function sendMessage() {
-      alert("Mesaj gönderme özelliği yakında eklenecek.");
-    }
+      document.getElementById("username").textContent = data.displayName || "Bilinmeyen";
+      document.getElementById("age").textContent = data.age ? `${data.age} yaş` : "";
+      document.getElementById("city").textContent = data.city || "";
+      document.getElementById("membershipStatus").textContent = data.membership || "Standart Üye";
 
-    function showGiftOptions() {
-      const tokens = currentUserData?.tokens || 0;
-      if (tokens < 5) {
-        showPopup(`
-          <h3>Yetersiz bakiye</h3>
-          <p>Hediye gönderebilmek için jeton bakiyeniz yetersiz.</p>
-          <p><strong>IBAN:</strong> TR910001004004522812155007</p>
-          <p><strong>Alıcı:</strong> Nejla Koç</p>
-        `);
+      if (data.profileImage) {
+        document.getElementById("profileImage").src = data.profileImage;
       } else {
-        showPopup(`
-          <h3>Hediye Seç</h3>
-          <div class="gift-option" onclick="alert('Kalpli Ayıcık gönderildi!')">🧸 Kalpli Ayıcık – 5 Jeton</div>
-          <div class="gift-option" onclick="alert('Gül gönderildi!')">🌹 Gül – 2 Jeton</div>
-          <div class="gift-option" onclick="alert('Kahve gönderildi!')">☕ Kahve – 3 Jeton</div>
-        `);
-      }
-    }
-
-    function startVideoCall() {
-      const membership = currentUserData?.membership || "";
-      if (membership.toLowerCase().includes("premium")) {
-        alert("Görüntülü arama başlatılıyor...");
-      } else {
-        showPopup(`
-          <h3>Sadece Premium Üyelere Özel</h3>
-          <p>Bu özellik yalnızca Premium üyeler için aktiftir.</p>
-          <p><strong>IBAN:</strong> TR910001004004522812155007</p>
-          <p><strong>Alıcı:</strong> Nejla Koç</p>
-        `);
-      }
-    }
-
-    function goHome() {
-      location.href = "/home/home.html";
-    }
-
-    async function loadProfile() {
-      const uid = getUidFromURL();
-      if (!uid) {
-        document.getElementById("username").textContent = "Kullanıcı bulunamadı.";
-        return;
-      }
-
-      const userRef = doc(db, "users", uid);
-      const userSnap = await getDoc(userRef);
-
-      if (userSnap.exists()) {
-        const data = userSnap.data();
-        currentUserData = data;
-
-        document.getElementById("username").textContent = data.displayName || "Bilinmeyen";
-        document.getElementById("age").textContent = data.age ? `${data.age} yaş` : "";
-        document.getElementById("city").textContent = data.city || "";
-        document.getElementById("membershipStatus").textContent = data.membership || "Standart Üye";
-
-        // Avatar seçimi
-        if (data.profileImage) {
-          document.getElementById("profileImage").src = data.profileImage;
-        } else if (data.gender === "kadın") {
+        if (data.gender === "Kadın") {
           document.getElementById("profileImage").src = "/images/kadin.png";
-        } else if (data.gender === "erkek") {
+        } else if (data.gender === "Erkek") {
           document.getElementById("profileImage").src = "/images/erkek.png";
         } else {
           document.getElementById("profileImage").src = "/images/default.png";
         }
-
-        if (data.bio && data.bio.trim()) {
-          document.getElementById("bioBox").textContent = `📝 ${data.bio}`;
-        } else {
-          document.getElementById("bioBox").textContent = "Bu kullanıcı hakkında bir şey yazmamış.";
-        }
-
-      } else {
-        document.getElementById("username").textContent = "Kullanıcı bulunamadı.";
       }
+
+      if (data.bio && data.bio.trim()) {
+        document.getElementById("bioBox").textContent = `📝 ${data.bio}`;
+      } else {
+        document.getElementById("bioBox").textContent = "Bu kullanıcı hakkında bir şey yazmamış.";
+      }
+
+    } else {
+      document.getElementById("username").textContent = "Kullanıcı bulunamadı.";
     }
+  }
+
+  loadProfile();
+</script>
+
 
     loadProfile();
   </script>
