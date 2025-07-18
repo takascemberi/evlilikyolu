@@ -2,23 +2,22 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kullanıcı Profili</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #ffe6f0;
-      margin: 0;
       padding: 20px;
       text-align: center;
+      background-color: #ffc0cb;
     }
-    .profile-card {
+    #profile-container {
       max-width: 400px;
       margin: 0 auto;
-      padding: 20px;
       background: white;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
     #profileImage {
       width: 120px;
@@ -31,36 +30,120 @@
       font-size: 18px;
       margin: 6px 0;
     }
+    .info.inline {
+      display: inline-block;
+      margin: 6px 10px;
+    }
+    .buttons {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
     .buttons button {
-      margin: 8px 5px;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 8px;
+      width: 90%;
+      padding: 12px;
       background-color: #ff69b4;
       color: white;
-      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
+    }
+    #bioBox {
+      margin-top: 15px;
+      background: #fff0f5;
+      padding: 12px;
+      border-radius: 10px;
+      font-style: italic;
+    }
+    #popup {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    #popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: left;
+      max-width: 320px;
+    }
+    #popup-content h3 {
+      margin-top: 0;
+    }
+    #popup-content button {
+      background: crimson;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      margin-top: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .gift-option {
+      margin-top: 8px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fefefe;
+      cursor: pointer;
+    }
+    .gift-option:hover {
+      background: #f0f0f0;
+    }
+    .back-btn {
+      margin-top: 20px;
+      padding: 12px;
+      background: #555;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      width: 90%;
+      cursor: pointer;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <div class="profile-card">
+  <div id="profile-container">
     <img id="profileImage" src="/images/default.png" alt="Profil Resmi" />
     <div class="info" id="username">Yükleniyor...</div>
-    <div class="info" id="agecity"></div>
-    <div class="info" id="about"></div>
+    <div class="info">
+      <span class="inline" id="age"></span>
+      <span class="inline" id="city"></span>
+    </div>
     <div class="info" id="membershipStatus"></div>
+
+    <div id="bioBox">Yükleniyor...</div>
+
     <div class="buttons">
       <button onclick="sendMessage()">✉️ Mesaj Gönder</button>
       <button onclick="showGiftOptions()">🎁 Hediye Gönder</button>
       <button onclick="startVideoCall()">📹 Görüntülü Ara</button>
-      <button onclick="goHome()">🏠 Ana Sayfaya Dön</button>
+      <button class="back-btn" onclick="goHome()">🏠 Ana Sayfaya Dön</button>
+    </div>
+  </div>
+
+  <div id="popup">
+    <div id="popup-content">
+      <div id="popup-body"></div>
+      <button onclick="closePopup()">Kapat</button>
     </div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
@@ -68,60 +151,110 @@
       projectId: "vipbulusma",
       storageBucket: "vipbulusma.firebasestorage.app",
       messagingSenderId: "552096712424",
-      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d"
+      appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const params = new URLSearchParams(window.location.search);
-    const uid = params.get("uid");
+    let currentUserData = null;
+
+    function getUidFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("uid");
+    }
+
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+      document.getElementById("popup-body").innerHTML = "";
+    }
+
+    function showPopup(contentHTML) {
+      document.getElementById("popup-body").innerHTML = contentHTML;
+      document.getElementById("popup").style.display = "flex";
+    }
+
+    function sendMessage() {
+      alert("Mesaj gönderme özelliği yakında eklenecek.");
+    }
+
+    function showGiftOptions() {
+      const tokens = currentUserData?.tokens || 0;
+      if (tokens < 5) {
+        showPopup(`
+          <h3>Yetersiz bakiye</h3>
+          <p>Hediye gönderebilmek için jeton bakiyeniz yetersiz.</p>
+          <p><strong>IBAN:</strong> TR910001004004522812155007</p>
+          <p><strong>Alıcı:</strong> Nejla Koç</p>
+        `);
+      } else {
+        showPopup(`
+          <h3>Hediye Seç</h3>
+          <div class="gift-option" onclick="alert('Kalpli Ayıcık gönderildi!')">🧸 Kalpli Ayıcık – 5 Jeton</div>
+          <div class="gift-option" onclick="alert('Gül gönderildi!')">🌹 Gül – 2 Jeton</div>
+          <div class="gift-option" onclick="alert('Kahve gönderildi!')">☕ Kahve – 3 Jeton</div>
+        `);
+      }
+    }
+
+    function startVideoCall() {
+      const membership = currentUserData?.membership || "";
+      if (membership.toLowerCase().includes("premium")) {
+        alert("Görüntülü arama başlatılıyor...");
+      } else {
+        showPopup(`
+          <h3>Sadece Premium Üyelere Özel</h3>
+          <p>Bu özellik yalnızca Premium üyeler için aktiftir.</p>
+          <p><strong>IBAN:</strong> TR910001004004522812155007</p>
+          <p><strong>Alıcı:</strong> Nejla Koç</p>
+        `);
+      }
+    }
+
+    function goHome() {
+      location.href = "/home/home.html";
+    }
 
     async function loadProfile() {
-      if (!uid) return;
+      const uid = getUidFromURL();
+      if (!uid) {
+        document.getElementById("username").textContent = "Kullanıcı bulunamadı.";
+        return;
+      }
+
       const userRef = doc(db, "users", uid);
-      const docSnap = await getDoc(userRef);
+      const userSnap = await getDoc(userRef);
 
-      if (docSnap.exists()) {
-        const data = docSnap.data();
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        currentUserData = data;
+
         document.getElementById("username").textContent = data.displayName || "Bilinmeyen";
-        document.getElementById("agecity").textContent =
-          (data.age ? data.age + " yaş" : "") +
-          (data.city ? " • " + data.city : "");
-        document.getElementById("membershipStatus").textContent = data.premium ? "Premium Üye" : "Standart Üye";
-        document.getElementById("about").textContent = data.about || "Bu kullanıcı hakkında bilgi eklememiş.";
+        document.getElementById("age").textContent = data.age ? `${data.age} yaş` : "";
+        document.getElementById("city").textContent = data.city || "";
+        document.getElementById("membershipStatus").textContent = data.membership || "Standart Üye";
 
+        // Avatar seçimi
         if (data.profileImage) {
           document.getElementById("profileImage").src = data.profileImage;
+        } else if (data.gender === "kadın") {
+          document.getElementById("profileImage").src = "/images/kadin.png";
+        } else if (data.gender === "erkek") {
+          document.getElementById("profileImage").src = "/images/erkek.png";
         } else {
-          if (data.gender === "kadın") {
-            document.getElementById("profileImage").src = "/images/kadin.png";
-          } else if (data.gender === "erkek") {
-            document.getElementById("profileImage").src = "/images/erkek.png";
-          } else {
-            document.getElementById("profileImage").src = "/images/default.png";
-          }
+          document.getElementById("profileImage").src = "/images/default.png";
         }
+
+        if (data.bio && data.bio.trim()) {
+          document.getElementById("bioBox").textContent = `📝 ${data.bio}`;
+        } else {
+          document.getElementById("bioBox").textContent = "Bu kullanıcı hakkında bir şey yazmamış.";
+        }
+
       } else {
         document.getElementById("username").textContent = "Kullanıcı bulunamadı.";
       }
     }
-
-    window.sendMessage = function() {
-      alert("Mesaj gönderme penceresi açılır (geliştirilecek).");
-    };
-
-    window.showGiftOptions = function() {
-      alert("Hediye gönderme ekranı açılır (geliştirilecek).");
-    };
-
-    window.startVideoCall = function() {
-      alert("Premium üyelere özel görüntülü arama (geliştirilecek).");
-    };
-
-    window.goHome = function() {
-      window.location.href = "/home/home.html";
-    };
 
     loadProfile();
   </script>
