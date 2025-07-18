@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -208,6 +209,18 @@
       background: none;
       border: none;
       cursor: pointer;
+    }
+    
+     @media only screen and (max-width: 768px) {
+      #online-user-list {
+        display: flex !important;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 10px;
+      }
+      #online-user-list > div {
+        flex: 0 0 auto;
+      }
     }
   </style>
 </head>
