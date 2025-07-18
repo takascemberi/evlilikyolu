@@ -42,6 +42,15 @@ if (container) {
   container.style.maxWidth = "100%";
 }
 
+function getAvatar(user) {
+  if (user.profileImage && user.profileImage.trim() !== "") {
+    return user.profileImage;
+  }
+  if (user.gender === "kadın") return "/images/kadın.png";
+  if (user.gender === "erkek") return "/images/erkek.png";
+  return "/images/default.png";
+}
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUserUID = user.uid;
@@ -86,7 +95,7 @@ onAuthStateChanged(auth, async (user) => {
           });
 
           const photo = document.createElement("img");
-          photo.src = user.profileImage || "/images/default.png";
+          photo.src = getAvatar(user);
           photo.alt = user.displayName || "Kullanıcı";
           photo.style.width = "50px";
           photo.style.height = "50px";
