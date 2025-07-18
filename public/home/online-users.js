@@ -38,12 +38,15 @@ if (container) {
   container.style.marginTop = "20px";
   container.style.zIndex = "999";
   container.style.position = "relative";
+  container.style.overflowX = "auto";
+  container.style.maxWidth = "100%";
 }
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUserUID = user.uid;
 
+    // Online listesine ekle
     const docRef = doc(db, "onlineUsers", user.uid);
     await setDoc(docRef, {
       uid: user.uid,
@@ -51,16 +54,18 @@ onAuthStateChanged(auth, async (user) => {
     });
     onlineDocRef = docRef;
 
+    // Sayfa tamamen kapatılırsa listeden çıkar
     window.addEventListener("beforeunload", async () => {
       if (onlineDocRef) {
         await deleteDoc(onlineDocRef);
       }
     });
 
+    // Online kullanıcıları izle
     const onlineQuery = query(collection(db, "onlineUsers"));
     onSnapshot(onlineQuery, async (snapshot) => {
       const onlineUIDs = snapshot.docs.map(doc => doc.data().uid);
-      container.innerHTML = "";
+      if (container) container.innerHTML = "";
 
       const usersSnapshot = await getDocs(collection(db, "users"));
       usersSnapshot.forEach(doc => {
@@ -73,6 +78,12 @@ onAuthStateChanged(auth, async (user) => {
           card.style.position = "relative";
           card.style.width = "60px";
           card.style.zIndex = "1000";
+          card.style.cursor = "pointer";
+
+          // Profil sayfasına yönlendir
+          card.addEventListener("click", () => {
+            window.location.href = `/profile/profile-view.html?uid=${user.uid}`;
+          });
 
           const photo = document.createElement("img");
           photo.src = user.profileImage || "/images/default.png";
