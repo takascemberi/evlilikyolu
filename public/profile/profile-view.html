@@ -30,24 +30,33 @@
       font-size: 18px;
       margin: 6px 0;
     }
+    .info.inline {
+      display: inline-block;
+      margin: 6px 10px;
+    }
     .buttons {
       margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
     }
     .buttons button {
-      margin: 5px;
-      padding: 10px 20px;
+      width: 90%;
+      padding: 12px;
       background-color: #ff69b4;
       color: white;
       border: none;
       border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
     }
-    #extraInfo {
+    #bioBox {
       margin-top: 15px;
       background: #fff0f5;
-      padding: 10px;
+      padding: 12px;
       border-radius: 10px;
-      text-align: left;
+      font-style: italic;
     }
     #popup {
       position: fixed;
@@ -90,12 +99,14 @@
     }
     .back-btn {
       margin-top: 20px;
-      padding: 10px 20px;
-      background: #888;
+      padding: 12px;
+      background: #555;
       color: white;
       border: none;
       border-radius: 8px;
+      width: 90%;
       cursor: pointer;
+      font-size: 16px;
     }
   </style>
 </head>
@@ -103,20 +114,20 @@
   <div id="profile-container">
     <img id="profileImage" src="/images/default.png" alt="Profil Resmi" />
     <div class="info" id="username">Yükleniyor...</div>
-    <div class="info" id="age"></div>
+    <div class="info">
+      <span class="inline" id="age"></span>
+      <span class="inline" id="city"></span>
+    </div>
     <div class="info" id="membershipStatus"></div>
+
+    <div id="bioBox">Yükleniyor...</div>
+
     <div class="buttons">
       <button onclick="sendMessage()">✉️ Mesaj Gönder</button>
       <button onclick="showGiftOptions()">🎁 Hediye Gönder</button>
       <button onclick="startVideoCall()">📹 Görüntülü Ara</button>
+      <button class="back-btn" onclick="goHome()">🏠 Ana Sayfaya Dön</button>
     </div>
-    <div id="extraInfo">
-      <div id="bioText"></div>
-      <div id="city"></div>
-      <div id="status"></div>
-      <div id="zodiac"></div>
-    </div>
-    <button class="back-btn" onclick="goHome()">🏠 Ana Sayfaya Dön</button>
   </div>
 
   <div id="popup">
@@ -216,12 +227,16 @@
 
         document.getElementById("username").textContent = data.displayName || "Bilinmeyen";
         document.getElementById("age").textContent = data.age ? `${data.age} yaş` : "";
+        document.getElementById("city").textContent = data.city || "";
         document.getElementById("membershipStatus").textContent = data.membership || "Standart Üye";
         document.getElementById("profileImage").src = data.profileImage || "/images/default.png";
-        document.getElementById("bioText").textContent = data.bio ? `📝 ${data.bio}` : "";
-        document.getElementById("city").textContent = data.city ? `Şehir: ${data.city}` : "";
-        document.getElementById("status").textContent = data.status ? `Durum: ${data.status}` : "";
-        document.getElementById("zodiac").textContent = data.zodiac ? `Burç: ${data.zodiac}` : "";
+
+        if (data.bio && data.bio.trim()) {
+          document.getElementById("bioBox").textContent = `📝 ${data.bio}`;
+        } else {
+          document.getElementById("bioBox").textContent = "Bu kullanıcı hakkında bir şey yazmamış.";
+        }
+
       } else {
         document.getElementById("username").textContent = "Kullanıcı bulunamadı.";
       }
