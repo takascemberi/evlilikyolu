@@ -67,7 +67,16 @@ onAuthStateChanged(auth, async (user) => {
           card.style.fontSize = "12px";
 
           const img = document.createElement("img");
-          img.src = data.profileImage || "/images/default-avatar.png";
+          let imageSrc = "/images/default-avatar.png";
+          if (data.profileImage && data.profileImage.trim() !== "") {
+          imageSrc = data.profileImage;
+          } else if (data.gender === "erkek") {
+          imageSrc = "/images/erkek.png";
+          } else if (data.gender === "kadın") {
+          imageSrc = "/images/kadın.png";
+          }
+          img.src = imageSrc;
+
           img.alt = "avatar";
           img.style.width = "60px";
           img.style.height = "60px";
