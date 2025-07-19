@@ -95,39 +95,38 @@ await setDoc(doc(db, "users", user.uid), {
       </div>
 
       <!-- Kayıt Formu -->
-      <div id="registerForm" class="form hidden">
-        <h2>Kayıt Ol</h2>
-        <input type="text" placeholder="Kullanıcı Adı" required />
-        <input type="email" placeholder="E-posta" required />
-        <div class="password-toggle">
-          <input type="password" placeholder="Şifre" required />
-          <span onclick="togglePasswordByElement(this)">👁️</span>
-        </div>
-        <div class="password-toggle">
-          <input type="password" placeholder="Şifre Tekrar" required />
-          <span onclick="togglePasswordByElement(this)">👁️</span>
-        </div>
-        <input type="number" placeholder="Yaş" min="18" required />
-        <select>
-          <option value="">Şehir Seçin</option>
-          <option>İstanbul</option><option>Ankara</option><option>İzmir</option>
-          <option>Bursa</option><option>Adana</option><option>Antalya</option>
-        </select>
-        <select>
-          <option value="">Cinsiyetiniz</option>
-          <option>Erkek</option><option>Kadın</option><option>Diğer</option>
-        </select>
-        <select>
-          <option value="">Aradığınız</option>
-          <option>Erkek</option><option>Kadın</option><option>Fark etmez</option>
-        </select>
-        <label class="checkbox-container">
-          <input type="checkbox" required />
-          Gizlilik şartlarını okudum, kabul ediyorum.
-        </label>
-        <button onclick="register()">Kayıt Ol</button>
-      </div>
-    </div>
+<div id="registerForm" class="form hidden">
+  <h2>Kayıt Ol</h2>
+  <input type="text" id="registerName" placeholder="Kullanıcı Adı" required />
+  <input type="email" id="registerEmail" placeholder="E-posta" required />
+  <div class="password-toggle">
+    <input type="password" id="registerPassword" placeholder="Şifre" required />
+    <span onclick="togglePasswordByElement(this)">👁️</span>
+  </div>
+  <div class="password-toggle">
+    <input type="password" id="registerConfirm" placeholder="Şifre Tekrar" required />
+    <span onclick="togglePasswordByElement(this)">👁️</span>
+  </div>
+  <input type="number" id="registerAge" placeholder="Yaş" min="18" required />
+  <select id="registerCity">
+    <option value="">Şehir Seçin</option>
+    <option>İstanbul</option><option>Ankara</option><option>İzmir</option>
+    <option>Bursa</option><option>Adana</option><option>Antalya</option>
+  </select>
+  <select id="registerGender">
+    <option value="">Cinsiyetiniz</option>
+    <option>Erkek</option><option>Kadın</option><option>Diğer</option>
+  </select>
+  <select id="registerLookingFor">
+    <option value="">Aradığınız</option>
+    <option>Erkek</option><option>Kadın</option><option>Fark etmez</option>
+  </select>
+  <label class="checkbox-container">
+    <input type="checkbox" id="privacyCheck" required />
+    Gizlilik şartlarını okudum, kabul ediyorum.
+  </label>
+  <button onclick="register()">Kayıt Ol</button>
+</div>
 
     <!-- Alt alan -->
     <div class="login-extra">
