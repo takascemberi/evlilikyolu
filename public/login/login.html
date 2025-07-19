@@ -108,18 +108,26 @@ await setDoc(doc(db, "users", user.uid), {
     <span onclick="togglePasswordByElement(this)">👁️</span>
   </div>
   <input type="number" id="registerAge" placeholder="Yaş" min="18" required />
-  <select id="registerCity">
+  <select id="registerCity" required>
     <option value="">Şehir Seçin</option>
-    <option>İstanbul</option><option>Ankara</option><option>İzmir</option>
-    <option>Bursa</option><option>Adana</option><option>Antalya</option>
+    <option>İstanbul</option>
+    <option>Ankara</option>
+    <option>İzmir</option>
+    <option>Bursa</option>
+    <option>Adana</option>
+    <option>Antalya</option>
   </select>
-  <select id="registerGender">
+  <select id="registerGender" required>
     <option value="">Cinsiyetiniz</option>
-    <option>Erkek</option><option>Kadın</option><option>Diğer</option>
+    <option value="erkek">Erkek</option>
+    <option value="kadın">Kadın</option>
+    <option value="diğer">Diğer</option>
   </select>
-  <select id="registerLookingFor">
+  <select id="registerLookingFor" required>
     <option value="">Aradığınız</option>
-    <option>Erkek</option><option>Kadın</option><option>Fark etmez</option>
+    <option value="erkek">Erkek</option>
+    <option value="kadın">Kadın</option>
+    <option value="farketmez">Fark etmez</option>
   </select>
   <label class="checkbox-container">
     <input type="checkbox" id="privacyCheck" required />
