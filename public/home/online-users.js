@@ -27,11 +27,22 @@ onAuthStateChanged(auth, async (user) => {
   if (user) {
     const uid = user.uid;
 
-    // Firestore'a online olarak bildir
-    await setDoc(doc(db, "onlineUsers", uid), {
-      uid: uid,
-      timestamp: Date.now()
-    });
+    // Firestore'a online olarak bildir (profil bilgileriyle birlikte)
+const userDoc = await getDoc(doc(db, "users", uid));
+if (userDoc.exists()) {
+  const data = userDoc.data();
+
+  await setDoc(doc(db, "onlineUsers", uid), {
+    uid: uid,
+    displayName: data.displayName || "Bilinmeyen",
+    age: data.age || 25,
+    profileImage: data.profileImage || "",
+    gender: data.gender || "",
+    city: data.city || "",
+    timestamp: Date.now()
+  });
+}
+
 
     // Sekme kapanınca çevrimdışına al
     window.addEventListener("beforeunload", () => {
