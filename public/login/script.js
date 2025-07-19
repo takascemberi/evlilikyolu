@@ -164,7 +164,6 @@ onAuthStateChanged(auth, async (user) => {
       const data = snap.data();
       const updates = {};
 
-      if (!data.displayName) updates.displayName = user.displayName || "Bilinmeyen";
       if (!data.profileImage) updates.profileImage = user.photoURL || "/images/default-avatar.png";
       if (!data.age) updates.age = 25;
       if (!data.city) updates.city = "Bilinmiyor";
