@@ -1,13 +1,22 @@
+// public/login/script.js
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   GoogleAuthProvider,
   signInWithPopup,
-  sendEmailVerification
+  sendEmailVerification,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { auth } from "/firebaseConfig.js";
-import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 const db = getFirestore();
 
 // Form geçişleri
@@ -26,7 +35,7 @@ document.getElementById("registerTab").addEventListener("click", () => {
 });
 
 // Şifre göster/gizle
-window.togglePassword = function(id) {
+window.togglePassword = function (id) {
   const input = document.getElementById(id);
   input.type = input.type === "password" ? "text" : "password";
 };
@@ -55,17 +64,19 @@ window.register = async function () {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await sendEmailVerification(userCredential.user);
 
-    // Cinsiyete göre avatar belirle
     const profileImage = gender === "kadın" ? "/images/kadın.png" : "/images/erkek.png";
 
     await setDoc(doc(db, "users", userCredential.user.uid), {
       uid: userCredential.user.uid,
       name: name,
+      displayName: name,
       age: age,
       gender: gender,
       looking: looking,
       city: city,
       profileImage: profileImage,
+      membership: "Standart Üye",
+      bio: "Merhaba ben buradayım",
       timestamp: serverTimestamp()
     });
 
@@ -90,6 +101,7 @@ window.login = async function () {
       alert("Lütfen önce e-posta adresinizi doğrulayın.");
       return;
     }
+
     alert("Giriş başarılı!");
     location.href = "home.html";
   } catch (error) {
@@ -114,10 +126,49 @@ window.resetPassword = async function () {
 window.googleSignIn = async function () {
   const provider = new GoogleAuthProvider();
   try {
-    await signInWithPopup(auth, provider);
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    const userDocRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userDocRef);
+
+    if (!userSnap.exists()) {
+      await setDoc(userDocRef, {
+        uid: user.uid,
+        displayName: user.displayName || "Bilinmeyen",
+        age: 25,
+        city: "Bilinmiyor",
+        gender: "belirsiz",
+        profileImage: user.photoURL || "/images/default-avatar.png",
+        membership: "Standart Üye",
+        bio: "Merhaba ben buradayım",
+        timestamp: serverTimestamp()
+      });
+    }
+
     alert("Giriş başarılı!");
     location.href = "home.html";
   } catch (error) {
     alert("Google ile giriş başarısız: " + error.message);
   }
 };
+
+// Kullanıcı giriş yaptıysa eksik alanlarını Firestore'a yaz (ekstra güvenlik)
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const ref = doc(db, "users", user.uid);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) {
+      await setDoc(ref, {
+        uid: user.uid,
+        displayName: user.displayName || "Bilinmeyen",
+        age: 25,
+        city: "Bilinmiyor",
+        gender: "belirsiz",
+        profileImage: user.photoURL || "/images/default-avatar.png",
+        membership: "Standart Üye",
+        bio: "Merhaba ben buradayım",
+        timestamp: serverTimestamp()
+      });
+    }
+  }
+});
