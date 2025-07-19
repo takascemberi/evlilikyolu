@@ -70,18 +70,17 @@ window.register = async function () {
     const profileImage = gender === "kadın" ? "/images/kadın.png" : "/images/erkek.png";
 
     await setDoc(doc(db, "users", user.uid), {
-      uid: user.uid,
-      name: name,
-      displayName: name,
-      age: age,
-      gender: gender,
-      looking: looking,
-      city: city,
-      profileImage: profileImage,
-      membership: "Standart Üye",
-      bio: "Merhaba ben buradayım",
-      timestamp: serverTimestamp()
-    });
+  uid: user.uid,
+  displayName: name,
+  age: parseInt(age), // 🔥 string değil sayı
+  gender: gender,
+  lookingFor: looking,
+  city: city,
+  profileImage: profileImage,
+  membership: "Standart Üye",
+  bio: "Merhaba ben buradayım",
+  timestamp: serverTimestamp()
+});
 
     alert("Kayıt başarılı! Lütfen e-posta adresinize gelen doğrulama bağlantısını onaylayın.");
     await auth.signOut();
