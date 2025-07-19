@@ -13,7 +13,7 @@ import {
   getAuth,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { firebaseConfig } from "/firebaseConfig.js";
+import { app } from "/firebaseConfig.js";
 
 // Firebase başlat
 const app = initializeApp(firebaseConfig);
