@@ -1,24 +1,50 @@
+// public/home/online-users.js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  deleteDoc,
+  onSnapshot,
+  collection
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { app } from "/firebaseConfig.js";
+
+// Firebase servisleri
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Hedef divler
+const listContainer = document.getElementById("online-user-list");
+const onlineCountText = document.querySelector(".online-count");
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     const uid = user.uid;
 
-    // Kullanıcı bilgilerini al
-    const userDoc = await getDoc(doc(db, "users", uid));
-    if (userDoc.exists()) {
-      const data = userDoc.data();
+    // Firestore'a online olarak bildir (profil bilgileriyle birlikte)
+const userDoc = await getDoc(doc(db, "users", uid));
+if (userDoc.exists()) {
+  const data = userDoc.data();
 
-      await setDoc(doc(db, "onlineUsers", uid), {
-        uid: uid,
-        displayName: data.displayName || "Bilinmeyen",
-        age: data.age || 25,
-        profileImage: data.profileImage || "",
-        gender: data.gender || "",
-        city: data.city || "",
-        timestamp: Date.now()
-      });
-    }
+  await setDoc(doc(db, "onlineUsers", uid), {
+    uid: uid,
+    displayName: data.displayName || "Bilinmeyen",
+    age: data.age || 25,
+    profileImage: data.profileImage || "",
+    gender: data.gender || "",
+    city: data.city || "",
+    timestamp: Date.now()
+  });
+}
 
-    // Sekme kapanınca çevrimdışı yap
+
+    // Sekme kapanınca çevrimdışına al
     window.addEventListener("beforeunload", () => {
       deleteDoc(doc(db, "onlineUsers", uid));
     });
@@ -30,6 +56,11 @@ onAuthStateChanged(auth, async (user) => {
       snapshot.forEach((docu) => {
         usersOnline.push(docu.id);
       });
+
+      // Online sayısını güncelle
+      if (onlineCountText) {
+        onlineCountText.textContent = `🟢 Şu an aktif olan kullanıcı sayısı: ${usersOnline.length}`;
+      }
 
       // Listeyi temizle
       listContainer.innerHTML = "";
@@ -57,6 +88,7 @@ onAuthStateChanged(auth, async (user) => {
             imageSrc = "/images/kadın.png";
           }
           img.src = imageSrc;
+
           img.alt = "avatar";
           img.style.width = "60px";
           img.style.height = "60px";
