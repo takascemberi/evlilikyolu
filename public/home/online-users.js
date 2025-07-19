@@ -44,7 +44,7 @@ onAuthStateChanged(auth, async (user) => {
     onSnapshot(onlineUsersRef, async (snapshot) => {
       const usersOnline = [];
       snapshot.forEach((docu) => {
-        usersOnline.push(docu.data().uid);
+        usersOnline.push(docu.id);
       });
 
       // Online sayısını güncelle
