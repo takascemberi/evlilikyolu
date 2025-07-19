@@ -19,7 +19,7 @@
       appId: "1:552096712424:web:2c5afb59f00dcd24092b5d",
     };
 
-    const app = initializeApp(firebaseConfig);
+    import { app } from "../firebaseConfig.js";
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
