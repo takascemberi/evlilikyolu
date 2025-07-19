@@ -63,12 +63,14 @@ window.register = async function () {
 
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    await sendEmailVerification(userCredential.user);
+    const user = userCredential.user;
+
+    await sendEmailVerification(user);
 
     const profileImage = gender === "kadın" ? "/images/kadın.png" : "/images/erkek.png";
 
-    await setDoc(doc(db, "users", userCredential.user.uid), {
-      uid: userCredential.user.uid,
+    await setDoc(doc(db, "users", user.uid), {
+      uid: user.uid,
       name: name,
       displayName: name,
       age: age,
@@ -82,6 +84,9 @@ window.register = async function () {
     });
 
     alert("Kayıt başarılı! Lütfen e-posta adresinize gelen doğrulama bağlantısını onaylayın.");
+    await auth.signOut();
+    location.href = "/login/login.html";
+
   } catch (error) {
     alert("Hata: " + error.message);
   }
