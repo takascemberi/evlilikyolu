@@ -1,8 +1,8 @@
-// Firebase yapılandırması
+// public/firebaseConfig.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyAcBbfYUNmzCUJ9woKsQeC4b7U4L3Td42w",
   authDomain: "vipbulusma.firebaseapp.com",
   projectId: "vipbulusma",
@@ -13,6 +13,4 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-export { auth };
+export const auth = getAuth(app);
