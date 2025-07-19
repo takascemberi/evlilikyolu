@@ -14,7 +14,8 @@ import {
   doc,
   setDoc,
   getDoc,
-  serverTimestamp
+  serverTimestamp,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const db = getFirestore();
@@ -101,7 +102,6 @@ window.login = async function () {
       alert("Lütfen önce e-posta adresinizi doğrulayın.");
       return;
     }
-
     alert("Giriş başarılı!");
     location.href = "home.html";
   } catch (error) {
@@ -128,47 +128,49 @@ window.googleSignIn = async function () {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    const userDocRef = doc(db, "users", user.uid);
-    const userSnap = await getDoc(userDocRef);
+    const ref = doc(db, "users", user.uid);
+    const snap = await getDoc(ref);
 
-    if (!userSnap.exists()) {
-      await setDoc(userDocRef, {
+    if (!snap.exists()) {
+      await setDoc(ref, {
         uid: user.uid,
         displayName: user.displayName || "Bilinmeyen",
+        profileImage: user.photoURL || "/images/default-avatar.png",
         age: 25,
         city: "Bilinmiyor",
         gender: "belirsiz",
-        profileImage: user.photoURL || "/images/default-avatar.png",
         membership: "Standart Üye",
         bio: "Merhaba ben buradayım",
         timestamp: serverTimestamp()
       });
     }
-
-    alert("Giriş başarılı!");
     location.href = "home.html";
   } catch (error) {
     alert("Google ile giriş başarısız: " + error.message);
   }
 };
 
-// Kullanıcı giriş yaptıysa eksik alanlarını Firestore'a yaz (ekstra güvenlik)
+// Eksik kullanıcı bilgilerini tamamla
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
-    if (!snap.exists()) {
-      await setDoc(ref, {
-        uid: user.uid,
-        displayName: user.displayName || "Bilinmeyen",
-        age: 25,
-        city: "Bilinmiyor",
-        gender: "belirsiz",
-        profileImage: user.photoURL || "/images/default-avatar.png",
-        membership: "Standart Üye",
-        bio: "Merhaba ben buradayım",
-        timestamp: serverTimestamp()
-      });
+
+    if (snap.exists()) {
+      const data = snap.data();
+      const updates = {};
+
+      if (!data.displayName) updates.displayName = user.displayName || "Bilinmeyen";
+      if (!data.profileImage) updates.profileImage = user.photoURL || "/images/default-avatar.png";
+      if (!data.age) updates.age = 25;
+      if (!data.city) updates.city = "Bilinmiyor";
+      if (!data.gender) updates.gender = "belirsiz";
+      if (!data.membership) updates.membership = "Standart Üye";
+      if (!data.bio) updates.bio = "Merhaba ben buradayım";
+
+      if (Object.keys(updates).length > 0) {
+        await updateDoc(ref, updates);
+      }
     }
   }
 });
