@@ -65,7 +65,10 @@ window.register = async function () {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    await sendEmailVerification(user);
+    await sendEmailVerification(user, {
+  url: "https://vipbulusma.firebaseapp.com/verified.html",
+  handleCodeInApp: false
+});
 
     const profileImage = gender === "kadın" ? "/images/kadın.png" : "/images/erkek.png";
 
