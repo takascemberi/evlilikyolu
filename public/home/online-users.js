@@ -1,7 +1,18 @@
 // public/home/online-users.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  deleteDoc,
+  onSnapshot,
+  collection
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { firebaseConfig } from "/firebaseConfig.js";
 
 // Firebase başlat
@@ -9,19 +20,21 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Online kullanıcıları göster
-const topBar = document.querySelector(".top-bar");
+// Hedef divler
+const listContainer = document.getElementById("online-user-list");
+const onlineCountText = document.querySelector(".online-count");
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     const uid = user.uid;
-    // Online olduğunu Firestore'a yaz
+
+    // Firestore'a online olarak bildir
     await setDoc(doc(db, "onlineUsers", uid), {
       uid: uid,
       timestamp: Date.now()
     });
 
-    // Çıkış veya sekme kapanınca onlineUsers'tan sil
+    // Sekme kapanınca çevrimdışına al
     window.addEventListener("beforeunload", () => {
       deleteDoc(doc(db, "onlineUsers", uid));
     });
@@ -34,16 +47,13 @@ onAuthStateChanged(auth, async (user) => {
         usersOnline.push(docu.data().uid);
       });
 
-      // Temizle
-      const existing = document.querySelector(".online-users-list");
-      if (existing) existing.remove();
+      // Online sayısını güncelle
+      if (onlineCountText) {
+        onlineCountText.textContent = `🟢 Şu an aktif olan kullanıcı sayısı: ${usersOnline.length}`;
+      }
 
-      const list = document.createElement("div");
-      list.className = "online-users-list";
-      list.style.display = "flex";
-      list.style.overflowX = "scroll";
-      list.style.gap = "10px";
-      list.style.padding = "10px";
+      // Listeyi temizle
+      listContainer.innerHTML = "";
 
       for (let uid of usersOnline) {
         const userDoc = await getDoc(doc(db, "users", uid));
@@ -53,36 +63,44 @@ onAuthStateChanged(auth, async (user) => {
           const card = document.createElement("div");
           card.style.cursor = "pointer";
           card.style.textAlign = "center";
-          card.style.width = "80px";
+          card.style.width = "90px";
           card.style.fontSize = "12px";
 
           const img = document.createElement("img");
           img.src = data.profileImage || "/images/default-avatar.png";
           img.alt = "avatar";
-          img.style.width = "50px";
-          img.style.height = "50px";
+          img.style.width = "60px";
+          img.style.height = "60px";
           img.style.borderRadius = "50%";
           img.style.border = "2px solid green";
+          img.style.objectFit = "cover";
 
           const name = document.createElement("div");
-          name.textContent = data.displayName || "Üye";
+          name.textContent = data.displayName || "Bilinmeyen";
+          name.style.fontWeight = "bold";
+          name.style.fontSize = "13px";
 
           const age = document.createElement("div");
           age.textContent = data.age ? `${data.age} yaş` : "";
+          age.style.fontSize = "12px";
+
+          const city = document.createElement("div");
+          city.textContent = data.city || "";
+          city.style.fontSize = "12px";
+          city.style.color = "gray";
 
           card.appendChild(img);
           card.appendChild(name);
           card.appendChild(age);
+          card.appendChild(city);
 
           card.addEventListener("click", () => {
             window.location.href = `/profile/profile-view.html?uid=${uid}`;
           });
 
-          list.appendChild(card);
+          listContainer.appendChild(card);
         }
       }
-
-      topBar.appendChild(list);
     });
   }
 });
