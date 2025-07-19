@@ -15,8 +15,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { app } from "/firebaseConfig.js";
 
-// Firebase başlat
-const app = initializeApp(firebaseConfig);
+// Firebase servisleri
 const db = getFirestore(app);
 const auth = getAuth(app);
 
@@ -65,15 +64,17 @@ onAuthStateChanged(auth, async (user) => {
           card.style.textAlign = "center";
           card.style.width = "90px";
           card.style.fontSize = "12px";
+          card.style.display = "inline-block";
+          card.style.margin = "5px";
 
           const img = document.createElement("img");
           let imageSrc = "/images/default-avatar.png";
           if (data.profileImage && data.profileImage.trim() !== "") {
-          imageSrc = data.profileImage;
+            imageSrc = data.profileImage;
           } else if (data.gender === "erkek") {
-          imageSrc = "/images/erkek.png";
+            imageSrc = "/images/erkek.png";
           } else if (data.gender === "kadın") {
-          imageSrc = "/images/kadın.png";
+            imageSrc = "/images/kadın.png";
           }
           img.src = imageSrc;
 
